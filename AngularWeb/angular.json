@@ -17,6 +17,9 @@
         "build": {
           "builder": "@angular/build:application",
           "options": {
+            "security": {
+              "autoCsp": true
+            },
             "browser": "src/main.ts",
             "polyfills": [
               "zone.js"
@@ -94,5 +97,8 @@
         }
       }
     }
+  },
+  "cli": {
+    "analytics": false
   }
 }
