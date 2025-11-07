@@ -12,6 +12,21 @@ ng serve
 
 Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
 
+## Starting App using SSL
+
+To start a local development server using ssl certificate, run:
+
+```bash
+ng serve --ssl true --ssl-cert "./server.crt" --ssl-key "./server.key"
+```
+
+## Trust Certificate
+* Double click server.crt
+* Select the login keychain in Keychain Access
+* You should see an entry called localhost - double click that
+* Expand the 'Trust' section and select 'Always Trust' under 'When using this certificate'
+* This step may be optional: Save the changes by adding your password 
+
 ## Code scaffolding
 
 Angular CLI includes powerful code scaffolding tools. To generate a new component, run:

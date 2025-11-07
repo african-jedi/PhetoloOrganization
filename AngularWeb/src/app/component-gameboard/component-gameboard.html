@@ -8,7 +8,7 @@
   .gameBoard {
     width: auto;
     height: auto;
-    border: 1px solid grey;
+    border: 1px solid lightgrey;
     border-radius: 4px;
     padding: 1rem;
   }
@@ -51,6 +51,27 @@
     color: transparent;
     cursor: not-allowed;
   }
+
+  .red {
+    background-color: #FA5F55;
+    color: black;
+    border: 2px solid #FA5F55;
+    border-radius: 4px;
+  }
+
+  .green {
+    background-color: green;
+    color: white;
+    border: 2px solid green;
+    border-radius: 4px;
+  }
+
+  .orangeButton {
+    background-color: #ffbf00;
+    color: black;
+    border: 2px solid #ffbf00;
+    border-radius: 4px;
+  }
 </style>
 <div class="centerContainer">
   <div class="gameBoard">
@@ -90,25 +111,40 @@
     <div class="boxContainer">
       <div style="display: flex; width: 100%">
         <div style="width: calc(100% - 40px)">
-          <input (click)="numerationSymbolClicked($event)" class="box" type="button" value="+" />
-        </div>
-        <div style="width: calc(100% - 40px)">
-          <input (click)="numerationSymbolClicked($event)" class="box" type="button" value="-" />
-        </div>
-        <div style="width: calc(100% - 40px)">
-          <input (click)="numerationSymbolClicked($event)" class="box" type="button" value="x" />
+          <input
+            (click)="numerationSymbolClicked($event)"
+            class="box orangeButton"
+            type="button"
+            value="+"
+          />
         </div>
         <div style="width: calc(100% - 40px)">
           <input
             (click)="numerationSymbolClicked($event)"
-            class="box"
+            class="box orangeButton"
+            type="button"
+            value="-"
+          />
+        </div>
+        <div style="width: calc(100% - 40px)">
+          <input
+            (click)="numerationSymbolClicked($event)"
+            class="box orangeButton"
+            type="button"
+            value="x"
+          />
+        </div>
+        <div style="width: calc(100% - 40px)">
+          <input
+            (click)="numerationSymbolClicked($event)"
+            class="box orangeButton"
             type="button"
             value="&#247;"
           />
         </div>
       </div>
     </div>
-    <div class="boxContainer">
+    <div class="boxContainer" style="min-height: 100px">
       <div style="display: flex; flex-direction: row; width: 300px; flex-wrap: wrap; gap: 10px">
         @for(item of numbers; track item.id){ @if(item.calculated!==true){
         <div style="width: calc(100% - 40px); flex: 0 1 10px">
@@ -119,6 +155,7 @@
             type="button"
             value="{{ item.value }}"
             [disabled]="item.disabledField"
+            [class]="item.colour"
           />
         </div>
         } }

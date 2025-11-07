@@ -5,5 +5,6 @@ export interface NumberDetails {
     disabledField: boolean,
     calculated?: boolean,
     selected?: boolean,
+    colour?:string
 
 }

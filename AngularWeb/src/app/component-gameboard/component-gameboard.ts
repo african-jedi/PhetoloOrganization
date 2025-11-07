@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, OnDestroy, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { NumberDetails } from '../models/number-details';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-component-gameboard',
@@ -9,12 +10,15 @@ import { NumberDetails } from '../models/number-details';
   templateUrl: './component-gameboard.html',
   styleUrl: './component-gameboard.scss',
 })
-export class ComponentGameboard {
+export class ComponentGameboard implements OnInit, OnDestroy {
   firstNumber: number | undefined;
   secondNumber: number | undefined;
   numerationSymbol: string = '';
   numbers: NumberDetails[] | undefined;
   errorMsg: string | undefined;
+  id = 0;
+
+  private router = inject(Router);
 
   constructor() {
     this.numbers = [{
@@ -36,27 +40,42 @@ export class ComponentGameboard {
     }];
   }
 
+  ngOnInit() {
+    this.id = setInterval(() => {
+      this._checkWinOrLose();
+    }, 2500);
+  }
+
+  ngOnDestroy() {
+    if (this.id) {
+      clearInterval(this.id);
+    }
+  }
+
   numberClicked(event: Event) {
     console.log("number clicked:", event);
     const button = event.target as HTMLButtonElement;
     console.log('Button name:', button.value);
     console.log('Button id:', button.id);
 
-    //set first number in calculation section if availabe
-    if (this.firstNumber === undefined) {
-      this.firstNumber = Number(button.value);
-      this._DisableButton(Number(button.id));
-      this._Calculate();
-    }
-    //set second number in calculation section if available
-    else if (this.secondNumber === undefined) {
-      this.secondNumber = Number(button.value);
-      this._DisableButton(Number(button.id));
-      this._Calculate();
-    } else {
-      //send toast message:
-      //numbers have been slected, select numeration symbol or click selected numbers to remove
-      console.log(`numbers (${this.firstNumber} and ${this.secondNumber}) have been slected, select numeration symbol or click selected numbers to remove`);
+    const activeNumbers = this.numbers?.filter(c => c.disabledField === false || c.selected == true);
+    if (activeNumbers !== undefined && activeNumbers.length >= 2) {
+      //set first number in calculation section if availabe
+      if (this.firstNumber === undefined) {
+        this.firstNumber = Number(button.value);
+        this._DisableButton(Number(button.id));
+        this._Calculate();
+      }
+      //set second number in calculation section if available
+      else if (this.secondNumber === undefined) {
+        this.secondNumber = Number(button.value);
+        this._DisableButton(Number(button.id));
+        this._Calculate();
+      } else {
+        //send toast message:
+        //numbers have been slected, select numeration symbol or click selected numbers to remove
+        console.log(`numbers (${this.firstNumber} and ${this.secondNumber}) have been slected, select numeration symbol or click selected numbers to remove`);
+      }
     }
   }
 
@@ -96,11 +115,19 @@ export class ComponentGameboard {
     }
   }
 
+  private _NavigateToComponent(url: string) {
+    if (this.id) {
+      clearInterval(this.id);
+    }
+
+    this.router.navigateByUrl(url);
+  }
+
   private _DisableButton(id: number): void {
     const selectedNumber = this.numbers?.find(c => c.id === id);
     if (selectedNumber?.id === id) {
       selectedNumber.disabledField = true;
-      selectedNumber.selected=true;
+      selectedNumber.selected = true;
     }
   }
 
@@ -109,8 +136,8 @@ export class ComponentGameboard {
     if (selectedNumbers?.length === 2) {
       selectedNumbers[0].calculated = selectedNumbers[1].calculated = true;
       selectedNumbers[0].selected = selectedNumbers[1].selected = false;
-      this.firstNumber=this.secondNumber=undefined;
-      this.numerationSymbol='';
+      this.firstNumber = this.secondNumber = undefined;
+      this.numerationSymbol = '';
     } else {
       this.errorMsg = "More than 2 items disabled";
       console.log(this.errorMsg);
@@ -118,15 +145,39 @@ export class ComponentGameboard {
     }
   }
 
-  private _addButton(total:number): void{
+  private _addButton(total: number): void {
     console.log("add button");
-     this.numbers?.push({
-       id: this.numbers.length+1,
-       value: total,
-       disabledField: false,
-       position: this.numbers.length+1
-     });
+    let colour = 'black';
+    const activeNumbers = this.numbers?.filter(c => c.disabledField === false);
+    console.log(`active number:${activeNumbers}`);
+    if (activeNumbers?.length == 0 && total !== 28)
+      colour = 'red';
+    if (activeNumbers?.length == 0 && total === 28)
+      colour = 'green';
 
-     console.log(this.numbers);
+    this.numbers?.push({
+      id: this.numbers.length + 1,
+      value: total,
+      disabledField: false,
+      position: this.numbers.length + 1,
+      colour: colour
+    });
+
+    console.log(this.numbers);
+  }
+
+  private _checkWinOrLose() {
+    console.log('Check win or lose every Five Seconds.', new Date());
+
+    const activeNumbers = this.numbers?.filter(c => c.disabledField === false || c.selected == true);
+    if (activeNumbers !== undefined && activeNumbers.length === 1) {
+      if (activeNumbers[0].value === 28){ 
+        console.log(`passed: ${activeNumbers[0].value}`);
+        this._NavigateToComponent("/pass");
+      }else{
+        console.log(`failed: ${activeNumbers[0].value}`);
+        this._NavigateToComponent("/fail");
+      }
+    }
   }
 }
