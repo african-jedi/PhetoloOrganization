@@ -115,12 +115,12 @@ export class ComponentGameboard implements OnInit, OnDestroy {
     }
   }
 
-  private _NavigateToComponent(url: string) {
+  private _NavigateToComponent(url: string, total:number) {
     if (this.id) {
       clearInterval(this.id);
     }
 
-    this.router.navigateByUrl(url);
+    this.router.navigate([url, total]);
   }
 
   private _DisableButton(id: number): void {
@@ -171,12 +171,14 @@ export class ComponentGameboard implements OnInit, OnDestroy {
 
     const activeNumbers = this.numbers?.filter(c => c.disabledField === false || c.selected == true);
     if (activeNumbers !== undefined && activeNumbers.length === 1) {
-      if (activeNumbers[0].value === 28){ 
-        console.log(`passed: ${activeNumbers[0].value}`);
-        this._NavigateToComponent("/pass");
+
+      let total=activeNumbers[0].value;
+      if (total === 28){ 
+        console.log(`passed: ${total}`);
+        this._NavigateToComponent("/pass", total);
       }else{
-        console.log(`failed: ${activeNumbers[0].value}`);
-        this._NavigateToComponent("/fail");
+        console.log(`failed: ${total}`);
+        this._NavigateToComponent("/fail", total);
       }
     }
   }

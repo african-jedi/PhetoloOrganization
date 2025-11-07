@@ -9,11 +9,11 @@ export const routes: Routes = [
         component: ComponentHome
     },
     {
-        path: 'pass',
+        path: 'pass/:total',
         component: ComponentPass
     },
     {
-        path: 'fail',
+        path: 'fail/:total',
         component: ComponentFail
     }
 ];

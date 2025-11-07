@@ -1,0 +1,22 @@
+<style>
+    .pass{
+       background-color: green;
+       padding: 2rem;
+       font-size: 2rem;
+       text-align: center;
+       border-radius: 4px;
+    }
+
+    .fail{
+       background-color: #FA5F55;
+       padding: 2rem;
+       font-size: 2rem;
+       text-align: center;
+    }
+</style>
+
+<div [class]="passOrfail" style="width: 100px;margin: auto;">{{ answer }}</div>
+<div style="padding: 1rem;margin-top: 20px;">You have solved puzzel:</div>
+<div style="padding: 10px 0;background-color: lightgrey;border-radius: 4px;">
+<div style="padding: 1rem;font-size: large;">(1+1)+(2+2)+(3+3)+(4+4)</div>
+</div>
