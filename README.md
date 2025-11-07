@@ -10,3 +10,4 @@ Contains the following projects:
 3. .Net 9 Asp.Net croe Web Api (Puzzel Generator)
 4. Communication between microservices uses RabbitMq
 5. PostgreSQL Database is used
+6. Redis used for caching
