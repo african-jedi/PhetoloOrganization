@@ -2,6 +2,9 @@ import { Component, OnInit, OnDestroy, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { NumberDetails } from '../models/number-details';
 import { Router } from '@angular/router';
+import { PuzzleService } from '../service/puzzleservice';
+import { CookieService } from 'ngx-cookie-service';
+import { Constants } from '../models/constants';
 
 @Component({
   selector: 'app-component-gameboard',
@@ -14,36 +17,21 @@ export class ComponentGameboard implements OnInit, OnDestroy {
   firstNumber: number | undefined;
   secondNumber: number | undefined;
   numerationSymbol: string = '';
+  readonly service = inject(PuzzleService);
+  readonly cookieSerive = inject(CookieService);
   numbers: NumberDetails[] | undefined;
   errorMsg: string | undefined;
   id = 0;
 
   private router = inject(Router);
-
-  constructor() {
-    this.numbers = [{
-      id: 1, value: 6, position: 1, disabledField: false
-    }, {
-      id: 2, value: 3, position: 2, disabledField: false
-    }, {
-      id: 3, value: 5, position: 3, disabledField: false
-    }, {
-      id: 4, value: 4, position: 4, disabledField: false
-    }, {
-      id: 5, value: 8, position: 5, disabledField: false
-    }, {
-      id: 6, value: 9, position: 6, disabledField: false
-    }, {
-      id: 7, value: 10, position: 7, disabledField: false
-    }, {
-      id: 8, value: 7, position: 8, disabledField: false
-    }];
-  }
+  readonly constants = new Constants();
 
   ngOnInit() {
     this.id = setInterval(() => {
       this._checkWinOrLose();
     }, 2500);
+    this.numbers = this.service.getPuzzel();
+    this.cookieSerive.set(this.constants.cookieName, '');
   }
 
   ngOnDestroy() {
@@ -53,7 +41,7 @@ export class ComponentGameboard implements OnInit, OnDestroy {
   }
 
   numberClicked(event: Event) {
-    console.log("number clicked:", event);
+    console.log('number clicked:', event);
     const button = event.target as HTMLButtonElement;
     console.log('Button name:', button.value);
     console.log('Button id:', button.id);
@@ -110,12 +98,14 @@ export class ComponentGameboard implements OnInit, OnDestroy {
       }
       console.log(calculation);
       console.log(this.numerationSymbol);
+
+      this._updateCookieValue(`(${this.firstNumber} ${this.numerationSymbol} ${this.secondNumber})`);
       this._removeButton();
       this._addButton(calculation);
     }
   }
 
-  private _NavigateToComponent(url: string, total:number) {
+  private _NavigateToComponent(url: string, total: number) {
     if (this.id) {
       clearInterval(this.id);
     }
@@ -172,14 +162,24 @@ export class ComponentGameboard implements OnInit, OnDestroy {
     const activeNumbers = this.numbers?.filter(c => c.disabledField === false || c.selected == true);
     if (activeNumbers !== undefined && activeNumbers.length === 1) {
 
-      let total=activeNumbers[0].value;
-      if (total === 28){ 
+      let total = activeNumbers[0].value;
+      if (total === 28) {
         console.log(`passed: ${total}`);
         this._NavigateToComponent("/pass", total);
-      }else{
+      } else {
         console.log(`failed: ${total}`);
         this._NavigateToComponent("/fail", total);
       }
     }
+  }
+
+  private _updateCookieValue(equation: string) {
+    let value = this.cookieSerive.get(this.constants.cookieName);
+    if (value === '')
+      this.cookieSerive.set(this.constants.cookieName, equation, 1);
+    else
+      this.cookieSerive.set(this.constants.cookieName, `${value} + ${equation}`, 1);
+
+    console.log(`Cookie value: ${this.cookieSerive.get(this.constants.cookieName)}`);
   }
 }

@@ -1,1 +1,34 @@
-<p>component-fail works!</p>
+<style>
+  .centerContainer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+  }
+  .gameBoard {
+    width: 400px;
+    height: auto;
+    border: 1px solid lightgrey;
+    border-radius: 4px;
+    padding: 1rem;
+  }
+  .nextButton{
+    padding: 1rem;
+    font-size: large;
+    background-color: #0047AB;
+     border: 2px solid #0047AB;
+     width: 100%;
+     border-radius: 4px;
+     margin-top: 20px;
+     color: antiquewhite;
+  }
+
+</style>
+<div class="centerContainer">
+  <div class="gameBoard">
+    <div style="text-align: center;"><h2>Opps, you failed!</h2></div>
+    <app-component-highlight-number [answer]="answer"></app-component-highlight-number>
+    <input class="nextButton" type="button" value="Retry Puzzle"/>
+  </div>
+</div>
+

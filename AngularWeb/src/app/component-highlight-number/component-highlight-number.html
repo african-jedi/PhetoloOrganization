@@ -12,11 +12,22 @@
        padding: 2rem;
        font-size: 2rem;
        text-align: center;
+       border-radius: 4px;
     }
 </style>
 
 <div [class]="passOrfail" style="width: 100px;margin: auto;">{{ answer }}</div>
-<div style="padding: 1rem;margin-top: 20px;">You have solved puzzel:</div>
+<div style="padding: 1rem;margin-top: 20px;">You have failed to solved puzzel:</div>
 <div style="padding: 10px 0;background-color: lightgrey;border-radius: 4px;">
-<div style="padding: 1rem;font-size: large;">(1+1)+(2+2)+(3+3)+(4+4)</div>
+<div style="padding: 1rem;font-size: large;font-weight: bold;">{{equation}}</div>
+</div>
+<div style="padding: 1rem;margin-top: 20px;">Tips:</div>
+<div style="padding: 1rem;">
+   <ul>
+   <li><b>Aim for 28 Early</b>: Try to get as close to <b>28</b> as possible from the start.</li>
+   <li><b>Use "+ and "–" Smartly</b>: Adjust with addition and subtraction to stay near <b>28</b>.</li>
+   <li><b>Balance Big and Small Moves</b>: Correct overshooting or undershooting with smaller adjustments.</li>
+   <li><b>Stay Patient</b>: Take your time and think through each step.</li>
+   <li><b>Try Working Backwards</b>: Consider how you could reach 28 by reversing your steps.</li>
+   </ul>
 </div>
