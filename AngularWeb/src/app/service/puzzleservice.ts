@@ -5,7 +5,7 @@ import { NumberDetails } from '../models/number-details';
   providedIn: 'root'
 })
 export class PuzzleService {
-   getPuzzel():NumberDetails[]{
+   getPuzzle():NumberDetails[]{
      let numbers = [{
       id: 1, value: 6, position: 1, disabledField: false
     }, {
