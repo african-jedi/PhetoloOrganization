@@ -36,10 +36,10 @@ export class ComponentGameboard implements OnInit, OnDestroy {
           spread: 160,
           origin: { y: 0.6 },
         });
-        this.id = setInterval(() => {
+      }
+      this.id = setInterval(() => {
           this._checkWinOrLose();
         }, 3000);
-      }
     });
   }
 
