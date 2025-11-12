@@ -7,6 +7,7 @@ import { CookieService } from 'ngx-cookie-service';
 import { Constants } from '../models/constants';
 import confetti from 'canvas-confetti';
 import { ComponentTimer } from '../component-timer/component-timer';
+import { GameBoardService } from '../service/game-board-service';
 
 @Component({
   selector: 'app-component-gameboard',
@@ -16,9 +17,6 @@ import { ComponentTimer } from '../component-timer/component-timer';
   styleUrl: './component-gameboard.scss',
 })
 export class ComponentGameboard implements OnInit, OnDestroy {
-  firstNumber: number | undefined;
-  secondNumber: number | undefined;
-  numerationSymbol: string = '';
   readonly service = inject(PuzzleService);
   readonly cookieService = inject(CookieService);
   numbers = signal<NumberDetails[]>([]);
@@ -29,7 +27,7 @@ export class ComponentGameboard implements OnInit, OnDestroy {
   private router = inject(Router);
   readonly constants = new Constants();
 
-  constructor() {
+  constructor(public boardService: GameBoardService) {
     effect(() => {
       console.log("You win or lose check effect - numbers changed:", this.numbers());
       if (this._isWinner()) {
@@ -39,11 +37,16 @@ export class ComponentGameboard implements OnInit, OnDestroy {
           origin: { y: 0.6 },
         });
       }
+
       if (this.endGame) {
         this.id = setInterval(() => {
           this._checkWinOrLose();
-        }, 5000);
+        }, 3000);
       }
+
+      setInterval(() => {
+      this._Calculate();
+      }, 500);
     });
   }
 
@@ -67,57 +70,52 @@ export class ComponentGameboard implements OnInit, OnDestroy {
     const activeNumbers = this.numbers().filter(c => c.disabledField === false || c.selected == true);
     if (activeNumbers !== undefined && activeNumbers.length >= 2) {
       //set first number in calculation section if availabe
-      if (this.firstNumber === undefined) {
-        this.firstNumber = Number(button.value);
+      if (this.boardService.firstNumber() === '') {
+        this.boardService.firstNumber.set(button.value);
         this._DisableButton(Number(button.id));
-        this._Calculate();
       }
       //set second number in calculation section if available
-      else if (this.secondNumber === undefined) {
-        this.secondNumber = Number(button.value);
+      else if (this.boardService.secondNumber() === '') {
+        this.boardService.secondNumber.set(button.value);
         this._DisableButton(Number(button.id));
-        this._Calculate();
       } else {
         //send toast message:
         //numbers have been slected, select numeration symbol or click selected numbers to remove
-        console.log(`numbers (${this.firstNumber} and ${this.secondNumber}) have been slected, select numeration symbol or click selected numbers to remove`);
+        console.log(`numbers (${this.boardService.firstNumber()} and ${this.boardService.secondNumber()}) have been slected, select numeration symbol or click selected numbers to remove`);
       }
     }
   }
 
   numerationSymbolClicked(event: Event) {
-    console.log("numeration sybol clicked:", event);
+    console.log("numeration symbol clicked:", event);
     const button = event.target as HTMLButtonElement;
     console.log('Button name:', button.value);
 
-    this.numerationSymbol = button.value;
-    this._Calculate();
+    this.boardService.numerationSymbol.set(button.value);
   }
 
   private _Calculate(): void {
     //calculate the results
     let calculation = 0;
-    if (this.firstNumber !== undefined && this.secondNumber !== undefined && this.numerationSymbol !== '') {
-      switch (this.numerationSymbol) {
+    if (this.boardService.firstNumber() !== '' && this.boardService.secondNumber() !== '' && this.boardService.numerationSymbol() !== '') {
+      switch (this.boardService.numerationSymbol()) {
         case "+":
-          calculation = this.firstNumber + this.secondNumber;
+          calculation = Number(this.boardService.firstNumber()) + Number(this.boardService.secondNumber());
           break;
         case "-":
-          calculation = this.firstNumber - this.secondNumber;
+          calculation = Number(this.boardService.firstNumber()) - Number(this.boardService.secondNumber());
           break;
         case "x":
-          calculation = this.firstNumber * this.secondNumber;
+          calculation = Number(this.boardService.firstNumber()) * Number(this.boardService.secondNumber());
           break;
         case "÷":
-          calculation = this.firstNumber / this.secondNumber;
+          calculation = Number(this.boardService.firstNumber()) / Number(this.boardService.secondNumber());
           break;
         default:
           this.errorMsg = "Calculation failed";
       }
-      console.log(calculation);
-      console.log(this.numerationSymbol);
-
-      this._updateCookieValue(`(${this.firstNumber} ${this.numerationSymbol} ${this.secondNumber})`);
+  
+      this._updateCookieValue(`(${this.boardService.firstNumber()} ${this.boardService.numerationSymbol()} ${Number(this.boardService.secondNumber())})`);
       this._removeButton();
       this._addButton(calculation);
     }
@@ -144,8 +142,9 @@ export class ComponentGameboard implements OnInit, OnDestroy {
     if (selectedNumbers?.length === 2) {
       selectedNumbers[0].calculated = selectedNumbers[1].calculated = true;
       selectedNumbers[0].selected = selectedNumbers[1].selected = false;
-      this.firstNumber = this.secondNumber = undefined;
-      this.numerationSymbol = '';
+      this.boardService.firstNumber.set(''); 
+      this.boardService.secondNumber.set('');
+      this.boardService.numerationSymbol.set('');
     } else {
       this.errorMsg = "More than 2 items disabled";
       console.log(this.errorMsg);
@@ -174,7 +173,7 @@ export class ComponentGameboard implements OnInit, OnDestroy {
       colour: colour
     }]);
 
-    console.log(this.numbers);
+    console.log("New button:",total);
   }
 
   private _checkWinOrLose() {

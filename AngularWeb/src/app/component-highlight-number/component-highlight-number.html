@@ -16,9 +16,9 @@
     }
 </style>
 
-<div [class]="passOrfail" style="width: 100px;margin: auto;">{{ answer }}</div>
+<div [class]="passOrfail" style="width: 100px;margin: auto;">{{ answer() }}</div>
 <div style="padding: 1rem;margin-top: 20px;">
-   @if(answer==28){
+   @if(answer()==28){
      <p>You have successfully solved puzzle:</p>
    }
    @else{

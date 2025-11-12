@@ -1,0 +1,44 @@
+<style>
+    .boxContainer {
+        width: 100%;
+        padding: 20px 0px;
+    }
+
+    .calcBoard>div {
+        width: 100%;
+        font-weight: bold;
+        font-size: large;
+        padding: 10px 20px;
+        background-color: grey;
+        border-radius: 4px;
+        text-align: center;
+        min-height: 30px;
+    }
+
+    .calcBoardInput {
+        width: 50px;
+        font-size: 20px;
+        font-weight: bold;
+        background: transparent;
+        border: 0px;
+        text-align: center;
+    }
+</style>
+<div class="boxContainer" style="min-height: 30px">
+    <div class="calcBoard" style="display: flex; width: 100%">
+        <div style="width: 33%; min-height: 30px">
+            <input class="calcBoardInput" type="text" maxlength="2" id="txtFirstNumber"
+                [value]="this.boardService.firstNumber()" />
+        </div>
+        &nbsp;
+        <div style="width: 33%">
+            <input class="calcBoardInput" type="text" maxlength="2" id="txtNumerationSymbol"
+                [value]="this.boardService.numerationSymbol()" />
+        </div>
+        &nbsp;
+        <div style="width: 33%">
+            <input class="calcBoardInput" type="text" maxlength="2" id="txtsecondNumber"
+                [value]="this.boardService.secondNumber()" />
+        </div>
+    </div>
+</div>

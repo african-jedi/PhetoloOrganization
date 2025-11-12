@@ -1,4 +1,4 @@
-import { Component, Input, inject } from '@angular/core';
+import { Component, input, inject } from '@angular/core';
 import { CookieService } from 'ngx-cookie-service';
 import { Constants } from '../models/constants';
 
@@ -10,14 +10,14 @@ import { Constants } from '../models/constants';
   styleUrl: './component-highlight-number.scss',
 })
 export class ComponentHighlightNumber {
-  @Input() answer = 0;
+  answer = input.required<number>();
   passOrfail = '';
   equation = '';
   readonly cookieService = inject(CookieService);
   readonly constants = new Constants();
 
   ngOnInit() {
-    this.passOrfail = this.answer === 28 ? 'pass' : 'fail';
+    this.passOrfail = this.answer() === 28 ? 'pass' : 'fail';
     this.equation=this.cookieService.get(this.constants.cookieName);
   }
 }

@@ -13,27 +13,7 @@
     padding: 1rem;
   }
 
-  .calcBoard > div {
-    width: 100%;
-    font-weight: bold;
-    font-size: large;
-    padding: 10px 20px;
-    background-color: grey;
-    border-radius: 4px;
-    text-align: center;
-    min-height: 30px;
-  }
-
-  .calcBoardInput {
-    width: 50px;
-    font-size: 20px;
-    font-weight: bold;
-    background: transparent;
-    border: 0px;
-    text-align: center;
-  }
-
-  .boxContainer {
+   .boxContainer {
     width: 100%;
     padding: 20px 0px;
   }
@@ -73,41 +53,6 @@
     border-radius: 4px;
   }
 </style>
-<div class="centerContainer">
-  <div class="gameBoard">
-    <div class="boxContainer" style="min-height: 30px">
-      <div class="calcBoard" style="display: flex; width: 100%">
-        <div style="width: 33%; min-height: 30px">
-          <input
-            class="calcBoardInput"
-            type="text"
-            maxlength="2"
-            id="txtFirstNumber"
-            [(ngModel)]="firstNumber"
-          />
-        </div>
-        &nbsp;
-        <div style="width: 33%">
-          <input
-            class="calcBoardInput"
-            type="text"
-            maxlength="2"
-            id="txtNumerationSymbol"
-            [(ngModel)]="numerationSymbol"
-          />
-        </div>
-        &nbsp;
-        <div style="width: 33%">
-          <input
-            class="calcBoardInput"
-            type="text"
-            maxlength="2"
-            id="txtsecondNumber"
-            [(ngModel)]="secondNumber"
-          />
-        </div>
-      </div>
-    </div>
     <div class="boxContainer">
       <div style="display: flex; width: 100%">
         <div style="width: calc(100% - 40px)">
@@ -162,5 +107,4 @@
       </div>
     </div>
     <app-component-timer [stopTime]="endGame"></app-component-timer>
-  </div>
-</div>
+
