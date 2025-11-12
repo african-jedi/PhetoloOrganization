@@ -17,11 +17,18 @@
 </style>
 
 <div [class]="passOrfail" style="width: 100px;margin: auto;">{{ answer }}</div>
-<div style="padding: 1rem;margin-top: 20px;">You have failed to solved puzzel:</div>
-<div style="padding: 10px 0;background-color: lightgrey;border-radius: 4px;">
-<div style="padding: 1rem;font-size: large;font-weight: bold;">{{equation}}</div>
+<div style="padding: 1rem;margin-top: 20px;">
+   @if(answer==28){
+     <p>You have successfully solved puzzle:</p>
+   }
+   @else{
+     <p>You have failed to solved puzzle:</p>
+   }
 </div>
-<div style="padding: 1rem;margin-top: 20px;">Tips:</div>
+<div style="padding: 10px 0;background-color: lightgrey;border-radius: 4px;">
+<div style="padding: 1rem;font-size: small;font-weight: bold;">{{equation}}</div>
+</div>
+<div style="padding: 1rem; margin-top: 20px;">Tips:</div>
 <div style="padding: 1rem;">
    <ul>
    <li><b>Aim for 28 Early</b>: Try to get as close to <b>28</b> as possible from the start.</li>

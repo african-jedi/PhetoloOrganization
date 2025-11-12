@@ -6,11 +6,12 @@ import { PuzzleService } from '../service/puzzleservice';
 import { CookieService } from 'ngx-cookie-service';
 import { Constants } from '../models/constants';
 import confetti from 'canvas-confetti';
+import { ComponentTimer } from '../component-timer/component-timer';
 
 @Component({
   selector: 'app-component-gameboard',
   standalone: true,
-  imports: [FormsModule],
+  imports: [FormsModule, ComponentTimer],
   templateUrl: './component-gameboard.html',
   styleUrl: './component-gameboard.scss',
 })
@@ -23,6 +24,7 @@ export class ComponentGameboard implements OnInit, OnDestroy {
   numbers = signal<NumberDetails[]>([]);
   errorMsg: string | undefined;
   id = 0;
+  endGame = false;
 
   private router = inject(Router);
   readonly constants = new Constants();
@@ -37,9 +39,11 @@ export class ComponentGameboard implements OnInit, OnDestroy {
           origin: { y: 0.6 },
         });
       }
-      this.id = setInterval(() => {
+      if (this.endGame) {
+        this.id = setInterval(() => {
           this._checkWinOrLose();
-        }, 3000);
+        }, 5000);
+      }
     });
   }
 
@@ -154,10 +158,13 @@ export class ComponentGameboard implements OnInit, OnDestroy {
     let colour = 'black';
     const activeNumbers = this.numbers().filter(c => c.disabledField === false);
     console.log(`active number:${activeNumbers}`);
-    if (activeNumbers?.length == 0 && total !== 28)
-      colour = 'red';
-    if (activeNumbers?.length == 0 && total === 28)
-      colour = 'green';
+    if (activeNumbers?.length == 0) {
+      this.endGame = true;
+      if (total !== 28)
+        colour = 'red';
+      if (total === 28)
+        colour = 'green';
+    }
 
     this.numbers.set([...this.numbers(), {
       id: this.numbers().length + 1,
