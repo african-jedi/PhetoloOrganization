@@ -1,5 +1,4 @@
 import { Component, OnInit, OnDestroy, inject, signal, effect } from '@angular/core';
-import { FormsModule } from '@angular/forms';
 import { NumberDetails } from '../models/number-details';
 import { Router } from '@angular/router';
 import { PuzzleService } from '../service/puzzleservice';
@@ -12,7 +11,7 @@ import { GameBoardService } from '../service/game-board-service';
 @Component({
   selector: 'app-component-gameboard',
   standalone: true,
-  imports: [FormsModule, ComponentTimer],
+  imports: [ComponentTimer],
   templateUrl: './component-gameboard.html',
   styleUrl: './component-gameboard.scss',
 })
@@ -20,7 +19,7 @@ export class ComponentGameboard implements OnInit, OnDestroy {
   readonly service = inject(PuzzleService);
   readonly cookieService = inject(CookieService);
   numbers = signal<NumberDetails[]>([]);
-  errorMsg: string | undefined;
+  errorMsg = '';
   id = 0;
   endGame = false;
 
@@ -172,9 +171,10 @@ export class ComponentGameboard implements OnInit, OnDestroy {
     console.log(`active number:${activeNumbers}`);
     if (activeNumbers?.length == 0) {
       this.endGame = true;
-      if (total !== 28)
+      if (total !== 28){
         colour = 'red';
-      if (total === 28)
+        this.errorMsg = `${total} is not equal to 28 - You lost!`;
+      }if (total === 28)
         colour = 'green';
     }
 

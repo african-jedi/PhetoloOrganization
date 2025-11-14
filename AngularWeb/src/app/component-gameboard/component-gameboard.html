@@ -5,6 +5,7 @@
     justify-content: center;
     height: 100vh;
   }
+
   .gameBoard {
     width: auto;
     height: auto;
@@ -13,7 +14,7 @@
     padding: 1rem;
   }
 
-   .boxContainer {
+  .boxContainer {
     width: 100%;
     padding: 20px 0px;
   }
@@ -53,58 +54,35 @@
     border-radius: 4px;
   }
 </style>
-    <div class="boxContainer">
-      <div style="display: flex; width: 100%">
-        <div style="width: calc(100% - 40px)">
-          <input
-            (click)="numerationSymbolClicked($event)"
-            class="box orangeButton"
-            type="button"
-            value="+"
-          />
-        </div>
-        <div style="width: calc(100% - 40px)">
-          <input
-            (click)="numerationSymbolClicked($event)"
-            class="box orangeButton"
-            type="button"
-            value="-"
-          />
-        </div>
-        <div style="width: calc(100% - 40px)">
-          <input
-            (click)="numerationSymbolClicked($event)"
-            class="box orangeButton"
-            type="button"
-            value="x"
-          />
-        </div>
-        <div style="width: calc(100% - 40px)">
-          <input
-            (click)="numerationSymbolClicked($event)"
-            class="box orangeButton"
-            type="button"
-            value="&#247;"
-          />
-        </div>
-      </div>
+<div class="boxContainer">
+  <div style="display: flex; width: 100%">
+    <div style="width: calc(100% - 40px)">
+      <input (click)="numerationSymbolClicked($event)" class="box orangeButton" type="button" value="+" />
     </div>
-    <div class="boxContainer" style="min-height: 100px">
-      <div style="display: flex; flex-direction: row; width: 300px; flex-wrap: wrap; gap: 10px">
-        @for(item of numbers(); track item.id){ @if(item.calculated!==true){
-        <div style="width: calc(100% - 40px); flex: 0 1 10px">
-          <input
-            [id]="item.id"
-            (click)="numberClicked($event)"
-            class="box"
-            type="button"
-            value="{{ item.value }}"
-            [disabled]="item.disabledField"
-            [class]="item.colour"
-          />
-        </div>
-        } }
-      </div>
+    <div style="width: calc(100% - 40px)">
+      <input (click)="numerationSymbolClicked($event)" class="box orangeButton" type="button" value="-" />
     </div>
-    <app-component-timer [stopTime]="endGame"></app-component-timer>
-
+    <div style="width: calc(100% - 40px)">
+      <input (click)="numerationSymbolClicked($event)" class="box orangeButton" type="button" value="x" />
+    </div>
+    <div style="width: calc(100% - 40px)">
+      <input (click)="numerationSymbolClicked($event)" class="box orangeButton" type="button" value="&#247;" />
+    </div>
+  </div>
+</div>
+<div class="boxContainer" style="min-height: 100px">
+  <div style="display: flex; flex-direction: row; width: 300px; flex-wrap: wrap; gap: 10px">
+    @for(item of numbers(); track item.id){ @if(item.calculated!==true){
+    <div style="width: calc(100% - 40px); flex: 0 1 10px">
+      <input [id]="item.id" (click)="numberClicked($event)" class="box" type="button" value="{{ item.value }}"
+        [disabled]="item.disabledField" [class]="item.colour" />
+    </div>
+    } }
+  </div>
+</div>
+@if(errorMsg !== '') {
+<div style="font-size: small; padding: 1rem; font-weight: bold; color: red">
+  {{errorMsg}}
+</div>
+}
+<app-component-timer [stopTime]="endGame"></app-component-timer>
