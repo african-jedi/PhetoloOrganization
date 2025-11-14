@@ -1,3 +1,4 @@
 export class Constants{
-     readonly cookieName = 'puzzleEquation';
+     readonly cookieName = 'puzzleEquationCookie';
+     readonly cookiePuzzleName = 'puzzleCookie';
 }

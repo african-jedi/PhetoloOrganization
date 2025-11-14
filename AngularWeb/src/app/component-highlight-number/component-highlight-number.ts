@@ -19,5 +19,8 @@ export class ComponentHighlightNumber {
   ngOnInit() {
     this.passOrfail = this.answer() === 28 ? 'pass' : 'fail';
     this.equation=this.cookieService.get(this.constants.cookieName);
+
+    if(this.passOrfail==='pass')
+       this.cookieService.set(this.constants.cookiePuzzleName, '');
   }
 }

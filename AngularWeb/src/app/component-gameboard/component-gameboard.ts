@@ -45,14 +45,27 @@ export class ComponentGameboard implements OnInit, OnDestroy {
       }
 
       setInterval(() => {
-      this._Calculate();
+        this._Calculate();
       }, 500);
     });
   }
 
   ngOnInit() {
-    this.numbers?.set(this.service.getPuzzle());
+    const cookieObject = this.cookieService.get(this.constants.cookiePuzzleName);
+    let puzzleNumbers: NumberDetails[] = [];
+
+    if (!!cookieObject){
+      console.log("Cookie exists");
+      puzzleNumbers = JSON.parse(cookieObject);
+    }else
+      puzzleNumbers = this.service.getPuzzle();
+
+
+    this.numbers?.set(puzzleNumbers);
     this.cookieService.set(this.constants.cookieName, '');
+    this.cookieService.set(this.constants.cookiePuzzleName, JSON.stringify(puzzleNumbers));
+    console.log("Puzzle numbers:", JSON.stringify(puzzleNumbers));
+
   }
 
   ngOnDestroy() {
@@ -114,7 +127,7 @@ export class ComponentGameboard implements OnInit, OnDestroy {
         default:
           this.errorMsg = "Calculation failed";
       }
-  
+
       this._updateCookieValue(`(${this.boardService.firstNumber()} ${this.boardService.numerationSymbol()} ${Number(this.boardService.secondNumber())})`);
       this._removeButton();
       this._addButton(calculation);
@@ -142,7 +155,7 @@ export class ComponentGameboard implements OnInit, OnDestroy {
     if (selectedNumbers?.length === 2) {
       selectedNumbers[0].calculated = selectedNumbers[1].calculated = true;
       selectedNumbers[0].selected = selectedNumbers[1].selected = false;
-      this.boardService.firstNumber.set(''); 
+      this.boardService.firstNumber.set('');
       this.boardService.secondNumber.set('');
       this.boardService.numerationSymbol.set('');
     } else {
@@ -173,7 +186,7 @@ export class ComponentGameboard implements OnInit, OnDestroy {
       colour: colour
     }]);
 
-    console.log("New button:",total);
+    console.log("New button:", total);
   }
 
   private _checkWinOrLose() {
