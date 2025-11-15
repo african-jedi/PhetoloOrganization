@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ComponentPass } from './component-pass';
+import { provideRouter } from '@angular/router';
 
 describe('ComponentPass', () => {
   let component: ComponentPass;
@@ -8,9 +9,10 @@ describe('ComponentPass', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ComponentPass]
+      imports: [ComponentPass],
+      providers: [provideRouter([])]
     })
-    .compileComponents();
+      .compileComponents();
 
     fixture = TestBed.createComponent(ComponentPass);
     component = fixture.componentInstance;

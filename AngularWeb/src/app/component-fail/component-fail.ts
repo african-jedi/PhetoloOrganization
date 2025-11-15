@@ -1,6 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { ComponentHighlightNumber } from '../component-highlight-number/component-highlight-number';
-import { ActivatedRoute, ActivatedRouteSnapshot } from '@angular/router';
+import { ActivatedRoute} from '@angular/router';
 
 @Component({
   selector: 'app-component-fail',

@@ -13,6 +13,7 @@ describe('ComponentHighlightNumber', () => {
     .compileComponents();
 
     fixture = TestBed.createComponent(ComponentHighlightNumber);
+    fixture.componentRef.setInput('answer', 1);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
