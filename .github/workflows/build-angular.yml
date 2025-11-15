@@ -20,7 +20,7 @@ jobs:
          run:  cd AngularWeb && npm install
 
        - name: Build
-         run: npm run build
+         run: cd AngularWeb && npm run build
 
 
 
