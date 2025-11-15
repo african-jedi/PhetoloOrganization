@@ -7,6 +7,9 @@ on:
 jobs:
    build-angular:
      runs-on: ubuntu-latest
+     defaults:
+      run:
+        working-directory: ./angularweb
 
      steps:
        - uses: actions/checkout@v4
