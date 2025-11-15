@@ -22,5 +22,8 @@ jobs:
        - name: Build
          run: cd AngularWeb && npm run build
 
+       - name: Unit Tests
+         run: cd AngularWeb && npm run test
+
 
 
