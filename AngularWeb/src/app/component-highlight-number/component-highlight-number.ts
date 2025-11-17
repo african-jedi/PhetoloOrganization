@@ -11,16 +11,16 @@ import { Constants } from '../models/constants';
 })
 export class ComponentHighlightNumber {
   answer = input.required<number>();
-  passOrfail = '';
+  passOrFail = '';
   equation = '';
   readonly cookieService = inject(CookieService);
   readonly constants = new Constants();
 
   ngOnInit() {
-    this.passOrfail = this.answer() === 28 ? 'pass' : 'fail';
-    this.equation=this.cookieService.get(this.constants.cookieName);
+    this.passOrFail = this.answer() === 28 ? 'pass' : 'fail';
+    this.equation = this.cookieService.get(this.constants.cookieName);
 
-    if(this.passOrfail==='pass')
-       this.cookieService.set(this.constants.cookiePuzzleName, '');
+    if (this.passOrFail === 'pass')
+      this.cookieService.set(this.constants.cookiePuzzleName, '');
   }
 }

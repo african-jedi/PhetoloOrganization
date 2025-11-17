@@ -13,4 +13,9 @@ describe('Puzzleservice', () => {
   it('should be created', () => {
     expect(service).toBeTruthy();
   });
+
+  it('should return puzzle numbers', () => {
+    const pieces = service.getPuzzle();
+    expect(pieces.length).toBeGreaterThan(0);
+  });
 });

@@ -110,23 +110,10 @@ export class ComponentGameboard implements OnInit, OnDestroy {
     //calculate the results
     let calculation = 0;
     if (this.boardService.firstNumber() !== '' && this.boardService.secondNumber() !== '' && this.boardService.numerationSymbol() !== '') {
-      switch (this.boardService.numerationSymbol()) {
-        case "+":
-          calculation = Number(this.boardService.firstNumber()) + Number(this.boardService.secondNumber());
-          break;
-        case "-":
-          calculation = Number(this.boardService.firstNumber()) - Number(this.boardService.secondNumber());
-          break;
-        case "x":
-          calculation = Number(this.boardService.firstNumber()) * Number(this.boardService.secondNumber());
-          break;
-        case "÷":
-          calculation = Number(this.boardService.firstNumber()) / Number(this.boardService.secondNumber());
-          break;
-        default:
-          this.errorMsg = "Calculation failed";
-      }
-
+      
+      calculation = this.boardService.calculate();
+      console.log(`calculation result: ${this.boardService.firstNumber()} ${this.boardService.numerationSymbol()} ${this.boardService.secondNumber()} = ${calculation}`);
+      
       this._updateCookieValue(`(${this.boardService.firstNumber()} ${this.boardService.numerationSymbol()} ${Number(this.boardService.secondNumber())})`);
       this._removeButton();
       this._addButton(calculation);
