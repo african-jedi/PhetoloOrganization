@@ -24,10 +24,6 @@ describe('ComponentPass', () => {
 
   it('should have pass message', () => {
     const paramap=new Map<string,string>();
-    paramap.set('total','28');
-    spyOnProperty(component['route'].snapshot, 'paramMap', 'get').and.returnValue({
-      get: (key: string) => paramap.get(key)
-    } as any);
 
     fixture = TestBed.configureTestingModule({
       imports: [ComponentPass],
