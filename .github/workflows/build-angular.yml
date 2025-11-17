@@ -23,7 +23,7 @@ jobs:
          run: cd AngularWeb && npm run build
 
        - name: Unit Tests
-         run: cd AngularWeb && npm run test
+         run: cd AngularWeb && npm run test:ci
 
 
 
