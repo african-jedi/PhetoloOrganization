@@ -13,19 +13,7 @@ export class ComponentTimer implements OnInit, OnDestroy {
   @Input() stopTime = false;
 
   ngOnInit() {
-
-
-    this.setTimeintervalObject = setInterval(() => {
-      console.log("Update time", this.userTime);
-      
-      if (this.stopTime) {
-        console.log("Stop time", this.userTime);
-        clearInterval(this.setTimeintervalObject);
-      } else {
-        this.userTime++;
-        this.displayTime.set(this._formatNumberToTime());
-      }
-    }, 1000);
+    this.setTimeintervalObject = setInterval(() => this.timeHandler(), 1000);
   }
 
   ngOnDestroy() {
@@ -42,4 +30,17 @@ export class ComponentTimer implements OnInit, OnDestroy {
 
     return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`
   }
+
+  timeHandler() {
+      console.log("Update time", this.userTime);
+
+      if (this.stopTime) {
+        console.log("Stop time", this.userTime);
+        clearInterval(this.setTimeintervalObject);
+      } else {
+        this.userTime++;
+        this.displayTime.set(this._formatNumberToTime());
+      }
+  }
+
 }

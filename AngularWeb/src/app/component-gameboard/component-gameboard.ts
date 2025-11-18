@@ -64,7 +64,6 @@ export class ComponentGameboard implements OnInit, OnDestroy {
     this.cookieService.set(this.constants.cookieName, '');
     this.cookieService.set(this.constants.cookiePuzzleName, JSON.stringify(puzzleNumbers));
     console.log("Puzzle numbers:", JSON.stringify(puzzleNumbers));
-
   }
 
   ngOnDestroy() {
@@ -113,7 +112,7 @@ export class ComponentGameboard implements OnInit, OnDestroy {
       
       calculation = this.boardService.calculate();
       console.log(`calculation result: ${this.boardService.firstNumber()} ${this.boardService.numerationSymbol()} ${this.boardService.secondNumber()} = ${calculation}`);
-      
+
       this._updateCookieValue(`(${this.boardService.firstNumber()} ${this.boardService.numerationSymbol()} ${Number(this.boardService.secondNumber())})`);
       this._removeButton();
       this._addButton(calculation);

@@ -6,5 +6,4 @@ export interface NumberDetails {
     calculated?: boolean,
     selected?: boolean,
     colour?:string
-
 }
