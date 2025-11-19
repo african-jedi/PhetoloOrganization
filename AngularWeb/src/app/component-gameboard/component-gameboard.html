@@ -1,20 +1,5 @@
 <style>
-  .centerContainer {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 100vh;
-  }
-
-  .gameBoard {
-    width: auto;
-    height: auto;
-    border: 1px solid lightgrey;
-    border-radius: 4px;
-    padding: 1rem;
-  }
-
-  .boxContainer {
+  .box-container {
     width: 100%;
     padding: 20px 0px;
   }
@@ -47,30 +32,30 @@
     border-radius: 4px;
   }
 
-  .orangeButton {
+  .orange-button {
     background-color: #ffbf00;
     color: black;
     border: 2px solid #ffbf00;
     border-radius: 4px;
   }
 </style>
-<div class="boxContainer">
+<div class="box-container">
   <div style="display: flex; width: 100%">
     <div style="width: calc(100% - 40px)">
-      <input (click)="numerationSymbolClicked($event)" class="box orangeButton" type="button" value="+" />
+      <input (click)="numerationSymbolClicked($event)" class="box orange-button" type="button" value="+" />
     </div>
     <div style="width: calc(100% - 40px)">
-      <input (click)="numerationSymbolClicked($event)" class="box orangeButton" type="button" value="-" />
+      <input (click)="numerationSymbolClicked($event)" class="box orange-button" type="button" value="-" />
     </div>
     <div style="width: calc(100% - 40px)">
-      <input (click)="numerationSymbolClicked($event)" class="box orangeButton" type="button" value="x" />
+      <input (click)="numerationSymbolClicked($event)" class="box orange-button" type="button" value="x" />
     </div>
     <div style="width: calc(100% - 40px)">
-      <input (click)="numerationSymbolClicked($event)" class="box orangeButton" type="button" value="&#247;" />
+      <input (click)="numerationSymbolClicked($event)" class="box orange-button" type="button" value="&#247;" />
     </div>
   </div>
 </div>
-<div class="boxContainer" style="min-height: 100px">
+<div class="box-container" style="min-height: 100px">
   <div style="display: flex; flex-direction: row; width: 300px; flex-wrap: wrap; gap: 10px">
     @for(item of numbers(); track item.id){ @if(item.calculated!==true){
     <div style="width: calc(100% - 40px); flex: 0 1 10px">
