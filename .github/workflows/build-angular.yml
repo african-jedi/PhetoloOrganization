@@ -30,6 +30,5 @@ jobs:
          env:
           VALIDATE_ALL_CODEBASE: true
           VALIDATE_JAVASCRIPT_ES: true
-          VALIDATE_PYTHON_BLACK: true
           VALIDATE_HTML: true
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
