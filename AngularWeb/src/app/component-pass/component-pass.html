@@ -1,11 +1,11 @@
 <style>
-  .centerContainer {
+  .center-container {
     display: flex;
     align-items: center;
     justify-content: center;
     height: 100vh;
   }
-  .gameBoard {
+  .game-board {
     width: 400px;
     height: auto;
     border: 1px solid lightgrey;
@@ -13,7 +13,7 @@
     padding: 1rem;
   }
 
-  .nextButton{
+  .next-button{
     padding: 1rem;
     font-size: large;
     background-color: #0047AB;
@@ -24,10 +24,10 @@
      color: antiquewhite;
   }
 </style>
-<div class="centerContainer">
-  <div class="gameBoard">
+<div class="center-container">
+  <div class="game-board">
     <div style="text-align: center;"><h2 class="message">Well, done!</h2></div>
     <app-component-highlight-number [answer]="answer"></app-component-highlight-number>
-    <input class="nextButton" type="button" value="Next Game ->"/>
+    <input class="next-button" type="button" value="Next Game ->"/>
   </div>
 </div>
