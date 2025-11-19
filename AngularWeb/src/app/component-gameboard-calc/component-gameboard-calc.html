@@ -1,10 +1,10 @@
 <style>
-    .boxContainer {
+    .box-container {
         width: 100%;
         padding: 20px 0px;
     }
 
-    .calcBoard>div {
+    .calc-board>div {
         width: 100%;
         font-weight: bold;
         font-size: large;
@@ -15,7 +15,7 @@
         min-height: 30px;
     }
 
-    .calcBoardInput {
+    .calc-board-input {
         width: 50px;
         font-size: 20px;
         font-weight: bold;
@@ -24,20 +24,20 @@
         text-align: center;
     }
 </style>
-<div class="boxContainer" style="min-height: 30px">
-    <div class="calcBoard" style="display: flex; width: 100%">
+<div class="box-container" style="min-height: 30px">
+    <div class="calc-board" style="display: flex; width: 100%">
         <div style="width: 33%; min-height: 30px">
-            <input class="calcBoardInput" type="text" maxlength="2" id="txtFirstNumber"
+            <input class="calc-board-input" type="text" maxlength="2" id="txtFirstNumber"
                 [value]="this.boardService.firstNumber()" />
         </div>
         &nbsp;
         <div style="width: 33%">
-            <input class="calcBoardInput" type="text" maxlength="2" id="txtNumerationSymbol"
+            <input class="calc-board-input" type="text" maxlength="2" id="txtNumerationSymbol"
                 [value]="this.boardService.numerationSymbol()" />
         </div>
         &nbsp;
         <div style="width: 33%">
-            <input class="calcBoardInput" type="text" maxlength="2" id="txtsecondNumber"
+            <input class="calc-board-input" type="text" maxlength="2" id="txtsecondNumber"
                 [value]="this.boardService.secondNumber()" />
         </div>
     </div>
