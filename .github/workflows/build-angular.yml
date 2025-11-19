@@ -27,3 +27,9 @@ jobs:
 
        - name: Super-Linter
          uses: super-linter/super-linter@v7.1.0
+         env:
+          VALIDATE_ALL_CODEBASE: true
+          VALIDATE_JAVASCRIPT_ES: true
+          VALIDATE_PYTHON_BLACK: true
+          VALIDATE_HTML: true
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
