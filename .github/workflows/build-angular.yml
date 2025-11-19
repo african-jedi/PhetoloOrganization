@@ -30,6 +30,5 @@ jobs:
          env:
           VALIDATE_ALL_CODEBASE: true
           VALIDATE_JAVASCRIPT_ES: true
-          # cant resolve doctype first and add class and id attribute rules
           VALIDATE_HTML: false
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
