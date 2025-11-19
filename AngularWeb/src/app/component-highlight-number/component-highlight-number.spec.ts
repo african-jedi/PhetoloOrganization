@@ -26,14 +26,14 @@ describe('ComponentHighlightNumber', () => {
     fixture.componentRef.setInput('answer', 10);
     fixture.detectChanges();
     component.ngOnInit();
-    expect(component.passOrFail).toBe('fail');
+    expect(component.answerClass).toBe('fail');
   });
 
   it('should set passOrFail to "pass" for correct answer', () => {
     fixture.componentRef.setInput('answer', 28);
     fixture.detectChanges();
     component.ngOnInit();
-    expect(component.passOrFail).toBe('pass');
+    expect(component.answerClass).toBe('pass');
   });
   
 });
