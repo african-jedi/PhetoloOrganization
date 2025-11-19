@@ -25,5 +25,5 @@ jobs:
        - name: Unit Tests
          run: cd AngularWeb && npm run test:ci
 
-
-
+       - name: Super-Linter
+         uses: super-linter/super-linter@v7.1.0
