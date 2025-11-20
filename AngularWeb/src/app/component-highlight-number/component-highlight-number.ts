@@ -21,6 +21,6 @@ export class ComponentHighlightNumber {
     this.equation = this.cookieService.get(this.constants.cookieName);
 
     if (this.answerClass === 'pass')
-      this.cookieService.set(this.constants.cookiePuzzleName, '');
+      this.cookieService.set(this.constants.puzzleCookieName, '');
   }
 }

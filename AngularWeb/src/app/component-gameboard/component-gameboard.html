@@ -39,28 +39,17 @@
     border-radius: 4px;
   }
 </style>
-<div class="box-container">
-  <div style="display: flex; width: 100%">
-    <div style="width: calc(100% - 40px)">
-      <input (click)="numerationSymbolClicked($event)" class="box orange-button" type="button" value="+" />
-    </div>
-    <div style="width: calc(100% - 40px)">
-      <input (click)="numerationSymbolClicked($event)" class="box orange-button" type="button" value="-" />
-    </div>
-    <div style="width: calc(100% - 40px)">
-      <input (click)="numerationSymbolClicked($event)" class="box orange-button" type="button" value="x" />
-    </div>
-    <div style="width: calc(100% - 40px)">
-      <input (click)="numerationSymbolClicked($event)" class="box orange-button" type="button" value="&#247;" />
-    </div>
-  </div>
-</div>
 <div class="box-container" style="min-height: 100px">
   <div style="display: flex; flex-direction: row; width: 300px; flex-wrap: wrap; gap: 10px">
-    @for(item of numbers(); track item.id){ @if(item.calculated!==true){
+    @for(item of numbers(); track item.id){
+    @if(item.calculated!==true && item.isNumber===true){
     <div style="width: calc(100% - 40px); flex: 0 1 10px">
       <input [id]="item.id" (click)="numberClicked($event)" class="box" type="button" value="{{ item.value }}"
         [disabled]="item.disabledField" [class]="item.colour" />
+    </div>
+    }@else if(item.calculated!==true && item.isNumber===false){
+    <div style="width: calc(100% - 40px); flex: 0 1 10px">
+      <input [id]="item.id" (click)="numerationSymbolClicked($event)" [disabled]="item.disabledField" class="box orange-button" type="button" value="{{ item.value }}" />
     </div>
     } }
   </div>

@@ -27,6 +27,7 @@ export class ComponentGameboard implements OnInit, OnDestroy {
   readonly constants = new Constants();
 
   constructor(public boardService: GameBoardService) {
+    this.initializeGameBoard();
     effect(() => {
       console.log("You win or lose check effect - numbers changed:", this.numbers());
       if (this._isWinner()) {
@@ -50,25 +51,37 @@ export class ComponentGameboard implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    const cookieObject = this.cookieService.get(this.constants.cookiePuzzleName);
-    let puzzleNumbers: NumberDetails[] = [];
 
-    if (!!cookieObject){
-      console.log("Cookie exists");
-      puzzleNumbers = JSON.parse(cookieObject);
-    }else
-      puzzleNumbers = this.service.getPuzzle();
-
-
-    this.numbers?.set(puzzleNumbers);
-    this.cookieService.set(this.constants.cookieName, '');
-    this.cookieService.set(this.constants.cookiePuzzleName, JSON.stringify(puzzleNumbers));
-    console.log("Puzzle numbers:", JSON.stringify(puzzleNumbers));
   }
 
   ngOnDestroy() {
     if (this.id) {
       clearInterval(this.id);
+    }
+  }
+
+  initializeGameBoard() {
+    const cookieObject = this.cookieService.get(this.constants.puzzleCookieName);
+    let puzzleNumbers: NumberDetails[] = [];
+
+    if (!!cookieObject) {
+      console.log("Cookie exists");
+      puzzleNumbers = JSON.parse(cookieObject);
+      console.log("Puzzle numbers:", JSON.stringify(puzzleNumbers));
+    } else
+      puzzleNumbers = this.service.getPuzzle(false);
+    //puzzleNumbers = this.service.getTodaysPuzzle();
+    
+    //reset: equation cookie
+    this.cookieService.set(this.constants.cookieName, '');
+
+    if (puzzleNumbers.length === 0) {
+      this.cookieService.set(this.constants.puzzleCookieName, '');
+    } else {
+      this.numbers?.set(puzzleNumbers);
+
+      this.cookieService.set(this.constants.puzzleCookieName, JSON.stringify(puzzleNumbers));
+      console.log("Puzzle numbers:", JSON.stringify(puzzleNumbers));
     }
   }
 
@@ -103,13 +116,14 @@ export class ComponentGameboard implements OnInit, OnDestroy {
     console.log('Button name:', button.value);
 
     this.boardService.numerationSymbol.set(button.value);
+    this._DisableButton(Number(button.id));
   }
 
   private _Calculate(): void {
     //calculate the results
     let calculation = 0;
     if (this.boardService.firstNumber() !== '' && this.boardService.secondNumber() !== '' && this.boardService.numerationSymbol() !== '') {
-      
+
       calculation = this.boardService.calculate();
       console.log(`calculation result: ${this.boardService.firstNumber()} ${this.boardService.numerationSymbol()} ${this.boardService.secondNumber()} = ${calculation}`);
 
@@ -128,18 +142,20 @@ export class ComponentGameboard implements OnInit, OnDestroy {
   }
 
   private _DisableButton(id: number): void {
+    console.log(`Disable button with id: ${id}`);
     const selectedNumber = this.numbers().find(c => c.id === id);
     if (selectedNumber?.id === id) {
       selectedNumber.disabledField = true;
       selectedNumber.selected = true;
+      console.log("Selected number:", selectedNumber);
     }
   }
 
   private _removeButton(): void {
     const selectedNumbers = this.numbers().filter(c => c.selected === true);
-    if (selectedNumbers?.length === 2) {
-      selectedNumbers[0].calculated = selectedNumbers[1].calculated = true;
-      selectedNumbers[0].selected = selectedNumbers[1].selected = false;
+    if (selectedNumbers?.length === 3) {
+      selectedNumbers[0].calculated = selectedNumbers[1].calculated = selectedNumbers[2].calculated = true;
+      selectedNumbers[0].selected = selectedNumbers[1].selected = selectedNumbers[2].selected = false;
       this.boardService.firstNumber.set('');
       this.boardService.secondNumber.set('');
       this.boardService.numerationSymbol.set('');
@@ -157,19 +173,20 @@ export class ComponentGameboard implements OnInit, OnDestroy {
     console.log(`active number:${activeNumbers}`);
     if (activeNumbers?.length == 0) {
       this.endGame = true;
-      if (total !== 28){
+      if (total !== 28) {
         colour = 'red';
         this.errorMsg = `${total} is not equal to 28 - You lost!`;
-      }if (total === 28)
+      } if (total === 28)
         colour = 'green';
     }
 
     this.numbers.set([...this.numbers(), {
       id: this.numbers().length + 1,
-      value: total,
+      value: total.toString(),
       disabledField: false,
       position: this.numbers().length + 1,
-      colour: colour
+      colour: colour,
+      isNumber: true
     }]);
 
     console.log("New button:", total);
@@ -201,7 +218,7 @@ export class ComponentGameboard implements OnInit, OnDestroy {
   private _finalNumber(): number | undefined {
     const activeNumbers = this.numbers().filter(c => c.disabledField === false || c.selected == true);
     if (activeNumbers !== undefined && activeNumbers.length === 1) {
-      return activeNumbers[0].value;
+      return Number(activeNumbers[0].value);
     }
     return undefined;
   }

@@ -112,8 +112,7 @@ describe('ComponentGameboard', () => {
     //   }
     // };
     component.boardService.firstNumber.set('');
-    component.numbers.set(component.service.getPuzzle());
-    console.log("first number test:", component.numbers());
+    component.numbers.set(component.service.getPuzzle(false));
     component.numberClicked(event);
     expect(component.boardService.firstNumber()).toEqual('1');
   });
@@ -123,8 +122,7 @@ describe('ComponentGameboard', () => {
     Object.defineProperty(event, 'target', { writable: true, value: { value: '2', id: '2' } });
 
     component.boardService.secondNumber.set('');
-    component.numbers.set(component.service.getPuzzle());
-    console.log("first number test:", component.numbers());
+    component.numbers.set(component.service.getPuzzle(false));
     component.numberClicked(event);
     component.numberClicked(event);
     component.numberClicked(event);
