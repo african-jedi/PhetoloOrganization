@@ -12,25 +12,15 @@
     border-radius: 4px;
     padding: 1rem;
   }
-  .next-button{
-    padding: 1rem;
-    font-size: large;
-    background-color: #0047AB;
-     border: 2px solid #0047AB;
-     border-radius: 4px;
-     margin-top: 20px;
-     color: antiquewhite;
-     display: block;
-     text-align: center;
-     text-decoration: none;
-  }
-
 </style>
 <div class="center-container">
   <div class="game-board">
     <div style="text-align: center;"><h2>Opps, you failed!</h2></div>
     <app-component-highlight-number [answer]="answer"></app-component-highlight-number>
-    <a class="next-button" href="/">Retry Puzzle</a>
+    <a matButton="filled" style="float: right;" href="/" matTooltip="Restart game">
+      Next Game
+      <mat-icon>arrow_forward</mat-icon>
+    </a>
   </div>
 </div>
 

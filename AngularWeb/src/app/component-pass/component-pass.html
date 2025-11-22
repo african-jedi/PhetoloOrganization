@@ -13,21 +13,25 @@
     padding: 1rem;
   }
 
-  .next-button{
+  .next-button {
     padding: 1rem;
     font-size: large;
-    background-color: #0047AB;
-     border: 2px solid #0047AB;
-     width: 100%;
-     border-radius: 4px;
-     margin-top: 20px;
-     color: antiquewhite;
+    background-color: #0047ab;
+    border: 2px solid #0047ab;
+    width: 100%;
+    border-radius: 4px;
+    margin-top: 20px;
+    color: antiquewhite;
   }
 </style>
 <div class="center-container">
   <div class="game-board">
-    <div style="text-align: center;"><h2 class="message">Well, done!</h2></div>
+    <div style="text-align: center"><h2 class="message">Well, done!</h2></div>
     <app-component-highlight-number [answer]="answer"></app-component-highlight-number>
-    <input class="next-button" type="button" value="Next Game ->"/>
+    <!-- <input class="next-button" type="button" value="Next Game ->"/> -->
+    <button matButton="filled" style="float: right;" matTooltip="Play next game">
+      Next Game
+      <mat-icon>arrow_forward</mat-icon>
+    </button>
   </div>
 </div>

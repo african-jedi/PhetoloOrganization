@@ -1,11 +1,14 @@
 import { Component, inject} from '@angular/core';
 import { ComponentHighlightNumber } from '../component-highlight-number/component-highlight-number';
 import { ActivatedRoute, ActivatedRouteSnapshot } from '@angular/router';
+import { MatButtonModule } from '@angular/material/button';
+import { MatTooltipModule} from '@angular/material/tooltip';
+import { MatIconModule} from '@angular/material/icon';
 
 @Component({
   selector: 'app-component-pass',
   standalone: true,
-  imports: [ComponentHighlightNumber],
+  imports: [ComponentHighlightNumber, MatIconModule, MatTooltipModule, MatButtonModule],
   templateUrl: './component-pass.html',
   styleUrl: './component-pass.scss',
 })
