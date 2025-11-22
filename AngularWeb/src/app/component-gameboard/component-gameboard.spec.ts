@@ -29,7 +29,7 @@ describe('ComponentGameboard', () => {
 
   it('should initialize numbers on ngOnInit', () => {
     spyOn(component.service, 'getPuzzle').and.returnValue([]);
-    component.cookieService.set(constants.cookiePuzzleName, '');
+    component.cookieService.set(constants.puzzleCookieName, '');
     component.ngOnInit();
     expect(component.numbers()).toEqual([]);
   });
@@ -75,9 +75,9 @@ describe('ComponentGameboard', () => {
   it('should navigate to Pass component when is winner', () => {
     let numbers = [
       {
-        id: 1, value: 28, position: 1, disabledField: true, selected: false
+        id: 1, value: '28', position: 1, disabledField: true, selected: false, isNumber:true
       }, {
-        id: 2, value: 3, position: 2, disabledField: false, selected: true
+        id: 2, value: '3', position: 2, disabledField: false, selected: true, isNumber:false
       }
     ];
     component.numbers.set(numbers);
@@ -89,9 +89,9 @@ describe('ComponentGameboard', () => {
   it('should navigate to Fail component when is not winner', () => {
     let numbers = [
       {
-        id: 1, value: 98, position: 1, disabledField: true, selected: false
+        id: 1, value: '98', position: 1, disabledField: true, selected: false, isNumber:true
       }, {
-        id: 2, value: 3, position: 2, disabledField: false, selected: true
+        id: 2, value: '3', position: 2, disabledField: false, selected: true, isNumber:false
       }
     ];
     component.numbers.set(numbers);
