@@ -31,7 +31,7 @@ describe('ComponentGameboard', () => {
     spyOn(component.service, 'getPuzzle').and.returnValue([]);
     component.cookieService.set(constants.puzzleCookieName, '');
     component.ngOnInit();
-    expect(component.numbers()).toEqual([]);
+    expect((component.service, 'getPuzzle')).toHaveBeenCalledTimes(0);
   });
 
   it('should clean up interval on ngOnDestroy', () => {

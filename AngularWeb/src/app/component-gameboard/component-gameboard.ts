@@ -77,6 +77,7 @@ export class ComponentGameboard implements OnInit, OnDestroy {
 
     if (puzzleNumbers.length === 0) {
       this.cookieService.set(this.constants.puzzleCookieName, '');
+      this.numbers?.set([]);
     } else {
       this.numbers?.set(puzzleNumbers);
 
