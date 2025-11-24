@@ -56,5 +56,12 @@ describe('GameBoardService', () => {
     service.numerationSymbol.set('÷');
     expect(service.calculate()).toBe(2);
   }); 
+
+  it('should return a number with 2 decimals place', ()=>{
+     service.firstNumber.set('30');
+    service.secondNumber.set('9');
+    service.numerationSymbol.set('÷');
+    expect(service.calculate()).toBe(3.33);
+  })
   
 });

@@ -12,20 +12,19 @@ export class GameBoardService {
     let calculation = 0;
     switch (this.numerationSymbol()) {
       case "+":
-        calculation = Number(this.firstNumber()) + Number(this.secondNumber());
+        return Number(this.firstNumber()) + Number(this.secondNumber());
         break;
       case "-":
-        calculation = Number(this.firstNumber()) - Number(this.secondNumber());
+        return Number(this.firstNumber()) - Number(this.secondNumber());
         break;
       case "x":
-        calculation = Number(this.firstNumber()) * Number(this.secondNumber());
+        return Number(this.firstNumber()) * Number(this.secondNumber());
         break;
       case "÷":
-        calculation = Number(this.firstNumber()) / Number(this.secondNumber());
+        return Number((Number(this.firstNumber()) / Number(this.secondNumber())).toFixed(2));
         break;
       default:
         throw new Error("Invalid numeration symbol");
     }
-    return calculation;
   }
 }

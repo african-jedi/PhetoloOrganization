@@ -71,7 +71,7 @@ export class ComponentGameboard implements OnInit, OnDestroy {
     } else
       puzzleNumbers = this.service.getPuzzle(false);
     //puzzleNumbers = this.service.getTodaysPuzzle();
-    
+
     //reset: equation cookie
     this.cookieService.set(this.constants.cookieName, '');
 
@@ -112,6 +112,17 @@ export class ComponentGameboard implements OnInit, OnDestroy {
   }
 
   numerationSymbolClicked(event: Event) {
+    //if clicked again - you need to deselect the selected numeration
+    if (this.boardService.numerationSymbol() !== '') {
+      //get all list of non numbers and set disabled and selected to true
+      const selectedNumerators = this.numbers().filter(c => c.selected === true && c.isNumber === false);
+
+    selectedNumerators.forEach(element => {
+        element.disabledField=false;
+        element.selected=false;
+      });
+    }
+    
     console.log("numeration symbol clicked:", event);
     const button = event.target as HTMLButtonElement;
     console.log('Button name:', button.value);
