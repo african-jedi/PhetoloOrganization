@@ -1,0 +1,22 @@
+.vscode
+.angular
+.*
+*.md
+coverage
+node_modules
+npm-debug.log
+
+# ================================
+# Node and build output
+# ================================
+node_modules
+dist
+out-tsc
+.angular
+.cache
+.tmp
+
+docker-compose*
+Dockerfile*
+LICENSE
+server*
