@@ -7,6 +7,16 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "WebAPI", "WebAPI", "{6EDC70
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Phetolo.Math28.API", "WebAPI\Phetolo.Math28.API\Phetolo.Math28.API.csproj", "{6D33157D-184B-4C9A-B5FC-693C1A79C6BD}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Generator", "Generator", "{3FA0F85F-A7C6-0754-1E55-9BD5D403A7D0}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{0AB3BF05-4346-4AA6-1389-037BE0695223}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Phetolo.Math28.PuzzelGenerator", "Generator\Phetolo.Math28.PuzzelGenerator.csproj", "{79FFE993-E9E7-439B-9B10-C5B66AAC112A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Phetolo.Math28.PuzzelGenerator.Console.RunGenerator", "Phetolo.Math28.PuzzelGenerator.Console.RunGenerator", "{DF9839DD-2462-E56C-E6DA-664397D01F3A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Phetolo.Math28.PuzzelGenerator.Console.RunGenerator", "Tests\Phetolo.Math28.PuzzelGenerator.Console.RunGenerator\Phetolo.Math28.PuzzelGenerator.Console.RunGenerator.csproj", "{A14F758F-6F1B-4E9A-8AA0-416FC9BA3F92}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -29,11 +39,38 @@ Global
 		{6D33157D-184B-4C9A-B5FC-693C1A79C6BD}.Release|x64.Build.0 = Release|Any CPU
 		{6D33157D-184B-4C9A-B5FC-693C1A79C6BD}.Release|x86.ActiveCfg = Release|Any CPU
 		{6D33157D-184B-4C9A-B5FC-693C1A79C6BD}.Release|x86.Build.0 = Release|Any CPU
+		{79FFE993-E9E7-439B-9B10-C5B66AAC112A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{79FFE993-E9E7-439B-9B10-C5B66AAC112A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{79FFE993-E9E7-439B-9B10-C5B66AAC112A}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{79FFE993-E9E7-439B-9B10-C5B66AAC112A}.Debug|x64.Build.0 = Debug|Any CPU
+		{79FFE993-E9E7-439B-9B10-C5B66AAC112A}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{79FFE993-E9E7-439B-9B10-C5B66AAC112A}.Debug|x86.Build.0 = Debug|Any CPU
+		{79FFE993-E9E7-439B-9B10-C5B66AAC112A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{79FFE993-E9E7-439B-9B10-C5B66AAC112A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{79FFE993-E9E7-439B-9B10-C5B66AAC112A}.Release|x64.ActiveCfg = Release|Any CPU
+		{79FFE993-E9E7-439B-9B10-C5B66AAC112A}.Release|x64.Build.0 = Release|Any CPU
+		{79FFE993-E9E7-439B-9B10-C5B66AAC112A}.Release|x86.ActiveCfg = Release|Any CPU
+		{79FFE993-E9E7-439B-9B10-C5B66AAC112A}.Release|x86.Build.0 = Release|Any CPU
+		{A14F758F-6F1B-4E9A-8AA0-416FC9BA3F92}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A14F758F-6F1B-4E9A-8AA0-416FC9BA3F92}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A14F758F-6F1B-4E9A-8AA0-416FC9BA3F92}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{A14F758F-6F1B-4E9A-8AA0-416FC9BA3F92}.Debug|x64.Build.0 = Debug|Any CPU
+		{A14F758F-6F1B-4E9A-8AA0-416FC9BA3F92}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{A14F758F-6F1B-4E9A-8AA0-416FC9BA3F92}.Debug|x86.Build.0 = Debug|Any CPU
+		{A14F758F-6F1B-4E9A-8AA0-416FC9BA3F92}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A14F758F-6F1B-4E9A-8AA0-416FC9BA3F92}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A14F758F-6F1B-4E9A-8AA0-416FC9BA3F92}.Release|x64.ActiveCfg = Release|Any CPU
+		{A14F758F-6F1B-4E9A-8AA0-416FC9BA3F92}.Release|x64.Build.0 = Release|Any CPU
+		{A14F758F-6F1B-4E9A-8AA0-416FC9BA3F92}.Release|x86.ActiveCfg = Release|Any CPU
+		{A14F758F-6F1B-4E9A-8AA0-416FC9BA3F92}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{6D33157D-184B-4C9A-B5FC-693C1A79C6BD} = {6EDC7094-E22D-CF10-605B-B42C7FB8B0A8}
+		{79FFE993-E9E7-439B-9B10-C5B66AAC112A} = {3FA0F85F-A7C6-0754-1E55-9BD5D403A7D0}
+		{DF9839DD-2462-E56C-E6DA-664397D01F3A} = {0AB3BF05-4346-4AA6-1389-037BE0695223}
+		{A14F758F-6F1B-4E9A-8AA0-416FC9BA3F92} = {DF9839DD-2462-E56C-E6DA-664397D01F3A}
 	EndGlobalSection
 EndGlobal
