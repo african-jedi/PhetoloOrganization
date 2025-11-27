@@ -2,9 +2,9 @@ FROM node:24-alpine as build
 WORKDIR /app
 
 # Copy package-related files first to leverage Docker's caching mechanism
-COPY ./AngularWeb/package.json ./AngularWeb/package-lock.json ./
+COPY package.json ./
 
-RUN npm install @angular/cli
+RUN npm install -g @angular/cli
 
 #RUN --mount=type=cache,target=/root/.npm npm ci
 
