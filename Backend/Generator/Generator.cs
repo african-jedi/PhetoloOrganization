@@ -1,6 +1,6 @@
-using System.ComponentModel;
 using System.Text;
 using Phetolo.Math28.PuzzleGenerator.Constants;
+using Phetolo.Math28.PuzzleGenerator.Helper;
 using Phetolo.Math28.PuzzleGenerator.Model;
 
 namespace Phetolo.Math28.PuzzleGenerator;
@@ -11,31 +11,22 @@ public class Generator
     private const int _total = 28;
     //generate 5 numbers that equal to 28 when operated
     private const int _count = 5;
-    private const int _MaxNumber = 10;
+    private const int _MaxNumber = 14;
     public ResultDTO GeneratePuzzle()
     {
         var puzzle = RandomNumbersEqualTo28();
 
         StringBuilder rawPuzzle = new StringBuilder();
-        StringBuilder numberPuzzle = new StringBuilder();
         var _random = new Random();
 
         foreach (var item in puzzle)
-        {
             rawPuzzle.Append(item.ToString());
-
-            OperatorType numerator = RandomOperator(_random);
-            item.CalculateSumNumber(_MaxNumber, numerator);
-
-            numberPuzzle.Append(item.ToString());
-        }
 
         return new ResultDTO
         {
-            Puzzle = numberPuzzle.ToString()
-                                 .ReplaceOperatorsWithColon(),
-            RawPuzzle = rawPuzzle.ToString(),
-            Answer = numberPuzzle.ToString()
+            RawPuzzle = rawPuzzle.ToString().ReplaceOperatorsWithColon(),
+            Scramble = rawPuzzle.ToString().Scramble(),
+            Answer = rawPuzzle.ToString()
         };
     }
 
@@ -51,43 +42,51 @@ public class Generator
     {
         var puzzle = new List<NumberPuzzle>();
 
-         var random = new Random();
-         //generate first random number
-        int sum = random.Next(0, _MaxNumber + 1);
-
         int[] randomOperators = GenerateRandomOperators();
 
-        for (int i = _count; i > 0; i--)
-        {
-           
-            int number = 0;
+        CalculateMiddleNumbers(puzzle, out int sum, (OperatorType)randomOperators[0], (OperatorType)randomOperators[1], randomOperators);
+        CalculateLastTwoNumbers(puzzle, sum, randomOperators);
 
-
-            //generate random number
-            number = random.Next(0, _MaxNumber + 1);
-
-
-            puzzle.Add(NumberPuzzle.CreateUsingTotal(number));
-
-            if (i > 1)
-            {
-                NumberPuzzle operatorPuzzle = NumberPuzzle.CreateRandomOperator(randomOperators[i - 2]);
-                puzzle.Add(operatorPuzzle);
-
-                if (operatorPuzzle.operatorType == OperatorType.minus)
-                    sum += number;
-                else if (operatorPuzzle.operatorType == OperatorType.multiply)
-                    sum /= number;
-                else if (operatorPuzzle.operatorType == OperatorType.division)
-                    sum *= number;
-                else
-                    sum -= number;
-            }
-
-        }
         return puzzle;
     }
 
+    private void CalculateLastTwoNumbers(List<NumberPuzzle> puzzle, int sum, int[] randomOperators)
+    {
+        int[] lastTwo = NumberGeneratorHelper.LastTwoNumbers(randomOperators.Skip(2).ToArray(), sum, _MaxNumber, out sum);
+        puzzle.Add(NumberPuzzle.CreateRandomOperator(randomOperators[2]));
+        puzzle.Add(NumberPuzzle.CreateUsingTotal(lastTwo[0]));
+        puzzle.Add(NumberPuzzle.CreateRandomOperator(randomOperators[3]));
+        puzzle.Add(NumberPuzzle.CreateUsingTotal(lastTwo[1]));
+
+        if (sum != _total)
+            throw new Exception($"Calculation must be equal to: {_total} and not equal to: {sum}");
+    }
+
+    private void CalculateMiddleNumbers(List<NumberPuzzle> puzzle, out int sum, OperatorType op1, OperatorType op2, int[] randomOperators)
+    {
+        var random = new Random();
+
+        //generate first random number higher than 2
+        sum = random.Next(7, _MaxNumber + 1);
+        puzzle.Add(NumberPuzzle.CreateUsingTotal(sum));//generate first random number higher than 2
+
+        int numbersCount = 1;
+        for (int i = 0; i < randomOperators.Length - 2; i++)
+        {
+            puzzle.Add(NumberPuzzle.CreateRandomOperator(randomOperators[i]));
+            numbersCount++;
+            int selectedNumber = numbersCount switch
+            {
+                2 => NumberGeneratorHelper.SecondNumber((OperatorType)randomOperators[i], sum, _MaxNumber, out sum),
+                3 => NumberGeneratorHelper.ThirdNumber((OperatorType)randomOperators[i], sum, _MaxNumber, out sum),
+                _ => throw new Exception("Cannot generate more than 3 numbers"),
+            };
+            puzzle.Add(NumberPuzzle.CreateUsingTotal(selectedNumber));
+        }
+
+        if(sum==1)
+         throw new Exception("Middle number total should not be 1");
+    }
     private int[] GenerateRandomOperators()
     {
         var random = new Random();

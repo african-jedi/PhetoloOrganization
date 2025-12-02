@@ -11,8 +11,8 @@ public class NumberPuzzle
         get => _total;
         set
         {
-            if (value.HasValue && (value < 0 || value > 10))
-                throw new Exception("Total must be between 0 and 10.");
+            if (value.HasValue && (value < 0 || value > 14))
+                throw new Exception("Total must be between 0 and 14.");
             _total = value;
         }
     }
@@ -48,65 +48,6 @@ public class NumberPuzzle
 
     public static NumberPuzzle CreateRandomOperator(int opType)
         => new(){ operatorType = (OperatorType)opType, IsOperator = true };
-
-    /// <summary>
-    /// Calculate the FirstNumber and SecondNumber
-    /// </summary>
-    /// <param name="maxNumber">hihest number that can be generated</param>
-    /// <exception cref="Exception"></exception>
-    public void CalculateSumNumber(int maxNumber,OperatorType numerator)
-    {
-        if (IsOperator)
-            return;
-            
-        if (!Total.HasValue)
-            throw new Exception("Total is null");
-
-        switch (numerator)
-        {
-            case OperatorType.plus:
-                operatorType = OperatorType.plus;
-                FirstNumber = _random.Next(0, Total.Value);
-                SecondNumber = Total - FirstNumber;
-                return;
-            case OperatorType.minus:
-                operatorType = OperatorType.minus;
-                FirstNumber = _random.Next(Total.Value, maxNumber + 1);
-                SecondNumber = FirstNumber - Total;
-                return;
-            case OperatorType.multiply:
-                operatorType = OperatorType.multiply;
-                if (Total % 2 == 0)
-                {
-                    FirstNumber = 2;
-                    SecondNumber = Total / 2;
-                }
-                else if (Total % 3 == 0)
-                {
-                    FirstNumber = 3;
-                    SecondNumber = Total / 3;
-                }
-                return;
-            case OperatorType.division:
-                operatorType = OperatorType.division;
-                if (Total % 2 == 0 && Total * 2 <= maxNumber)
-                {
-                    FirstNumber = Total * 2;
-                    SecondNumber = 2;
-                }
-                else if (Total % 3 == 0 && Total * 3 <= maxNumber)
-                {
-                    FirstNumber = Total * 3;
-                    SecondNumber = 3;
-                }
-                else
-                {
-                    FirstNumber = Total;
-                    SecondNumber = 1;
-                }
-                return;
-        }
-    }
 
     public override string ToString()
     {
