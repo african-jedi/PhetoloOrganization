@@ -52,7 +52,10 @@ public class Generator
 
     private void CalculateLastTwoNumbers(List<NumberPuzzle> puzzle, int sum, int[] randomOperators)
     {
-        int[] lastTwo = NumberGeneratorHelper.LastTwoNumbers(randomOperators.Skip(2).ToArray(), sum, _MaxNumber, out sum);
+        int[] lastTwo = NumberGeneratorHelper.LastTwoNumbers(randomOperators.Skip(2).ToArray(), total: sum, highestNumber: _MaxNumber, out sum);
+        if (lastTwo.Any(c => c > 14))
+            throw new Exception("Selected numbers cannot be greater than 14");
+
         puzzle.Add(NumberPuzzle.CreateRandomOperator(randomOperators[2]));
         puzzle.Add(NumberPuzzle.CreateUsingTotal(lastTwo[0]));
         puzzle.Add(NumberPuzzle.CreateRandomOperator(randomOperators[3]));
@@ -77,15 +80,18 @@ public class Generator
             numbersCount++;
             int selectedNumber = numbersCount switch
             {
-                2 => NumberGeneratorHelper.SecondNumber((OperatorType)randomOperators[i], sum, _MaxNumber, out sum),
-                3 => NumberGeneratorHelper.ThirdNumber((OperatorType)randomOperators[i], sum, _MaxNumber, out sum),
+                2 => NumberGeneratorHelper.SecondNumber((OperatorType)randomOperators[i], total: sum, highestNumber: _MaxNumber, out sum),
+                3 => NumberGeneratorHelper.ThirdNumber((OperatorType)randomOperators[i], total: sum, highestNumber: _MaxNumber, randomOperators.Skip(2).ToArray(), out sum),
                 _ => throw new Exception("Cannot generate more than 3 numbers"),
             };
+            if (selectedNumber > 14)
+                throw new Exception("Selected number cannot be greater than 14");
+
             puzzle.Add(NumberPuzzle.CreateUsingTotal(selectedNumber));
         }
 
-        if(sum==1)
-         throw new Exception("Middle number total should not be 1");
+        if (sum == 1)
+            throw new Exception("Middle number total should not be 1");
     }
     private int[] GenerateRandomOperators()
     {
