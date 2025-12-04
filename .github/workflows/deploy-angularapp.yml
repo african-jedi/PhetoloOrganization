@@ -1,4 +1,6 @@
 name: Deploy Angular App
+permissions:
+  contents: read
 
 on:
     [workflow_dispatch]
