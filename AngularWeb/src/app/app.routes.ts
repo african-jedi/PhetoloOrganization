@@ -1,19 +1,16 @@
 import { Routes } from '@angular/router';
-import { ComponentHome } from './component-home/component-home';
-import { ComponentPass } from './component-pass/component-pass';
-import { ComponentFail } from './component-fail/component-fail';
 
 export const routes: Routes = [
     {
         path: '',
-        component: ComponentHome
+        loadComponent: () => import('./component-home/component-home').then(c=> c.ComponentHome)
     },
     {
         path: 'pass/:total',
-        component: ComponentPass
+        loadComponent: () => import('./component-pass/component-pass').then(c=> c.ComponentPass)
     },
     {
         path: 'fail/:total',
-        component: ComponentFail
+        loadComponent: () => import('./component-fail/component-fail').then(c=> c.ComponentFail)
     }
 ];
