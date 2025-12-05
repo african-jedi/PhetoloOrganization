@@ -56,14 +56,14 @@ public class NumberGeneratorHelper
         {
             //generate higher number because only 2 operator increase the number
             case OperatorType.plus:
-                num = CalcPlusNumber(total: total, highestNumber: highestNumber, lastTwoOperators);
+                num = ThirdNumberGeneratorHelper.CalcPlusThirdNumber(total: total, highestNumber: highestNumber, lastTwoOperators);
 
                 sum = total + num;
                 return num;
             //generate number higher than 28
             case OperatorType.multiply:
                 //num = random.Next(28 / total > 10 ? 10 : 28 / total, highestNumber + 1);
-                num = CalcMultiplyNumber(total: total, highestNumber: highestNumber, lastTwoOperators);
+                num = ThirdNumberGeneratorHelper.CalcMultiplyThirdNumber(total: total, highestNumber: highestNumber, lastTwoOperators);
 
                 sum = total * num;
                 return num;
@@ -71,42 +71,12 @@ public class NumberGeneratorHelper
                 num = 0;
 
                 //mod high numbers first allow num to be lower than highest number
-                num = CalcDivisionNumber(total, highestNumber, lastTwoOperators);
+                num = ThirdNumberGeneratorHelper.CalcDivisionThirdNumber(total, highestNumber, lastTwoOperators);
 
                 sum = total / num;
                 return num;
             case OperatorType.minus:
-                if (total <= 4)
-                    num = 0;
-                else
-                {
-                    if (total > 4 && total <= 7)
-                        num = total % 4;
-                    else if (total > 7 && total <= 14)
-                        num = total % 7;
-                    else if (total > 14 && total < 28)
-                        num = total % 14;
-                    else if (total == 28)
-                    {
-                        int randomNumber = random.Next(0, 2);
-                        if (randomNumber == 0)
-                            num = 14;
-                        else
-                            num = 7;
-                    }
-                    else if (total > 28)
-                        if (total % TOTAL <= highestNumber)
-                            num = total % TOTAL;
-                        else
-                        {
-                            //get closer to factor of 28 by subtracting number which will 
-                            //result in mod not being less than 14
-                            int max = (total % TOTAL) - highestNumber;
-                            num = _random.Next(0, max);
-                        }
-                    else
-                        num = 0;
-                }
+                num = ThirdNumberGeneratorHelper.CalcMinusThirdNumber(total, highestNumber, lastTwoOperators);
 
                 sum = total - num;
                 if (sum == 1 && num == 14)
@@ -132,40 +102,13 @@ public class NumberGeneratorHelper
 
         if (op1 == OperatorType.plus && op2 == OperatorType.minus
            || op1 == OperatorType.minus && op2 == OperatorType.plus)
-        {
-            if (total < TOTAL && TOTAL - total <= highestNumber)
-            {
-                int firstNumber = random.Next(TOTAL - total, highestNumber);
-                int secondNumber = TOTAL - (total + firstNumber);
-                if (secondNumber < 0)
-                    secondNumber *= -1;
+           return LastTwoNumberGeneratorHelper.MinusPlusNumbers(total: total, highestNumber: highestNumber, out sum);
 
-                sum = total + firstNumber - secondNumber;
-                return [firstNumber, secondNumber];
-            }
-            else if (total >= TOTAL && total <= TOTAL + highestNumber)
-            {
-                int firstNumber = 14;
-                int secondNumber = (total - firstNumber) - TOTAL;
-                if (secondNumber < 0)
-                    secondNumber *= -1;
-
-                sum = total - firstNumber + secondNumber;
-                return [firstNumber, secondNumber];
-            }
-        }
         else if (op1 == OperatorType.minus && op2 == OperatorType.division
         || op1 == OperatorType.division && op2 == OperatorType.minus)
-        {
-            if (total >= TOTAL)
-            {
-                int num = total % TOTAL;
-                int firstNumber = num;
-                int secondNumber = (total - num) / TOTAL;
-                sum = (total - firstNumber) / secondNumber;
-                return [firstNumber, secondNumber];
-            }
-        }
+           return LastTwoNumberGeneratorHelper.MinusDivideNumber(total, out sum);
+            
+
         else if (op1 == OperatorType.multiply && op2 == OperatorType.division
         || op1 == OperatorType.division && op2 == OperatorType.multiply)
         {
@@ -251,7 +194,7 @@ public class NumberGeneratorHelper
         else if (op1 == OperatorType.multiply && op2 == OperatorType.minus
         || op1 == OperatorType.minus && op2 == OperatorType.multiply)
         {
-            if (total % 2 == 0 && total % 4 <= 2)
+            if (total % 2 >= 0 && total % 2 <= 2 && total <= 3)
             {
                 sum = (total - (total % 2)) * 14;
                 return [total % 2, 14];
@@ -263,8 +206,14 @@ public class NumberGeneratorHelper
             }
             else if (total % 7 >= 0 && total % 7 < highestNumber && total > 7 && total <= 14)
             {
-                sum = (total - (total % 7)) * 4;
-                return [total % 7, 4];
+                int minusNum = 0;
+                if (total % 7 == 0 && total / 7 == 2)
+                    minusNum = total - 7;
+                else
+                    minusNum = total % 7;
+
+                sum = (total - minusNum) * 4;
+                return [minusNum, 4];
             }
             else if (total % 14 >= 0 && total % 14 < highestNumber && total > 14 && total < 28)
             {
@@ -301,14 +250,8 @@ public class NumberGeneratorHelper
                 return [TOTAL - total, 1];
             }
         }
-        //if * and divide: divide answer must be a multiple of 28
-        //if divide and minus: divide by final number must be equal to 28
 
-        //if * and divide: divide answer must be a multiple of 28
-        //if divide and minus: divide by final number must be equal to 28
-        //throw new Exception($"Cannot find last two numbers for {op1} and {op2}");
-        sum = 0;
-        return [1, 1];
+        throw new Exception($"Cannot find last two numbers for {op1} and {op2}");
     }
 
     #region Private Methods
@@ -342,111 +285,7 @@ public class NumberGeneratorHelper
 
         return true;
     }
-
-    private static int CalcMultiplyNumber(int total, int highestNumber, int[] lastTwoOperators)
-    {
-        OperatorType op1 = (OperatorType)lastTwoOperators[0];
-        OperatorType op2 = (OperatorType)lastTwoOperators[1];
-        //potential block - unit test all options
-        while (true)
-        {
-            int num = _random.Next(28 / total > 10 ? 10 : 28 / total, highestNumber + 1);
-            int sum = total * num;
-
-            //true if next number is minus and division
-            if (op1 == OperatorType.minus && op2 == OperatorType.division
-                || op1 == OperatorType.division && op2 == OperatorType.minus)
-            {
-                if (sum % TOTAL <= highestNumber)
-                    return num;
-            }
-
-            //if next number is plus and division
-            if (op1 == OperatorType.plus && op2 == OperatorType.division
-                || op1 == OperatorType.division && op2 == OperatorType.plus)
-            {
-                if (sum % TOTAL >= highestNumber)
-                    return num;
-            }
-
-            //if next number is plus and mins
-            if (op1 == OperatorType.plus && op2 == OperatorType.minus
-               || op1 == OperatorType.minus && op2 == OperatorType.plus)
-            {
-                if (total < highestNumber)
-                {
-                    for (int i = 1; i <= 14; i++)
-                        if (total * i < TOTAL + highestNumber && total * i > TOTAL - 2)
-                            return i;
-                }
-                else
-                    return 2;
-            }
-        }
-
-        throw new Exception($"{total} cannot be multiple as value is too high");
-    }
-
-    private static int CalcPlusNumber(int total, int highestNumber, int[] lastTwoOperators)
-    {
-        OperatorType op1 = (OperatorType)lastTwoOperators[0];
-        OperatorType op2 = (OperatorType)lastTwoOperators[1];
-
-        if (op1 == OperatorType.minus || op2 == OperatorType.minus)
-        {
-            int remainder = total % TOTAL;
-            if (remainder >= highestNumber)
-                return 14;
-            else if (remainder > 7)
-                return _random.Next(0, highestNumber - remainder);
-            else
-                return _random.Next(remainder + 1, highestNumber - remainder);
-        }
-
-        if (total >= 14 && total < TOTAL)
-            return IncrementUntilMax(total, TOTAL);
-        if (total >= 7 && total < 14)
-            return IncrementUntilMax(total, 14);
-        if (total >= 4 && total < 7)
-            return IncrementUntilMax(total, 7);
-        if (total >= 2 && total < 4)
-            return IncrementUntilMax(total, 4);
-        if (total > 0 && total < 2)
-            return IncrementUntilMax(total, 2);
-
-        return 0;
-    }
-
-    private static int CalcDivisionNumber(int total, int highestNumber, int[] lastTwoOperators)
-    {
-        OperatorType op1 = (OperatorType)lastTwoOperators[0];
-        OperatorType op2 = (OperatorType)lastTwoOperators[1];
-
-        if (op1 == OperatorType.plus && op2 == OperatorType.minus
-           || op1 == OperatorType.minus && op2 == OperatorType.plus)
-        {
-            //number must be as close as possible to highest number
-            for (int i = 14; i > 0; i--)
-                if (total > i && total % i == 0 && total / i > 14)
-                    return i;
-        }
-        //mod high numbers first allow num to be lower than highest number
-        for (int i = 14; i > 0; i--)
-            if (total > i && total % i == 0)
-                return i;
-
-        throw new Exception("Division method cannot calculate third number");
-    }
-    private static int IncrementUntilMax(int total, int max)
-    {
-        int increment = 0;
-        while (total < max)
-        {
-            increment++;
-            total += 1;
-        }
-        return increment;
-    }
+    
     #endregion
 }
 

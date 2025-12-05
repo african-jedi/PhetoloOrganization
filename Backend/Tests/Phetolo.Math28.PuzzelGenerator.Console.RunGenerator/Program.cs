@@ -2,10 +2,13 @@
 using Phetolo.Math28.PuzzleGenerator.Constants;
 
 var generator = new Generator();
-while (true)
+
+int count=0;
+while (count < 100)
 {
     try
     {
+        count++;
         var output = generator.GeneratePuzzle();
 
         Console.WriteLine($"RawPuzzle: {output.RawPuzzle}");
@@ -17,5 +20,3 @@ while (true)
         Console.WriteLine($"Exception: {ex.Message}");
     }
 }
-
-Console.ReadLine();
