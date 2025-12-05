@@ -8,7 +8,6 @@ namespace Phetolo.Math28.API.Controllers
     [ApiController]
     public class PuzzleController : ControllerBase
     {
-        [Route("api/gettodayspuzzle")]
         [HttpGet]
         public PuzzleDetailsDTO TodaysPuzzle()
         {
