@@ -1,4 +1,6 @@
 name: Build Angular App
+permissions:
+  contents: read
 
 on:
    push:
