@@ -1,5 +1,4 @@
 ﻿using Phetolo.Math28.PuzzleGenerator;
-using Phetolo.Math28.PuzzleGenerator.Constants;
 
 var generator = new Generator();
 

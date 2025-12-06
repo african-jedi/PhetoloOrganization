@@ -12,7 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Generator\Phetolo.Math28.PuzzelGenerator.csproj" />
+    <ProjectReference Include="..\..\Generator\Phetolo.Math28.PuzzleGenerator.csproj" />
   </ItemGroup>
 
 </Project>

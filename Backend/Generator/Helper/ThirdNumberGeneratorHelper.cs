@@ -1,8 +1,6 @@
-public class ThirdNumberGeneratorHelper
+namespace Phetolo.Math28.PuzzleGenerator.Helper;
+public partial class NumberGeneratorHelper
 {
-    private const int TOTAL = 28;
-    private static Random _random = new();
-
     public static int CalcMultiplyThirdNumber(int total, int highestNumber, int[] lastTwoOperators)
     {
         OperatorType op1 = (OperatorType)lastTwoOperators[0];

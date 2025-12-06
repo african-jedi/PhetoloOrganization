@@ -11,11 +11,15 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Generator", "Generator", "{
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{0AB3BF05-4346-4AA6-1389-037BE0695223}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Phetolo.Math28.PuzzelGenerator", "Generator\Phetolo.Math28.PuzzelGenerator.csproj", "{79FFE993-E9E7-439B-9B10-C5B66AAC112A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Phetolo.Math28.PuzzleGenerator", "Generator\Phetolo.Math28.PuzzleGenerator.csproj", "{79FFE993-E9E7-439B-9B10-C5B66AAC112A}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Phetolo.Math28.PuzzelGenerator.Console.RunGenerator", "Phetolo.Math28.PuzzelGenerator.Console.RunGenerator", "{DF9839DD-2462-E56C-E6DA-664397D01F3A}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Phetolo.Math28.PuzzleGenerator.Console.RunGenerator", "Phetolo.Math28.PuzzleGenerator.Console.RunGenerator", "{DF9839DD-2462-E56C-E6DA-664397D01F3A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Phetolo.Math28.PuzzelGenerator.Console.RunGenerator", "Tests\Phetolo.Math28.PuzzelGenerator.Console.RunGenerator\Phetolo.Math28.PuzzelGenerator.Console.RunGenerator.csproj", "{A14F758F-6F1B-4E9A-8AA0-416FC9BA3F92}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Phetolo.Math28.PuzzleGenerator.Console.RunGenerator", "Tests\Phetolo.Math28.PuzzleGenerator.Console.RunGenerator\Phetolo.Math28.PuzzleGenerator.Console.RunGenerator.csproj", "{A14F758F-6F1B-4E9A-8AA0-416FC9BA3F92}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Phetolo.Math28.PuzzleGenerator.XUnitTest", "Phetolo.Math28.PuzzleGenerator.XUnitTest", "{5E0E1D75-1472-6DEA-110C-3A60F2BD6015}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Phetolo.Math28.PuzzleGenerator.XUnitTest", "Tests\Phetolo.Math28.PuzzleGenerator.XUnitTest\Phetolo.Math28.PuzzleGenerator.XUnitTest.csproj", "{237921EF-25EA-4D8C-856C-11FD606015ED}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -63,6 +67,18 @@ Global
 		{A14F758F-6F1B-4E9A-8AA0-416FC9BA3F92}.Release|x64.Build.0 = Release|Any CPU
 		{A14F758F-6F1B-4E9A-8AA0-416FC9BA3F92}.Release|x86.ActiveCfg = Release|Any CPU
 		{A14F758F-6F1B-4E9A-8AA0-416FC9BA3F92}.Release|x86.Build.0 = Release|Any CPU
+		{237921EF-25EA-4D8C-856C-11FD606015ED}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{237921EF-25EA-4D8C-856C-11FD606015ED}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{237921EF-25EA-4D8C-856C-11FD606015ED}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{237921EF-25EA-4D8C-856C-11FD606015ED}.Debug|x64.Build.0 = Debug|Any CPU
+		{237921EF-25EA-4D8C-856C-11FD606015ED}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{237921EF-25EA-4D8C-856C-11FD606015ED}.Debug|x86.Build.0 = Debug|Any CPU
+		{237921EF-25EA-4D8C-856C-11FD606015ED}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{237921EF-25EA-4D8C-856C-11FD606015ED}.Release|Any CPU.Build.0 = Release|Any CPU
+		{237921EF-25EA-4D8C-856C-11FD606015ED}.Release|x64.ActiveCfg = Release|Any CPU
+		{237921EF-25EA-4D8C-856C-11FD606015ED}.Release|x64.Build.0 = Release|Any CPU
+		{237921EF-25EA-4D8C-856C-11FD606015ED}.Release|x86.ActiveCfg = Release|Any CPU
+		{237921EF-25EA-4D8C-856C-11FD606015ED}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -72,5 +88,7 @@ Global
 		{79FFE993-E9E7-439B-9B10-C5B66AAC112A} = {3FA0F85F-A7C6-0754-1E55-9BD5D403A7D0}
 		{DF9839DD-2462-E56C-E6DA-664397D01F3A} = {0AB3BF05-4346-4AA6-1389-037BE0695223}
 		{A14F758F-6F1B-4E9A-8AA0-416FC9BA3F92} = {DF9839DD-2462-E56C-E6DA-664397D01F3A}
+		{5E0E1D75-1472-6DEA-110C-3A60F2BD6015} = {0AB3BF05-4346-4AA6-1389-037BE0695223}
+		{237921EF-25EA-4D8C-856C-11FD606015ED} = {5E0E1D75-1472-6DEA-110C-3A60F2BD6015}
 	EndGlobalSection
 EndGlobal
