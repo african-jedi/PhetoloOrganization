@@ -1,3 +1,4 @@
+namespace Phetolo.Math28.PuzzleGenerator.Model;
 public enum OperatorType
 {
     plus=1,

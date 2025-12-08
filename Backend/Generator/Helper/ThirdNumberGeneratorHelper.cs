@@ -1,3 +1,5 @@
+using Phetolo.Math28.PuzzleGenerator.Model;
+
 namespace Phetolo.Math28.PuzzleGenerator.Helper;
 public partial class NumberGeneratorHelper
 {
@@ -72,7 +74,7 @@ public partial class NumberGeneratorHelper
         if (total > 0 && total < 2)
             return IncrementUntilMax(total, 2);
 
-        return 0;
+        return 14;
     }
 
     public static int CalcDivisionThirdNumber(int total, int highestNumber, int[] lastTwoOperators)

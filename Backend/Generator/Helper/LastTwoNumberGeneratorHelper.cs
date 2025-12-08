@@ -59,9 +59,9 @@ public partial class NumberGeneratorHelper
 
         throw new Exception("MinusPlusNumbers method: failed to calculate last two numbers.");
     }
-    public static int[] MinusDivideNumbers(int total, out int sum)
+    public static int[] MinusDivideNumbers(int total, int highestNumber, out int sum)
     {
-        if (total >= TOTAL)
+        if (total >= TOTAL && total % TOTAL <= highestNumber)
         {
             int num = total % TOTAL;
             int firstNumber = num;
@@ -70,7 +70,7 @@ public partial class NumberGeneratorHelper
             return [firstNumber, secondNumber];
         }
 
-        throw new Exception("MinusDivideNumber method: cannot fin last two numbers");
+        throw new Exception("MinusDivideNumbers method: cannot fin last two numbers");
     }
 
     public static int[] MinusMultiplyNumbers(int total, int highestNumber, out int sum)
@@ -127,13 +127,13 @@ public partial class NumberGeneratorHelper
             total = total / 2;
             firstNumber = 2;
         }
-        else if (((double)total / 7) == 7 || ((double)total / 7) == 14)
-        {
-            total = total / 7;
-            firstNumber = 7;
-        }
 
-        if (total == 4)
+        if (total == 2)
+        {
+            sum = total * 14;
+            return [2, 14];
+        }
+        else if (total == 4)
         {
             sum = total * 7;
             return firstNumber != 0 ? [firstNumber, 7] : [7, 1];
@@ -147,11 +147,6 @@ public partial class NumberGeneratorHelper
         {
             sum = total * 2;
             return firstNumber != 0 ? [firstNumber, 2] : [2, 1];
-        }
-        else if (total == 28)
-        {
-            sum = total * 1;
-            return firstNumber != 0 ? [firstNumber, 1] : [1, 1];
         }
 
         throw new Exception("MultiplyDivideNumbers: Cannot find last two numbers for multiply and divide");

@@ -1,3 +1,5 @@
+using Phetolo.Math28.PuzzleGenerator.Model;
+
 namespace Phetolo.Math28.PuzzleGenerator.Helper;
 
 public partial class NumberGeneratorHelper
@@ -78,12 +80,6 @@ public partial class NumberGeneratorHelper
                 num = CalcMinusThirdNumber(total, highestNumber, lastTwoOperators);
 
                 sum = total - num;
-                if (sum == 1 && num == 14)
-                {
-                    num -= 1;
-                    sum = total - num;
-                }
-
                 return num;
             default:
                 throw new Exception("Cannot find random number");
@@ -105,7 +101,7 @@ public partial class NumberGeneratorHelper
 
         else if (op1 == OperatorType.minus && op2 == OperatorType.division
         || op1 == OperatorType.division && op2 == OperatorType.minus)
-           return MinusDivideNumbers(total, out sum);
+           return MinusDivideNumbers(total, highestNumber: highestNumber, out sum);
             
         else if (op1 == OperatorType.multiply && op2 == OperatorType.division
         || op1 == OperatorType.division && op2 == OperatorType.multiply)

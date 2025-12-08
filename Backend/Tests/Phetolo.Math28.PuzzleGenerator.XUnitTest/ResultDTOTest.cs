@@ -1,7 +1,7 @@
 using System;
 using Phetolo.Math28.PuzzleGenerator.Model;
 
-namespace Phetolo.Math28.PuzzelGenerator.XUnitTest;
+namespace Phetolo.Math28.PuzzleGenerator.XUnitTest;
 
 public class ResultDTOTest
 {

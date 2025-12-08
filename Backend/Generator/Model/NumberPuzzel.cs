@@ -1,10 +1,10 @@
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
+namespace Phetolo.Math28.PuzzleGenerator.Model;
+
 public class NumberPuzzle
 {
-    private static readonly Random _random = new Random();
-
     private int? _total;
     public int? Total
     {
@@ -17,29 +17,7 @@ public class NumberPuzzle
         }
     }
     public bool IsOperator { get; set; }
-     
-    private int? _firstNumber;
-    public int? FirstNumber
-    {
-        get => _firstNumber;
-        set
-        {
-            if (value.HasValue && (value < 0 || value > 10))
-                throw new Exception("FirstNumber must be between 0 and 10.");
-            _firstNumber = value;
-        }
-    }
-    public int? _secondNumber;
-    public int? SecondNumber
-    {
-        get => _secondNumber;
-        set
-        {
-            if (value.HasValue && (value < 0 || value > 10))
-                throw new Exception("SecondNumber must be between 0 and 10.");
-            _secondNumber = value;
-        }
-    }
+
     public OperatorType operatorType { get; set; }
 
     public static NumberPuzzle CreateUsingTotal(int total)
@@ -47,7 +25,7 @@ public class NumberPuzzle
         { Total = total, IsOperator = false };
 
     public static NumberPuzzle CreateRandomOperator(int opType)
-        => new(){ operatorType = (OperatorType)opType, IsOperator = true };
+        => new() { operatorType = (OperatorType)opType, IsOperator = true };
 
     public override string ToString()
     {
@@ -55,13 +33,10 @@ public class NumberPuzzle
             //switch expression for operatorType
             return GetOperatorString();
 
-        if (FirstNumber.HasValue && SecondNumber.HasValue)
-            return $"{FirstNumber.Value.ToString()}{GetOperatorString()}{SecondNumber.Value}";
-
         return Total.HasValue ? Total.Value.ToString() : "";
     }
 
-    private string GetOperatorString()
+     private string GetOperatorString()
     {
         return operatorType switch
         {

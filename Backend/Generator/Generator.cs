@@ -8,13 +8,14 @@ namespace Phetolo.Math28.PuzzleGenerator;
 public class Generator
 {
     //todo: change all variables to be readOnly so that app is configurable
-    private const int _total = 28;
+    private const int TOTAL = 28;
     //generate 5 numbers that equal to 28 when operated
-    private const int _count = 5;
-    private const int _MaxNumber = 14;
+    private const int NUMBERS = 5;
+    //maximum number allowed in puzzle
+    private const int MAX = 14;
     public ResultDTO GeneratePuzzle()
     {
-        var puzzle = RandomNumbersEqualTo28();
+        List<Phetolo.Math28.PuzzleGenerator.Model.NumberPuzzle> puzzle = RandomNumbersEqualTo28();
 
         StringBuilder rawPuzzle = new StringBuilder();
         var _random = new Random();
@@ -52,7 +53,7 @@ public class Generator
 
     private void CalculateLastTwoNumbers(List<NumberPuzzle> puzzle, int sum, int[] randomOperators)
     {
-        int[] lastTwo = NumberGeneratorHelper.LastTwoNumbers(randomOperators.Skip(2).ToArray(), total: sum, highestNumber: _MaxNumber, out sum);
+        int[] lastTwo = NumberGeneratorHelper.LastTwoNumbers(randomOperators.Skip(2).ToArray(), total: sum, highestNumber: MAX, out sum);
         if (lastTwo.Any(c => c > 14))
             throw new Exception("Selected numbers cannot be greater than 14");
 
@@ -61,8 +62,8 @@ public class Generator
         puzzle.Add(NumberPuzzle.CreateRandomOperator(randomOperators[3]));
         puzzle.Add(NumberPuzzle.CreateUsingTotal(lastTwo[1]));
 
-        if (sum != _total)
-            throw new Exception($"Calculation must be equal to: {_total} and not equal to: {sum}");
+        if (sum != TOTAL)
+            throw new Exception($"Calculation must be equal to: {TOTAL} and not equal to: {sum}");
     }
 
     private void CalculateMiddleNumbers(List<NumberPuzzle> puzzle, out int sum, OperatorType op1, OperatorType op2, int[] randomOperators)
@@ -70,7 +71,7 @@ public class Generator
         var random = new Random();
 
         //generate first random number higher than 2
-        sum = random.Next(7, _MaxNumber + 1);
+        sum = random.Next(7, MAX + 1);
         puzzle.Add(NumberPuzzle.CreateUsingTotal(sum));//generate first random number higher than 2
 
         int numbersCount = 1;
@@ -80,8 +81,8 @@ public class Generator
             numbersCount++;
             int selectedNumber = numbersCount switch
             {
-                2 => NumberGeneratorHelper.SecondNumber((OperatorType)randomOperators[i], total: sum, highestNumber: _MaxNumber, out sum),
-                3 => NumberGeneratorHelper.ThirdNumber((OperatorType)randomOperators[i], total: sum, highestNumber: _MaxNumber, randomOperators.Skip(2).ToArray(), out sum),
+                2 => NumberGeneratorHelper.SecondNumber((OperatorType)randomOperators[i], total: sum, highestNumber: MAX, out sum),
+                3 => NumberGeneratorHelper.ThirdNumber((OperatorType)randomOperators[i], total: sum, highestNumber: MAX, randomOperators.Skip(2).ToArray(), out sum),
                 _ => throw new Exception("Cannot generate more than 3 numbers"),
             };
             if (selectedNumber > 14)

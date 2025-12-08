@@ -1,5 +1,6 @@
 using Microsoft.OpenApi;
 using Microsoft.OpenApi.Models;
+using Phetolo.Math28.API;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -20,6 +21,8 @@ builder.Services.AddSwaggerGen(options =>
         }
     });
 });
+
+builder.AddApplicationServices();
 
 var app = builder.Build();
 app.MapControllers();

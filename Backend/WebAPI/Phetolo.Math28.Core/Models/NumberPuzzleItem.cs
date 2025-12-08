@@ -1,6 +1,8 @@
-namespace Phetolo.Math28.API.Models;
+using System;
 
-public class PuzzleDTO
+namespace Phetolo.Math28.Core.Models;
+
+public class NumberPuzzleItem
 {
     public Guid Id { get; init; }
     public required string Value { get; init; }
