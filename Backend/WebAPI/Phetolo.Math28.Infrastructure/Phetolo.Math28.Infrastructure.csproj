@@ -1,0 +1,18 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Folder Include="Repository\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Generator\Phetolo.Math28.PuzzleGenerator.csproj" />
+    <ProjectReference Include="..\Phetolo.Math28.Application\Phetolo.Math28.Application.csproj" />
+  </ItemGroup>
+
+</Project>

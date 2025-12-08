@@ -1,27 +1,20 @@
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Phetolo.Math28.API.Models;
+using Phetolo.Math28.Core.Models;
 
-namespace Phetolo.Math28.API.Controllers
+namespace Phetolo.Math28.API.Controllers;
+
+[Route("api/[controller]")]
+[ApiController]
+public class PuzzleController : ControllerBase
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class PuzzleController : ControllerBase
+    private readonly GetTodayPuzzleUseCase getTodayPuzzleUseCase;
+    public PuzzleController(GetTodayPuzzleUseCase getTodayPuzzleUseCase)
     {
-        [Route("api/gettodayspuzzle")]
-        [HttpGet]
-        public PuzzleDetailsDTO TodaysPuzzle()
-        {
-            return new PuzzleDetailsDTO
-            {
-                PuzzleNumbers = new PuzzleDTO
-                {
-                    Id = Guid.NewGuid(),
-                    Position = 1,
-                    Value = "1",
-                    IsNumber = true,
-                }
-            };
-        }
+        this.getTodayPuzzleUseCase = getTodayPuzzleUseCase;
+    }
+
+    [HttpGet]
+    public Phetolo.Math28.Core.Models.NumberPuzzle TodaysPuzzle()
+    {
+       return getTodayPuzzleUseCase.GetPuzzle();
     }
 }

@@ -8,10 +8,17 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="9.0.10" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="9.0.6" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Properties/Controllers/" />
+    <Folder Include="Extensions\" />
+    <Folder Include="Models\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Phetolo.Math28.Application\Phetolo.Math28.Application.csproj" />
+    <ProjectReference Include="..\Phetolo.Math28.Core\Phetolo.Math28.Core.csproj" />
+    <ProjectReference Include="..\Phetolo.Math28.Infrastructure\Phetolo.Math28.Infrastructure.csproj" />
+  </ItemGroup>
 </Project>
