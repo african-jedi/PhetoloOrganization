@@ -21,6 +21,11 @@ builder.Services.AddSwaggerGen(options =>
         }
     });
 });
+builder.Services.AddStackExchangeRedisCache(Options =>
+{
+    Options.Configuration = builder.Configuration.GetConnectionString("Redis");
+    Options.InstanceName = "Math28.API_";
+});
 
 builder.AddApplicationServices();
 
