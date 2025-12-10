@@ -8,9 +8,9 @@ namespace Phetolo.Math28.Infrastructure.Service;
 
 public class PuzzleGeneratorService(Generator generator) : IPuzzleGeneratorService
 {
-    public PuzzleGeneratorDTO GetPuzzle()
+    public async Task<PuzzleGeneratorDTO> GetPuzzleAsync()
     {
-        ResultDTO result = generator.GeneratePuzzle();
+        ResultDTO result = await Task.FromResult(generator.GeneratePuzzle());
         return new PuzzleGeneratorDTO
         {
             Scramble = result.Scramble,
