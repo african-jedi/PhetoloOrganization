@@ -7,6 +7,7 @@ import { Constants } from '../models/constants';
 import confetti from 'canvas-confetti';
 import { ComponentTimer } from '../component-timer/component-timer';
 import { GameBoardService } from '../service/game-board-service';
+import { SharedService } from '../service/sharedservice';
 
 @Component({
   selector: 'app-component-gameboard',
@@ -26,11 +27,18 @@ export class ComponentGameboard implements OnInit, OnDestroy, OnChanges {
   private router = inject(Router);
   readonly constants = new Constants();
 
-  constructor(public boardService: GameBoardService) {
+  constructor(public boardService: GameBoardService, private sharedService: SharedService) {
     console.log("ComponentGameboard: Constructor called before lifecycle hooks");
     this.initializeGameBoard();
     effect(() => {
       console.log("You win or lose check effect - numbers changed:", this.numbers());
+
+      //set showRestart in shared service
+      var result = this.numbers().filter(c => c.calculated === true);
+      if (result.length > 0)
+        this.sharedService.updateShowRestart(true);
+
+      //trigger confetti if winner
       if (this._isWinner()) {
         confetti({
           particleCount: 100,
@@ -52,8 +60,8 @@ export class ComponentGameboard implements OnInit, OnDestroy, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-     //this should not print since the are no input bindings in the component
-     console.log("ComponentGameboard: ngOnChanges called after constructor");
+    //this should not print since the are no input bindings in the component
+    console.log("ComponentGameboard: ngOnChanges called after constructor");
   }
 
   ngOnInit() {
@@ -123,12 +131,12 @@ export class ComponentGameboard implements OnInit, OnDestroy, OnChanges {
       //get all list of non numbers and set disabled and selected to true
       const selectedNumerators = this.numbers().filter(c => c.selected === true && c.isNumber === false);
 
-    selectedNumerators.forEach(element => {
-        element.disabledField=false;
-        element.selected=false;
+      selectedNumerators.forEach(element => {
+        element.disabledField = false;
+        element.selected = false;
       });
     }
-    
+
     console.log("numeration symbol clicked:", event);
     const button = event.target as HTMLButtonElement;
     console.log('Button name:', button.value);

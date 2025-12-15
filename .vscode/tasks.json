@@ -1,0 +1,103 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "ng serve (AngularWeb)",
+      "type": "shell",
+      "command": "ng",
+      "args": ["serve", "--open"],
+      "options": {
+        "cwd": "${workspaceFolder}/AngularWeb"
+      },
+      "isBackground": true,
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "problemMatcher": {
+        "pattern": {
+          "regexp": "^ERROR in (.*):(\\d+):(\\d+)(.*)$",
+          "file": 1,
+          "location": 2,
+          "message": 4
+        },
+        "background": {
+          "activeOnStart": true,
+          "beginsPattern": "^ng serve.*",
+          "endsPattern": "compiled successfully|ERROR in"
+        }
+      }
+    },
+    {
+      "label": "ng serve (debug)",
+      "type": "shell",
+      "command": "ng",
+      "args": [
+        "serve",
+        "--poll=2000"
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}/AngularWeb"
+      },
+      "isBackground": true,
+      "group": {
+        "kind": "build"
+      },
+      "problemMatcher": {
+        "pattern": {
+          "regexp": "^.*ERROR.*",
+          "file": 1,
+          "message": 0
+        },
+        "background": {
+          "activeOnStart": true,
+          "beginsPattern": "Building.*",
+          "endsPattern": "compiled successfully|ERROR"
+        }
+      }
+    },
+    {
+      "label": "ng test",
+      "type": "shell",
+      "command": "ng",
+      "args": ["test"],
+      "options": {
+        "cwd": "${workspaceFolder}/AngularWeb"
+      },
+      "group": {
+        "kind": "test"
+      }
+    },
+    {
+      "label": "ng build",
+      "type": "shell",
+      "command": "ng",
+      "args": ["build"],
+      "options": {
+        "cwd": "${workspaceFolder}/AngularWeb"
+      },
+      "group": {
+        "kind": "build"
+      }
+    },
+    {
+      "label": "npm install (AngularWeb)",
+      "type": "shell",
+      "command": "npm",
+      "args": ["install"],
+      "options": {
+        "cwd": "${workspaceFolder}/AngularWeb"
+      }
+    },
+    {
+      "label": "kill ng serve",
+      "type": "shell",
+      "command": "taskkill",
+      "args": ["/IM", "ng.cmd", "/F"],
+      "windows": {
+        "command": "taskkill",
+        "args": ["/IM", "ng.cmd", "/F"]
+      }
+    }
+  ]
+}

@@ -46,6 +46,11 @@ For generating a component without Tests
 ng g c ComponentTips --skip-tests=false
 ```
 
+For generating a serive
+```bash
+ng g s service/shared
+```
+
 ## Building
 
 To build the project run:

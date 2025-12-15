@@ -4,7 +4,7 @@
   </a>
   <div style="float: right">
     @if(showRestart){
-    <a style="color: #005cbb; cursor: pointer;" [routerLink]="['']" matTooltip="Restart Game">
+    <a (click)="ReloadPage()" style="color: #005cbb; cursor: pointer;" matTooltip="Restart Game">
       <mat-icon>restart_alt</mat-icon>
     </a>
     }
