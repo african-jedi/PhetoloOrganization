@@ -4,10 +4,11 @@ import { ActivatedRoute} from '@angular/router';
 import { MatButtonModule } from '@angular/material/button';
 import { MatTooltipModule} from '@angular/material/tooltip';
 import { MatIconModule} from '@angular/material/icon';
+import { RouterLink } from '@angular/router'; 
 
 @Component({
   selector: 'app-component-fail',
-  imports: [ComponentHighlightNumber, MatIconModule, MatTooltipModule, MatButtonModule],
+  imports: [ComponentHighlightNumber, MatIconModule, MatTooltipModule, MatButtonModule, RouterLink],
   templateUrl: './component-fail.html',
   styleUrl: './component-fail.scss',
 })

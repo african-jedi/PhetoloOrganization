@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, inject, signal, effect } from '@angular/core';
+import { Component, OnInit, OnDestroy, inject, signal, effect, SimpleChanges, OnChanges } from '@angular/core';
 import { NumberDetails } from '../models/number-details';
 import { Router } from '@angular/router';
 import { PuzzleService } from '../service/puzzleservice';
@@ -15,7 +15,7 @@ import { GameBoardService } from '../service/game-board-service';
   templateUrl: './component-gameboard.html',
   styleUrl: './component-gameboard.scss',
 })
-export class ComponentGameboard implements OnInit, OnDestroy {
+export class ComponentGameboard implements OnInit, OnDestroy, OnChanges {
   readonly service = inject(PuzzleService);
   readonly cookieService = inject(CookieService);
   numbers = signal<NumberDetails[]>([]);
@@ -27,6 +27,7 @@ export class ComponentGameboard implements OnInit, OnDestroy {
   readonly constants = new Constants();
 
   constructor(public boardService: GameBoardService) {
+    console.log("ComponentGameboard: Constructor called before lifecycle hooks");
     this.initializeGameBoard();
     effect(() => {
       console.log("You win or lose check effect - numbers changed:", this.numbers());
@@ -50,8 +51,13 @@ export class ComponentGameboard implements OnInit, OnDestroy {
     });
   }
 
-  ngOnInit() {
+  ngOnChanges(changes: SimpleChanges): void {
+     //this should not print since the are no input bindings in the component
+     console.log("ComponentGameboard: ngOnChanges called after constructor");
+  }
 
+  ngOnInit() {
+    console.log("ComponentGameboard: ngOnInit called after constructor because component has no input; it will not call ngOnChanges life cycle hook!");
   }
 
   ngOnDestroy() {

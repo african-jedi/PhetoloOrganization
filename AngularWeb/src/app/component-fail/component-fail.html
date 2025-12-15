@@ -3,7 +3,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    height: 100vh;
+    padding-top: 1rem;
   }
   .game-board {
     width: 400px;
@@ -17,8 +17,8 @@
   <div class="game-board">
     <div style="text-align: center;"><h2>Opps, you failed!</h2></div>
     <app-component-highlight-number [answer]="answer"></app-component-highlight-number>
-    <a matButton="filled" style="float: right;" href="/" matTooltip="Restart game">
-      Next Game
+    <a matButton="filled" style="float: right;" [routerLink]="['']" matTooltip="Restart game">
+      Restart Game
       <mat-icon>arrow_forward</mat-icon>
     </a>
   </div>
