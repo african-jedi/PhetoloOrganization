@@ -1,10 +1,11 @@
 import { Component, input, inject } from '@angular/core';
 import { CookieService } from 'ngx-cookie-service';
 import { Constants } from '../models/constants';
+import { ComponentTips } from '../component-tips/component-tips';
 
 @Component({
   selector: 'app-component-highlight-number',
-  imports: [],
+  imports: [ComponentTips],
   standalone: true,
   templateUrl: './component-highlight-number.html',
   styleUrl: './component-highlight-number.scss',

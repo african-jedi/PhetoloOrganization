@@ -5,6 +5,7 @@
     justify-content: center;
     height: 100vh;
   }
+
   .game-board {
     width: 400px;
     height: auto;
@@ -26,12 +27,16 @@
 </style>
 <div class="center-container">
   <div class="game-board">
-    <div style="text-align: center"><h2 class="message">Well, done!</h2></div>
+    <div style="text-align: center">
+      <h2 class="message">Well, done!</h2>
+    </div>
     <app-component-highlight-number [answer]="answer"></app-component-highlight-number>
     <!-- <input class="next-button" type="button" value="Next Game ->"/> -->
-    <button matButton="filled" style="float: right;" matTooltip="Play next game">
-      Next Game
-      <mat-icon>arrow_forward</mat-icon>
-    </button>
+    <div style="padding-top: 1rem;">
+      <button matButton="filled" style="float: right;" matTooltip="Play next game">
+        Next Game
+        <mat-icon>arrow_forward</mat-icon>
+      </button>
+    </div>
   </div>
 </div>

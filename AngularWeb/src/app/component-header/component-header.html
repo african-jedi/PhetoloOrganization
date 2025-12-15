@@ -1,0 +1,16 @@
+<div style="padding: .75rem;background-color: #d7e3ff">
+  <a href="/" style="text-decoration: none; color: black;font-weight: bold;">
+    <img src="logo.png" alt="Math28 logo" height="15" /> Math
+  </a>
+  <div style="float: right">
+    @if(showRestart){
+    <a style="color: #005cbb; cursor: pointer;" href="/" matTooltip="Restart Game">
+      <mat-icon>restart_alt</mat-icon>
+    </a>
+    }
+    <a (click)="DisplayTipsDialog()" style="color: #005cbb; cursor: pointer; padding-left: 20px;"
+      matTooltip="Math28 Tips">
+      <mat-icon>lightbulb</mat-icon>
+    </a>
+  </div>
+</div>

@@ -41,6 +41,11 @@ For a complete list of available schematics (such as `components`, `directives`,
 ng generate --help
 ```
 
+For generating a component without Tests
+```bash
+ng g c ComponentTips --skip-tests=false
+```
+
 ## Building
 
 To build the project run:
