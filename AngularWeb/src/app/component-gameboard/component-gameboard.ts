@@ -30,6 +30,18 @@ export class ComponentGameboard implements OnInit, OnDestroy, OnChanges {
   constructor(public boardService: GameBoardService, private sharedService: SharedService) {
     console.log("ComponentGameboard: Constructor called before lifecycle hooks");
     this.initializeGameBoard();
+
+    //subscribe to restart value
+    this.sharedService.restart$.subscribe(value=>{
+        if(value){
+          console.log('restart game');
+          this.initializeGameBoard();
+          this.boardService.firstNumber.set('');
+          this.boardService.secondNumber.set('');
+          this.boardService.numerationSymbol.set('');
+        }
+    });
+
     effect(() => {
       console.log("You win or lose check effect - numbers changed:", this.numbers());
 

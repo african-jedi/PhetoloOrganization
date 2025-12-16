@@ -7,6 +7,9 @@ import { BehaviorSubject, Observable } from 'rxjs';
 export class SharedService {
    private showRestartSubject = new BehaviorSubject<boolean>(false);
    showRestart$ = this.showRestartSubject.asObservable();
+
+   private restartSubject = new BehaviorSubject<boolean>(false);
+   restart$ = this.restartSubject.asObservable();
    
    constructor() { }
    
@@ -16,5 +19,9 @@ export class SharedService {
 
    getShowRestartValue(): boolean {
      return this.showRestartSubject.getValue();
+   }
+
+   updateRestart(value: boolean){
+      this.restartSubject.next(value);
    }
 }

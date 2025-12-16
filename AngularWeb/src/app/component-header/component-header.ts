@@ -3,7 +3,6 @@ import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { ComponentTipsDialog } from '../component-tips-dialog/component-tips-dialog';
 import { MatIconModule } from '@angular/material/icon';
-import { RouterLink, RouterModule } from '@angular/router';
 import { SharedService } from '../service/sharedservice';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -11,7 +10,7 @@ import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-component-header',
-  imports: [MatDialogModule, ComponentTipsDialog, MatIconModule, MatTooltipModule, RouterLink, RouterModule],
+  imports: [MatDialogModule, ComponentTipsDialog, MatIconModule, MatTooltipModule],
   templateUrl: './component-header.html',
   styleUrl: './component-header.scss',
 })
@@ -43,11 +42,12 @@ export class ComponentHeader implements OnInit, OnDestroy {
     const dialogRef = this.dialog.open(ComponentTipsDialog);
   }
 
-  ReloadPage(): void {
+  RestartGame(): void {
 
-    //this.sharedService.updateShowRestart(false);
+    this.sharedService.updateShowRestart(false);
     // Re-run initialization
     // todo: find better solution to reset the game without reloading
-    location.reload();
+    //location.reload();
+    this.sharedService.updateRestart(true);
   }
 }
