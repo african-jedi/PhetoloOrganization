@@ -69,6 +69,13 @@ To execute unit tests with the [Karma](https://karma-runner.github.io) test runn
 ng test
 ```
 
+## Running only 1 spec that has issue
+Use the below command with "--watch=true" to view on the browser.
+
+```bash
+ng test --include='src/app/service/sharedservice.spec.ts' --watch=true
+```
+
 ## Running unit tests with code coverage
 
 To execute unit tests with code coverage, use the following command:
