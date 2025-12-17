@@ -1,13 +1,26 @@
 using Microsoft.OpenApi;
 using Microsoft.OpenApi.Models;
 using Phetolo.Math28.API;
+using Phetolo.Math28.API.Hubs;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
+// Add CORS policy
+builder.Services.AddCors(options =>
+{
+options.AddPolicy("AllowAll", builder => {
+    builder.WithOrigins("http://localhost:4200")
+    .AllowAnyHeader()
+    .AllowAnyMethod()
+    .AllowCredentials();
+});
+});
+
 builder.Services.AddControllers();
+builder.Services.AddSignalR();
 builder.Services.AddSwaggerGen(options =>
 {
     options.SwaggerDoc("v1", new OpenApiInfo
@@ -41,6 +54,6 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
+app.MapHub<WinnerNotificationHub>("/winnerNotificationHub");
+app.UseCors("AllowAll");
 app.Run();
-

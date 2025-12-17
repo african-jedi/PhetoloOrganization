@@ -12,5 +12,9 @@ export const routes: Routes = [
     {
         path: 'fail/:total',
         loadComponent: () => import('./component-fail/component-fail').then(c=> c.ComponentFail)
+    },
+    {
+        path: 'test',
+        loadComponent: () => import('./component-signal-r/component-signal-r').then(c=> c.ComponentSignalR)
     }
 ];

@@ -7,10 +7,12 @@ import { SharedService } from '../service/sharedservice';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { Router } from '@angular/router';
+import { SignalRService } from '../service/signalrservice';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-component-header',
-  imports: [MatDialogModule, ComponentTipsDialog, MatIconModule, MatTooltipModule],
+  imports: [MatDialogModule, MatIconModule, MatTooltipModule],
   templateUrl: './component-header.html',
   styleUrl: './component-header.scss',
 })
@@ -18,7 +20,11 @@ export class ComponentHeader implements OnInit, OnDestroy {
   showRestart = false;
   private destroy$ = new Subject<void>();
 
-  constructor(public dialog: MatDialog, private sharedService: SharedService, private router: Router) {
+  constructor(public dialog: MatDialog
+    , private sharedService: SharedService
+    , private router: Router
+    , private signalRService: SignalRService
+    , private snackBar: MatSnackBar) {
     console.log("ComponentHeader: Constructor called");
     // subscribe to changes in shared service when showRestart is updated
     this.sharedService.showRestart$
@@ -31,6 +37,12 @@ export class ComponentHeader implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     console.log("ComponentHeader: ngOnInit called");
+    this.signalRService.startConnection();
+    this.signalRService.addWinnerNotificationListener((message: string) => {
+       this.snackBar.open(message, 'close',{
+        duration: 5000
+      });
+    });
   }
 
   ngOnDestroy(): void {
