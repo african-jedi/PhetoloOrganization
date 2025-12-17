@@ -26,3 +26,7 @@ View Sample code below:
       .catch(err => console.log('Error while starting SignalR connection: ' + err));
   }
 ```
+
+## To test SignalR
+
+Navigate to [http://localhost:4200/test](http://localhost:4200/test), on this page you can send message and view received messages.
