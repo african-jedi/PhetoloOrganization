@@ -1,6 +1,6 @@
 # Phetolo Organization Projects
 
-This repository containes the main website project and Math28 game project.
+This repository contains the main website project and Math28 game project.
 
 ## Math28 Project
 
@@ -11,3 +11,4 @@ Contains the following projects:
 4. Communication between microservices uses RabbitMq
 5. PostgreSQL Database is used
 6. Redis used for caching
+7. SignalR used for real time notifications
