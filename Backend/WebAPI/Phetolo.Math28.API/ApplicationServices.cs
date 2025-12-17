@@ -1,5 +1,7 @@
 using System;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Caching.Distributed;
+using Phetolo.Math28.API.Hubs;
 using Phetolo.Math28.Application.Interface;
 using Phetolo.Math28.Application.UseCases;
 using Phetolo.Math28.Core.Interfaces;

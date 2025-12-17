@@ -22,7 +22,9 @@
     "cSpell.words": [
         "colour",
         "gameboard",
+        "Phetolo",
         "puzzleservice",
-        "sharedservice"
+        "sharedservice",
+        "signalrservice"
     ]
 }
