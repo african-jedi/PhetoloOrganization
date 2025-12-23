@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 
 namespace Phetolo.Math28.Core.Models;
 
@@ -12,22 +13,16 @@ public class NumberPuzzle
 
     public static NumberPuzzle MapToModel(string puzzleValue, bool isTodaysPuzzle, DateTime generate)
     {
-        var items = puzzleValue.Split(':');
-        var puzzleItems = new NumberPuzzleItem[items.Length];
-
-        for (int i = 0; i < items.Length; i++)
-            puzzleItems[i] = new NumberPuzzleItem
-            {
-                Id = Guid.NewGuid(),
-                Value = items[i],
-                Position = i,
-                DisabledField = false,
-                IsNumber = IsNumber(items[i])
-            };
-
         return new NumberPuzzle
         {
-            Items = puzzleItems,
+            Items = [.. puzzleValue.Split(':').Select((c,i) => new NumberPuzzleItem
+            {
+                Id = Guid.NewGuid(),
+                Value = c,
+                Position = i,
+                DisabledField = false,
+                IsNumber = IsNumber(c)
+            })],
             Value = puzzleValue,
             //this Id will be replaced when saved to DB
             Id = Guid.NewGuid(),

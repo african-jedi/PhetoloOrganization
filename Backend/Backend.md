@@ -1,5 +1,5 @@
 ## Backend Projects
 
-This folder contains the Web API, Event Proccesor and the Puzzel generator project.
+This folder contains the Test, Web API, Event Processor and the Puzzle generator project.
 
 # Web API Project

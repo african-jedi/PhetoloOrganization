@@ -7,5 +7,6 @@ public class PuzzleStatistics
     public required Puzzle Puzzle { get; set; }
     public required User User { get; set; }
     public bool Completed{get;set;}
+    public int Attempts { get; set; }
     public TimeOnly CompletedTime{get;set;}
 }

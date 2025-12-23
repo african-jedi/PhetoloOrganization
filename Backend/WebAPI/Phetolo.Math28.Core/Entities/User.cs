@@ -6,8 +6,9 @@ public class User
 {
     public required long Id { get; set; }
     public required Guid RowGuid { get; set; }
-    public string? Name { get; set; }
-    public string? Surname { get; set; }
-    public required string IPAdress{get;set;}
-   
+    public required string Name { get; set; }
+    public required string Surname { get; set; }
+    public required string Email { get; set; }
+    public required string IPAdress { get; set; }
+
 }
