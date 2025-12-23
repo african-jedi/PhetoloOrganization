@@ -28,3 +28,11 @@ jobs:
         - name: Test with the dotnet CLI
           working-directory: ./Backend
           run: dotnet test --no-build
+        
+        - name: Code Coverage
+          uses: b3b00/coverlet-action@1.2.5
+          with:
+            testProject: 'Backend/Tests/Phetolo.Math28.Core.XUnitTest/Phetolo.Math28.Core.XUnitTest.csproj'
+            output: 'lcov.info'
+            outputFormat: 'lcov'
+            threshold: 80
