@@ -50,7 +50,7 @@ jobs:
             Write-Host "======================================="
             Write-Host "Line Code Coverage: $coveragePercent%"
             Write-Host "======================================="
-            if ($coveragePercent -lt 80) {
-              Write-Host "Error: Code coverage is below 80% threshold"
+            if ($coveragePercent -lt 95) {
+              Write-Host "Error: Code coverage is below 95% threshold"
               exit 1
             }
