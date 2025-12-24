@@ -40,10 +40,17 @@ jobs:
           shell: pwsh
           run: |
             $xmlFile = Get-ChildItem -Path "Backend/TestResults/coverageresults" -Filter "*.xml" -Recurse | Select-Object -First 1
+            Write-Host "Found coverage file: $($xmlFile.FullName)"
             [xml]$coverageXml = Get-Content $xmlFile.FullName
-            $lineCoverage = [decimal]$coverageXml.CoverageSession.Summary.linecoverage
-            Write-Host "Line Coverage: $lineCoverage%"
-            if ($lineCoverage -lt 80) {
+            $lineCoverage = [decimal]$coverageXml.coverage.'line-rate'
+            if (-not $lineCoverage) {
+              $lineCoverage = [decimal]$coverageXml.CoverageSession.Summary.linecoverage
+            }
+            $coveragePercent = $lineCoverage * 100
+            Write-Host "======================================="
+            Write-Host "Line Code Coverage: $coveragePercent%"
+            Write-Host "======================================="
+            if ($coveragePercent -lt 80) {
               Write-Host "Error: Code coverage is below 80% threshold"
               exit 1
             }
