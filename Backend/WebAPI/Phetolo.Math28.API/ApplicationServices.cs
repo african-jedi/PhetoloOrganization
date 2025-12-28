@@ -13,10 +13,8 @@ namespace Phetolo.Math28.API;
 
 internal static class Extensions
 {
-    public static void AddApplicationServices(this IHostApplicationBuilder builder)
+    public static IServiceCollection AddApplicationServices(this IServiceCollection services)
     {
-        var services = builder.Services;
-
         services.AddScoped<IPuzzleGeneratorService, PuzzleGeneratorService>();
         // Register the base repository implementation
         services.AddScoped<PuzzleRepository>();
@@ -29,5 +27,7 @@ internal static class Extensions
         services.AddScoped<GetTodayPuzzleUseCase>();
         services.AddScoped<GetNextPuzzleUseCase>();
         services.AddTransient<Generator>();
+
+        return services;
     }
 }
