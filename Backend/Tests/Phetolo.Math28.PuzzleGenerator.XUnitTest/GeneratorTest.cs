@@ -1,17 +1,21 @@
 using System;
+using System.Threading.Tasks;
 
 namespace Phetolo.Math28.PuzzleGenerator.XUnitTest;
 
 public class GeneratorTest
 {
-    [Fact]
-    public void Test_GeneratePuzzle_ShouldReturnValidResultDTO()
+    private readonly Generator _generator;
+    public GeneratorTest()
     {
-        // Arrange
-        var generator = new Phetolo.Math28.PuzzleGenerator.Generator();
+        _generator = new Generator(new Helper.NumberGeneratorHelper());
+    }
+    [Fact]
+    public async Task Test_GeneratePuzzle_ShouldReturnValidResultDTO()
+    {
 
         // Act
-        var result = generator.GeneratePuzzle();
+        var result = await _generator.GeneratePuzzle();
 
         // Assert
         Assert.NotNull(result);
@@ -21,15 +25,14 @@ public class GeneratorTest
     }
 
     [Fact]
-    public void Test_GeneratePuzzle_ShouldReturnValidResultDTO_Performance()
+    public async Task Test_GeneratePuzzle_ShouldReturnValidResultDTO_Performance()
     {
-        // Arrange
-        var generator = new Phetolo.Math28.PuzzleGenerator.Generator();
+
         int countdownEvent = 0;
         while (countdownEvent < 1000)
         {
             // Act
-            var result = generator.GeneratePuzzle();
+            var result = await _generator.GeneratePuzzle();
 
             // Assert
             Assert.NotNull(result);

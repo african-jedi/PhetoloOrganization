@@ -10,7 +10,7 @@ public class PuzzleGeneratorService(Generator generator) : IPuzzleGeneratorServi
 {
     public async Task<PuzzleGeneratorDTO> GetPuzzleAsync()
     {
-        ResultDTO result = await Task.FromResult(generator.GeneratePuzzle());
+        ResultDTO result = await generator.GeneratePuzzle();
         return new PuzzleGeneratorDTO
         {
             Scramble = result.Scramble,

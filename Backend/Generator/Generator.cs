@@ -13,9 +13,16 @@ public class Generator
     private const int NUMBERS = 5;
     //maximum number allowed in puzzle
     private const int MAX = 14;
-    public ResultDTO GeneratePuzzle()
+    private readonly NumberGeneratorHelper _helper;
+
+    public Generator(NumberGeneratorHelper helper)
     {
-        List<Phetolo.Math28.PuzzleGenerator.Model.NumberPuzzle> puzzle = RandomNumbersEqualTo28();
+        _helper = helper;
+    }
+
+    public async Task<ResultDTO> GeneratePuzzle()
+    {
+        List<Phetolo.Math28.PuzzleGenerator.Model.NumberPuzzle> puzzle = await RandomNumbersEqualTo28();
 
         StringBuilder rawPuzzle = new StringBuilder();
         var _random = new Random();
@@ -39,39 +46,42 @@ public class Generator
     }
 
     #region Private Methods
-    private List<NumberPuzzle> RandomNumbersEqualTo28()
+    private async Task<List<NumberPuzzle>> RandomNumbersEqualTo28()
     {
         var puzzle = new List<NumberPuzzle>();
 
         int[] randomOperators = GenerateRandomOperators();
 
-        CalculateMiddleNumbers(puzzle, out int sum, (OperatorType)randomOperators[0], (OperatorType)randomOperators[1], randomOperators);
-        CalculateLastTwoNumbers(puzzle, sum, randomOperators);
+        int sum = await CalculateMiddleNumbers(puzzle, (OperatorType)randomOperators[0], (OperatorType)randomOperators[1], randomOperators);
+        await CalculateLastTwoNumbers(puzzle, sum, randomOperators);
 
         return puzzle;
     }
 
-    private void CalculateLastTwoNumbers(List<NumberPuzzle> puzzle, int sum, int[] randomOperators)
+    private async Task CalculateLastTwoNumbers(List<NumberPuzzle> puzzle, int sum, int[] randomOperators)
     {
-        int[] lastTwo = NumberGeneratorHelper.LastTwoNumbers(randomOperators.Skip(2).ToArray(), total: sum, highestNumber: MAX, out sum);
-        if (lastTwo.Any(c => c > 14))
+        int[] lastTwoAndSum = await _helper.LastTwoNumbers(randomOperators.Skip(2).ToArray(), total: sum, highestNumber: MAX);
+        if(lastTwoAndSum.Length != 3)
+          throw new Exception($"LastTwoAndSum array must contain 3 items not {lastTwoAndSum.Length}");
+
+        if (lastTwoAndSum.Take(2).Any(c => c > 14))
             throw new Exception("Selected numbers cannot be greater than 14");
 
         puzzle.Add(NumberPuzzle.CreateRandomOperator(randomOperators[2]));
-        puzzle.Add(NumberPuzzle.CreateUsingTotal(lastTwo[0]));
+        puzzle.Add(NumberPuzzle.CreateUsingTotal(lastTwoAndSum[0]));
         puzzle.Add(NumberPuzzle.CreateRandomOperator(randomOperators[3]));
-        puzzle.Add(NumberPuzzle.CreateUsingTotal(lastTwo[1]));
+        puzzle.Add(NumberPuzzle.CreateUsingTotal(lastTwoAndSum[1]));
 
-        if (sum != TOTAL)
+        if (lastTwoAndSum[2] != TOTAL)
             throw new Exception($"Calculation must be equal to: {TOTAL} and not equal to: {sum}");
     }
 
-    private void CalculateMiddleNumbers(List<NumberPuzzle> puzzle, out int sum, OperatorType op1, OperatorType op2, int[] randomOperators)
+    private async Task<int> CalculateMiddleNumbers(List<NumberPuzzle> puzzle, OperatorType op1, OperatorType op2, int[] randomOperators)
     {
         var random = new Random();
 
         //generate first random number higher than 2
-        sum = random.Next(7, MAX + 1);
+        int sum = random.Next(7, MAX + 1);
         puzzle.Add(NumberPuzzle.CreateUsingTotal(sum));//generate first random number higher than 2
 
         int numbersCount = 1;
@@ -81,18 +91,21 @@ public class Generator
             numbersCount++;
             int selectedNumber = numbersCount switch
             {
-                2 => NumberGeneratorHelper.SecondNumber((OperatorType)randomOperators[i], total: sum, highestNumber: MAX, out sum),
-                3 => NumberGeneratorHelper.ThirdNumber((OperatorType)randomOperators[i], total: sum, highestNumber: MAX, randomOperators.Skip(2).ToArray(), out sum),
+                2 => await _helper.SecondNumber((OperatorType)randomOperators[i], total: sum, highestNumber: MAX),
+                3 => await _helper.ThirdNumber((OperatorType)randomOperators[i], total: sum, highestNumber: MAX, randomOperators.Skip(2).ToArray()),
                 _ => throw new Exception("Cannot generate more than 3 numbers"),
             };
             if (selectedNumber > 14)
                 throw new Exception("Selected number cannot be greater than 14");
-
+                
+            sum = CalculateSum((OperatorType)randomOperators[i], sum: sum, selectedNumber: selectedNumber);
             puzzle.Add(NumberPuzzle.CreateUsingTotal(selectedNumber));
         }
 
-        if (sum == 1)
-            throw new Exception("Middle number total should not be 1");
+        if (sum <= 1)
+            throw new Exception("Middle number total should not be less or equal to 1");
+
+        return sum;
     }
     private int[] GenerateRandomOperators()
     {
@@ -106,6 +119,18 @@ public class Generator
             operators.RemoveAt(number - 1);
         }
         return randomOperators.ToArray();
+    }
+
+    private int CalculateSum(OperatorType op, int sum, int selectedNumber)
+    {
+        return op switch
+        {
+            OperatorType.plus => sum + selectedNumber,
+            OperatorType.minus => sum - selectedNumber,
+            OperatorType.multiply => sum * selectedNumber,
+            OperatorType.division => sum / selectedNumber,
+            _ => throw new Exception($"Unknown enum: {op.ToString()}")
+        };
     }
     #endregion
 }

@@ -6,7 +6,7 @@ public partial class NumberGeneratorHelper
 {
     private const int TOTAL = 28;
     private static Random _random = new();
-    public static int SecondNumber(OperatorType op, int total, int highestNumber, out int sum)
+    public async Task<int> SecondNumber(OperatorType op, int total, int highestNumber)
     {
         int num = 0;
         switch (op)
@@ -14,79 +14,47 @@ public partial class NumberGeneratorHelper
             //generate higher number because only 2 operator increase the number
             //number must not be a prime number
             case OperatorType.plus:
-                num = _random.Next(5, highestNumber + 1);
-                sum = total + num;
-                return num;
+                return _random.Next(5, highestNumber + 1);
             //generate number higher than 28
             case OperatorType.multiply:
                 if (total > 10)
-                    num = _random.Next(1, 4) * 2;
+                    return _random.Next(1, 4) * 2;
                 else
-                    num = _random.Next(2, 6) * 2;
-
-                sum = total * num;
-                return num;
+                    return _random.Next(2, 6) * 2;
             case OperatorType.division:
                 //divide for second number must not equal 1
                 if (total % 2 == 0)
-                    num = total / 2;
+                    return total / 2;
                 else if (total % 3 == 0)
-                    num = total / 3;
+                    return total / 3;
                 else
                 {
                     num = 1;
-                    sum = total;
                     return num;
                 }
-                sum = total / num;
-                return num;
             case OperatorType.minus:
                 //number must not be a prime number
-                num = GenerateNonePrimeNumber(total);
-                sum = total - num;
-                return num;
+                return GenerateNonePrimeNumber(total);
             default:
                 throw new Exception("Cannot find random number");
         }
     }
 
-    public static int ThirdNumber(OperatorType op, int total, int highestNumber, int[] lastTwoOperators, out int sum)
+    public async Task<int> ThirdNumber(OperatorType op, int total, int highestNumber, int[] lastTwoOperators)
     {
-        Random random = new Random();
-        int num = 0;
-        switch (op)
+        return op switch
         {
             //generate higher number because only 2 operator increase the number
-            case OperatorType.plus:
-                num = CalcPlusThirdNumber(total: total, highestNumber: highestNumber, lastTwoOperators);
-
-                sum = total + num;
-                return num;
+            OperatorType.plus => CalcPlusThirdNumber(total: total, highestNumber: highestNumber, lastTwoOperators),
             //generate number higher than 28
-            case OperatorType.multiply:
-                //num = random.Next(28 / total > 10 ? 10 : 28 / total, highestNumber + 1);
-                num = CalcMultiplyThirdNumber(total: total, highestNumber: highestNumber, lastTwoOperators);
-                sum = total * num;
-                return num;
-            case OperatorType.division:
-                num = 0;
-
-                //mod high numbers first allow num to be lower than highest number
-                num = CalcDivisionThirdNumber(total, highestNumber, lastTwoOperators);
-
-                sum = total / num;
-                return num;
-            case OperatorType.minus:
-                num = CalcMinusThirdNumber(total, highestNumber, lastTwoOperators);
-
-                sum = total - num;
-                return num;
-            default:
-                throw new Exception("Cannot find random number");
-        }
+            OperatorType.multiply => CalcMultiplyThirdNumber(total: total, highestNumber: highestNumber, lastTwoOperators),//num = random.Next(28 / total > 10 ? 10 : 28 / total, highestNumber + 1);
+            OperatorType.division => CalcDivisionThirdNumber(total, highestNumber, lastTwoOperators),//mod high numbers first allow num to be lower than highest number
+            OperatorType.minus => CalcMinusThirdNumber(total, highestNumber, lastTwoOperators),
+            _ => throw new Exception("Cannot find random number"),
+        };
     }
 
-    public static int[] LastTwoNumbers(int[] operators, int total, int highestNumber, out int sum)
+    public async Task<int[]> LastTwoNumbers(int[] operators, int total, int highestNumber)
     {
         Random random = new Random();
         if (operators.Length != 2)
@@ -97,27 +65,27 @@ public partial class NumberGeneratorHelper
 
         if (op1 == OperatorType.plus && op2 == OperatorType.minus
            || op1 == OperatorType.minus && op2 == OperatorType.plus)
-           return MinusPlusNumbers(total: total, highestNumber: highestNumber, out sum);
+           return await MinusPlusNumbers(total: total, highestNumber: highestNumber);
 
         else if (op1 == OperatorType.minus && op2 == OperatorType.division
         || op1 == OperatorType.division && op2 == OperatorType.minus)
-           return MinusDivideNumbers(total, highestNumber: highestNumber, out sum);
+           return await MinusDivideNumbers(total, highestNumber: highestNumber);
             
         else if (op1 == OperatorType.multiply && op2 == OperatorType.division
         || op1 == OperatorType.division && op2 == OperatorType.multiply)
-            return MultiplyDivideNumbers(total, out sum);
+            return await MultiplyDivideNumbers(total);
 
         else if (op1 == OperatorType.plus && op2 == OperatorType.division
         || op1 == OperatorType.division && op2 == OperatorType.plus)
-           return DividePlusNumbers(total, out sum);
+           return await DividePlusNumbers(total);
 
         else if (op1 == OperatorType.multiply && op2 == OperatorType.minus
         || op1 == OperatorType.minus && op2 == OperatorType.multiply)
-            return MinusMultiplyNumbers(total: total, highestNumber: highestNumber, out sum);
+            return await MinusMultiplyNumbers(total: total, highestNumber: highestNumber);
 
         else if (op1 == OperatorType.multiply && op2 == OperatorType.plus
        || op1 == OperatorType.plus && op2 == OperatorType.multiply)
-            return MultiplyPlusNumbers(total, out sum);
+            return await MultiplyPlusNumbers(total);
 
         throw new Exception($"Cannot find last two numbers for {op1} and {op2}");
     }

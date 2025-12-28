@@ -1,4 +1,5 @@
 using System;
+using System.Threading.Tasks;
 using Phetolo.Math28.PuzzleGenerator.Helper;
 using Phetolo.Math28.PuzzleGenerator.Model;
 
@@ -8,12 +9,16 @@ public class SecondNumberTests
 {
     private int _highestNumber = 14;
 
+    private readonly NumberGeneratorHelper _helper;
+
+    public SecondNumberTests() => _helper = new NumberGeneratorHelper();
+
     [Fact]
-    public void SecondNumber_ShouldReturnException()
+    public async Task SecondNumber_ShouldReturnException()
     {
         try
         {
-            NumberGeneratorHelper.SecondNumber((OperatorType)5, 2, highestNumber: _highestNumber, out int sum);
+            await _helper.SecondNumber((OperatorType)5, 2, highestNumber: _highestNumber);
         }
         catch (Exception ex)
         {

@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using Phetolo.Math28.PuzzleGenerator.Helper;
 namespace Phetolo.Math28.PuzzleGenerator.XUnitTest;
 
@@ -6,22 +7,26 @@ public class LastTwoNumberGeneratorHelperTests
     private int _total = 28;
     private int _highestNumber = 14;
 
+      private readonly NumberGeneratorHelper _helper;
+
+    public LastTwoNumberGeneratorHelperTests() => _helper = new NumberGeneratorHelper();
+
     [Theory]
     [InlineData(15)]
     [InlineData(80)]
-    public void DividePlusNumbers_ShouldEqual28(int total)
+    public async Task DividePlusNumbers_ShouldEqual28(int total)
     {
-        var result = NumberGeneratorHelper.DividePlusNumbers(total, out int sum);
-        Assert.Equal(_total, sum);
+        var result = await _helper.DividePlusNumbers(total);
+        Assert.Equal(_total, result[2]);
     }
 
     [Theory]
     [InlineData(90)]
-    public void DividePlusNumbers_ShouldThrowError(int total)
+    public async Task DividePlusNumbers_ShouldThrowError(int total)
     {
         try
         {
-            var result = NumberGeneratorHelper.DividePlusNumbers(total, out int sum);
+            var result = await _helper.DividePlusNumbers(total);
             Assert.Fail();
         }
         catch (Exception ex)
@@ -33,20 +38,20 @@ public class LastTwoNumberGeneratorHelperTests
     [Theory]
     [InlineData(15)]
     [InlineData(35)]
-    public void MinusPlusNumbers_ShouldEqual28(int total)
+    public async Task MinusPlusNumbers_ShouldEqual28(int total)
     {
-        var result = NumberGeneratorHelper.MinusPlusNumbers(total, highestNumber: _highestNumber, out int sum);
-        Assert.Equal(_total, sum);
+        var result = await _helper.MinusPlusNumbers(total, highestNumber: _highestNumber);
+        Assert.Equal(_total, result[2]);
     }
 
     [Theory]
     [InlineData(1)]
     [InlineData(80)]
-    public void MinusPlusNumbers_ShouldThrowError(int total)
+    public async Task MinusPlusNumbers_ShouldThrowError(int total)
     {
         try
         {
-            var result = NumberGeneratorHelper.MinusPlusNumbers(total, highestNumber: _highestNumber, out int sum);
+            var result = await _helper.MinusPlusNumbers(total, highestNumber: _highestNumber);
             Assert.Fail();
         }
         catch (Exception ex)
@@ -58,20 +63,20 @@ public class LastTwoNumberGeneratorHelperTests
     [Theory]
     [InlineData(40)]
     [InlineData(35)]
-    public void MinusDivideNumbers_ShouldEqual28(int total)
+    public async Task MinusDivideNumbers_ShouldEqual28(int total)
     {
-        var result = NumberGeneratorHelper.MinusDivideNumbers(total, highestNumber: _highestNumber, out int sum);
-        Assert.Equal(_total, sum);
+        var result = await _helper.MinusDivideNumbers(total, highestNumber: _highestNumber);
+        Assert.Equal(_total, result[2]);
     }
 
     [Theory]
     [InlineData(47)]
     [InlineData(23)]
-    public void MinusDivideNumbers_ShouldThrowError(int total)
+    public async Task MinusDivideNumbers_ShouldThrowError(int total)
     {
         try
         {
-            var result = NumberGeneratorHelper.MinusDivideNumbers(total, highestNumber: _highestNumber, out int sum);
+            var result = await _helper.MinusDivideNumbers(total, highestNumber: _highestNumber);
             Assert.Fail();
         }
         catch (Exception ex)
@@ -86,20 +91,20 @@ public class LastTwoNumberGeneratorHelperTests
     [InlineData(7)]
     [InlineData(14)]
     [InlineData(28)]
-    public void MultiplyDivideNumbers_ShouldEqual28(int total)
+    public async Task MultiplyDivideNumbers_ShouldEqual28(int total)
     {
-        var result = NumberGeneratorHelper.MultiplyDivideNumbers(total, out int sum);
-        Assert.Equal(_total, sum);
+        var result = await _helper.MultiplyDivideNumbers(total);
+        Assert.Equal(_total, result[2]);
     }
 
     [Theory]
     [InlineData(1)]
     [InlineData(29)]
-    public void MultiplyDivideNumbers_ShouldThrowError(int total)
+    public async Task MultiplyDivideNumbers_ShouldThrowError(int total)
     {
         try
         {
-            var result = NumberGeneratorHelper.MultiplyDivideNumbers(total, out int sum);
+            var result = await _helper.MultiplyDivideNumbers(total);
             Assert.Fail();
         }
         catch (Exception ex)
@@ -109,11 +114,11 @@ public class LastTwoNumberGeneratorHelperTests
     }
 
     [Fact]
-    public void LastTwoNumbers_ShouldArgumentException()
+    public async Task LastTwoNumbers_ShouldArgumentException()
     {
         try
         {
-            var result = NumberGeneratorHelper.LastTwoNumbers([1, 2, 3], 10, highestNumber: _highestNumber, out int sum);
+            var result = await _helper.LastTwoNumbers([1, 2, 3], 10, highestNumber: _highestNumber);
             Assert.Fail();
         }
         catch (Exception ex)

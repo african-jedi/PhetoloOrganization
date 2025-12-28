@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using Phetolo.Math28.PuzzleGenerator.Helper;
 using Phetolo.Math28.PuzzleGenerator.Model;
 
@@ -6,13 +7,16 @@ namespace Phetolo.Math28.PuzzleGenerator.XUnitTest;
 public class ThirdNumberTests
 {
     private int _highestNumber = 14;
+    private readonly NumberGeneratorHelper _helper;
+
+    public ThirdNumberTests() => _helper = new NumberGeneratorHelper();
 
     [Fact]
-    public void ThirdNumberNumber_ShouldReturnException()
+    public async Task ThirdNumberNumber_ShouldReturnException()
     {
         try
         {
-            NumberGeneratorHelper.ThirdNumber((OperatorType)5, 2, highestNumber: _highestNumber, [1, 2], out int sum);
+           await _helper.ThirdNumber((OperatorType)5, 2, highestNumber: _highestNumber, [1, 2]);
         }
         catch (Exception ex)
         {
@@ -25,9 +29,9 @@ public class ThirdNumberTests
     [InlineData(3)]
     [InlineData(1)]
     [InlineData(0)]
-    public void CalcPlusThirdNumber_ShouldReturnValue(int total)
+    public async Task CalcPlusThirdNumber_ShouldReturnValue(int total)
     {
-        int num = NumberGeneratorHelper.ThirdNumber(OperatorType.plus, total, highestNumber: _highestNumber, [3, 4], out int sum);
+        int num = await _helper.ThirdNumber(OperatorType.plus, total, highestNumber: _highestNumber, [3, 4]);
         Assert.True(num + total >= 2);
     }
 
