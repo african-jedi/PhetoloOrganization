@@ -9,7 +9,6 @@ public class Puzzle
     public required Guid RowGuid { get; set; }
     public required string Scramble { get; set; }
     public required string Answer { get; set; }
-    public required DateTime CreatedDate { get; set; }
     public required DateTime ExpiryDate { get; set; }
     public required bool TodaysPuzzle { get; set; }
     public int? Stage{get;set;}
