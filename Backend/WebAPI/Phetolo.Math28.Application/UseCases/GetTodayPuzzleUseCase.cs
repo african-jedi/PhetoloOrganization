@@ -4,10 +4,10 @@ public class GetTodayPuzzleUseCase(IPuzzleRepository puzzleRepository, ILogger<G
 {
     public async Task<NumberPuzzle> GetPuzzle(CancellationToken token)
     {
-        logger.LogInformation("Generated today puzzle");
+        if (logger.IsEnabled(LogLevel.Debug))
+            logger.LogDebug("Get today puzzle");
         //check cached value first
         //else use generator service and save to db
         return await puzzleRepository.GetPuzzleAsync(token);
-    
     }
 }

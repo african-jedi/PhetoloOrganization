@@ -10,6 +10,7 @@ public class NumberPuzzle
     public required NumberPuzzleItem[] Items { get; init; }
     public bool IsTodaysPuzzle { get; init; }
     public DateTime Generate { get; init; }
+    public int? Stage{get; init;}
 
     public static NumberPuzzle MapToModel(string puzzleValue, bool isTodaysPuzzle, DateTime generate)
     {

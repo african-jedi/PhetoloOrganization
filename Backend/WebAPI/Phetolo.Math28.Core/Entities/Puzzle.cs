@@ -12,4 +12,5 @@ public class Puzzle
     public required DateTime CreatedDate { get; set; }
     public required DateTime ExpiryDate { get; set; }
     public required bool TodaysPuzzle { get; set; }
+    public int? Stage{get;set;}
 }
