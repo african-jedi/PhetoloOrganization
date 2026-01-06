@@ -8,7 +8,7 @@ public class NumberPuzzleTest
     [Fact]
     public void MapToModel_ShouldPass()
     {
-        var result = NumberPuzzle.MapToModel("8:5:*:/:2:+:9:-:1", true, DateTime.Now);
+        var result = NumberPuzzle.MapToModel("8:5:*:/:2:+:9:-:1", true, DateTime.Now, Guid.NewGuid());
         result.Items.Should().HaveCount(9);
         result.Items[0].Value.Should().Be("8");
         result.Items[1].Value.Should().Be("5");
@@ -26,7 +26,7 @@ public class NumberPuzzleTest
     [InlineData("10:4:*:/:2:+:9:-:1")]
     public void MapToModel_ShouldHaveCountOfNine(string puzzleValue)
     {
-        var result = NumberPuzzle.MapToModel(puzzleValue, true, DateTime.Now);
+        var result = NumberPuzzle.MapToModel(puzzleValue, true, DateTime.Now, Guid.NewGuid());
         result.Items.Should().HaveCount(9);
     }
 }

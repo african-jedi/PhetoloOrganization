@@ -1,6 +1,4 @@
-using System;
 using Microsoft.EntityFrameworkCore;
-using Phetolo.Math28.Core.Entities;
 
 namespace Phetolo.Math28.Infrastructure.Configurations;
 

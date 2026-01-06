@@ -17,7 +17,6 @@ public class PuzzleTest
             RowGuid =Guid.NewGuid(),
             Scramble = "8:5:*:/:2:+:9:-:1",
             Answer = "42",
-            CreatedDate = createdDate,
             ExpiryDate = createdDate.AddDays(1),
             TodaysPuzzle = true,
         };
@@ -25,7 +24,6 @@ public class PuzzleTest
         puzzle.Id.Should().Be(1);
         puzzle.Scramble.Should().Be("8:5:*:/:2:+:9:-:1");
         puzzle.Answer.Should().Be("42");
-        puzzle.CreatedDate.Should().Be(createdDate);
         puzzle.ExpiryDate.Should().Be(createdDate.AddDays(1));
    }
 }

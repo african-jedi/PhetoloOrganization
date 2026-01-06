@@ -1,6 +1,3 @@
-using System;
-using Phetolo.Math28.Core.Entities;
-
 namespace Phetolo.Math28.Infrastructure.Constants;
 
 internal static class TableNames

@@ -5,8 +5,8 @@ namespace Phetolo.Math28.Core.Entities;
 
 public class Puzzle
 {
-    public required long Id { get; set; }
-    public required Guid RowGuid { get; set; }
+    public long Id { get; set; }
+    public Guid RowGuid { get; set; }= Guid.NewGuid();
     public required string Scramble { get; set; }
     public required string Answer { get; set; }
     public required DateTime ExpiryDate { get; set; }

@@ -12,7 +12,7 @@ public class NumberPuzzle
     public DateTime Generate { get; init; }
     public int? Stage{get; init;}
 
-    public static NumberPuzzle MapToModel(string puzzleValue, bool isTodaysPuzzle, DateTime generate)
+    public static NumberPuzzle MapToModel(string puzzleValue, bool isTodaysPuzzle, DateTime generate, Guid entityRowGuid)
     {
         return new NumberPuzzle
         {
@@ -25,8 +25,7 @@ public class NumberPuzzle
                 IsNumber = IsNumber(c)
             })],
             Value = puzzleValue,
-            //this Id will be replaced when saved to DB
-            Id = Guid.NewGuid(),
+            Id = entityRowGuid,
             IsTodaysPuzzle = isTodaysPuzzle,
             Generate = generate
         };

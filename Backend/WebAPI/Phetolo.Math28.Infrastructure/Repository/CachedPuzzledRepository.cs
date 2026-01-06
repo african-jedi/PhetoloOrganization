@@ -1,4 +1,5 @@
 using Microsoft.Extensions.Caching.Distributed;
+using Microsoft.Extensions.Logging;
 
 namespace Phetolo.Math28.Infrastructure.Repository;
 
@@ -7,19 +8,29 @@ public class CachedPuzzleRepository : IPuzzleRepository
     //decorator pattern
     private readonly IPuzzleRepository _decorated;
     private readonly IDistributedCache _distributedCache;
+    private readonly ILogger<CachedPuzzleRepository> _logger;
 
-    public CachedPuzzleRepository(IPuzzleRepository decorated, IDistributedCache distributedCache)
+    public CachedPuzzleRepository(IPuzzleRepository decorated, IDistributedCache distributedCache, ILogger<CachedPuzzleRepository> logger)
     {
         _decorated = decorated;
         _distributedCache = distributedCache;
+        _logger = logger;
     }
 
     public async Task<NumberPuzzle> GetPuzzleAsync(CancellationToken cancellationToken = default)
     {
         string cacheKey = "puzzle:0";
-        string? puzzle = await _distributedCache.GetStringAsync(
-           cacheKey,
-           cancellationToken);
+        string? puzzle = string.Empty;
+        try
+        {
+            puzzle = await _distributedCache.GetStringAsync(
+               cacheKey,
+               cancellationToken);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error retrieving puzzle from cache with key {CacheKey}", cacheKey);
+        }
 
         if (!string.IsNullOrEmpty(puzzle))
         {
@@ -35,9 +46,17 @@ public class CachedPuzzleRepository : IPuzzleRepository
     {
         string cacheKey = $"puzzle:{id}";
 
-        string? puzzle = await _distributedCache.GetStringAsync(
-            cacheKey,
-            cancellationToken);
+        string? puzzle = string.Empty;
+        try
+        {
+            puzzle = await _distributedCache.GetStringAsync(
+               cacheKey,
+               cancellationToken);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error retrieving puzzle from cache with key {CacheKey}", cacheKey);
+        }
 
         if (!string.IsNullOrEmpty(puzzle))
         {
@@ -57,11 +76,19 @@ public class CachedPuzzleRepository : IPuzzleRepository
         {
             AbsoluteExpirationRelativeToNow = TimeSpan.FromHours(24 - DateTime.Now.Hour)
         };
-        await _distributedCache.SetStringAsync(
-            cacheKey,
-            serializedPuzzle,
-            options,
-            cancellationToken);
+
+        try
+        {
+            await _distributedCache.SetStringAsync(
+                cacheKey,
+                serializedPuzzle,
+                options,
+                cancellationToken);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error caching puzzle with key {CacheKey}", cacheKey);
+        }
 
         return newPuzzle;
     }

@@ -1,7 +1,8 @@
-using Microsoft.OpenApi;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using Phetolo.Math28.API;
 using Phetolo.Math28.API.Hubs;
+using Phetolo.Math28.Infrastructure.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,12 +12,13 @@ builder.Services.AddOpenApi();
 // Add CORS policy
 builder.Services.AddCors(options =>
 {
-options.AddPolicy("AllowAll", builder => {
-    builder.WithOrigins("http://localhost:4200")
-    .AllowAnyHeader()
-    .AllowAnyMethod()
-    .AllowCredentials();
-});
+    options.AddPolicy("AllowAll", builder =>
+    {
+        builder.WithOrigins("http://localhost:4200")
+        .AllowAnyHeader()
+        .AllowAnyMethod()
+        .AllowCredentials();
+    });
 });
 
 builder.Services.AddControllers();
@@ -34,11 +36,22 @@ builder.Services.AddSwaggerGen(options =>
         }
     });
 });
+
+builder.Services.AddDbContext<Math28DBContext>(options =>
+{
+    options.UseNpgsql(builder.Configuration.GetConnectionString("Math28DB"));
+});
+//builder.EnrichNpgsqlDbContext<Math28DBContext>();
+
+//services.AddMigration<Math28DBContext, Math28DBContextSeed>();
+
 builder.Services.AddStackExchangeRedisCache(Options =>
 {
     Options.Configuration = builder.Configuration.GetConnectionString("Redis");
     Options.InstanceName = "Math28.API_";
 }).AddApplicationServices();
+
+
 
 var app = builder.Build();
 app.MapControllers();

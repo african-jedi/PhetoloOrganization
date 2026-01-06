@@ -1,6 +1,5 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Phetolo.Math28.Core.Entities;
 using Phetolo.Math28.Infrastructure.Constants;
 
 namespace Phetolo.Math28.Infrastructure.Configurations;
