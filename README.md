@@ -1,6 +1,6 @@
 # Phetolo Organization Projects
 
-This repository contains the main website project and Math28 game project.
+This repository contains the main website project and Math28 API and puzzle generator project.
 
 
 The Math28 solution consists of the following components:
