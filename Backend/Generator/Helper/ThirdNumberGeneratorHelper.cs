@@ -3,7 +3,7 @@ using Phetolo.Math28.PuzzleGenerator.Model;
 namespace Phetolo.Math28.PuzzleGenerator.Helper;
 public partial class NumberGeneratorHelper
 {
-    public static int CalcMultiplyThirdNumber(int total, int highestNumber, int[] lastTwoOperators)
+    public int CalcMultiplyThirdNumber(int total, int highestNumber, int[] lastTwoOperators)
     {
         OperatorType op1 = (OperatorType)lastTwoOperators[0];
         OperatorType op2 = (OperatorType)lastTwoOperators[1];
@@ -47,7 +47,7 @@ public partial class NumberGeneratorHelper
         throw new Exception($"{total} cannot be multiple as value is too high");
     }
 
-    public static int CalcPlusThirdNumber(int total, int highestNumber, int[] lastTwoOperators)
+    public int CalcPlusThirdNumber(int total, int highestNumber, int[] lastTwoOperators)
     {
         OperatorType op1 = (OperatorType)lastTwoOperators[0];
         OperatorType op2 = (OperatorType)lastTwoOperators[1];
@@ -77,7 +77,7 @@ public partial class NumberGeneratorHelper
         return 14;
     }
 
-    public static int CalcDivisionThirdNumber(int total, int highestNumber, int[] lastTwoOperators)
+    public int CalcDivisionThirdNumber(int total, int highestNumber, int[] lastTwoOperators)
     {
         OperatorType op1 = (OperatorType)lastTwoOperators[0];
         OperatorType op2 = (OperatorType)lastTwoOperators[1];
@@ -98,7 +98,7 @@ public partial class NumberGeneratorHelper
         throw new Exception("Division method cannot calculate third number");
     }
 
-    public static int CalcMinusThirdNumber(int total, int highestNumber, int[] lastTwoOperators)
+    public int CalcMinusThirdNumber(int total, int highestNumber, int[] lastTwoOperators)
     {
         if (total <= 4)
             return 0;
@@ -133,7 +133,7 @@ public partial class NumberGeneratorHelper
 
     #region Private methods
 
-    private static int IncrementUntilMax(int total, int max)
+    private int IncrementUntilMax(int total, int max)
     {
         int increment = 0;
         while (total < max)

@@ -6,7 +6,7 @@ public class TestGetTodayPuzzleUseCase
     public void Test_CanCreateInstance()
     {
         var mockRepository = Substitute.For<IPuzzleRepository>();
-        var test = new GetTodayPuzzleUseCase(mockRepository, NullLogger<GetTodayPuzzleUseCase>.Instance);
+        var test = new CreatePuzzleCommandHandler(mockRepository, NullLogger<CreatePuzzleCommandHandler>.Instance);
         Assert.NotNull(test);
     }
 
@@ -18,8 +18,8 @@ public class TestGetTodayPuzzleUseCase
         mockRepository.GetPuzzleAsync(Arg.Any<CancellationToken>())
             .Returns(new NumberPuzzle { Id = Guid.NewGuid(), IsTodaysPuzzle = true, Value = pValue, Items=[new NumberPuzzleItem { Id = Guid.NewGuid(), Value = "5", Position=1 }] });
 
-        var test = new GetTodayPuzzleUseCase(mockRepository, NullLogger<GetTodayPuzzleUseCase>.Instance);
-        var result = await test.GetPuzzle(CancellationToken.None);
+        var test = new CreatePuzzleCommandHandler(mockRepository, NullLogger<CreatePuzzleCommandHandler>.Instance);
+        var result = await test.Handle(new CreatePuzzleCommand(true, null), CancellationToken.None);
         Assert.Equal(pValue, result.Value);
     }
 }

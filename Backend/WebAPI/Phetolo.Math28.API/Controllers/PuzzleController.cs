@@ -1,26 +1,26 @@
+using MediatR;
+using Phetolo.Math28.API.Controllers.Base;
+using Phetolo.Math28.Application.PuzzleUseCases.Command;
+
 namespace Phetolo.Math28.API.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class PuzzleController : ControllerBase
+public class PuzzleController : ApiController
 {
-    private readonly GetTodayPuzzleUseCase _TodayPuzzleUseCase;
-    private readonly GetNextPuzzleUseCase _NextPuzzleUseCase;
-    public PuzzleController(GetTodayPuzzleUseCase getTodayPuzzleUseCase, GetNextPuzzleUseCase getNextPuzzleUseCase)
+    public PuzzleController(ISender sender) : base(sender)
     {
-        this._TodayPuzzleUseCase = getTodayPuzzleUseCase;
-        this._NextPuzzleUseCase = getNextPuzzleUseCase;
     }
 
     [HttpGet]
     public async Task<Phetolo.Math28.Core.Models.NumberPuzzle> TodaysPuzzle(CancellationToken cancellationToken)
     {
-       return await _TodayPuzzleUseCase.GetPuzzle(cancellationToken);
+        return await Sender.Send(new CreatePuzzleCommand(true, null), cancellationToken);
     }
 
     [HttpGet("{id:int}")]
     public async Task<Phetolo.Math28.Core.Models.NumberPuzzle> GetPuzzle(int id, CancellationToken cancellationToken)
     {
-       return await _NextPuzzleUseCase.GetPuzzle(id, cancellationToken);
+        return await Sender.Send(new CreatePuzzleCommand(false, id), cancellationToken);
     }
 }

@@ -40,7 +40,7 @@ public class ThirdNumberTests
     {
         try
         {
-            int sum = NumberGeneratorHelper.CalcDivisionThirdNumber(0, highestNumber: _highestNumber, [3, 4]);
+            int sum = _helper.CalcDivisionThirdNumber(0, highestNumber: _highestNumber, [3, 4]);
             Assert.Fail();
         }
         catch (Exception ex)

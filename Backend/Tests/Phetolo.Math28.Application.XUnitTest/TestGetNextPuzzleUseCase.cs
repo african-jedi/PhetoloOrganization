@@ -1,4 +1,3 @@
-
 namespace Phetolo.Math28.Application.XUnitTest;
 
 public class TestGetNextPuzzleUseCase
@@ -7,7 +6,7 @@ public class TestGetNextPuzzleUseCase
     public void Test_CanCreateInstance()
     {
         var mockRepository = Substitute.For<IPuzzleRepository>();
-        var test = new GetNextPuzzleUseCase(mockRepository, NullLogger<GetNextPuzzleUseCase>.Instance);
+        var test = new CreatePuzzleCommandHandler(mockRepository, NullLogger<CreatePuzzleCommandHandler>.Instance);
         Assert.NotNull(test);
     }
 
@@ -18,8 +17,8 @@ public class TestGetNextPuzzleUseCase
         var mockRepository = Substitute.For<IPuzzleRepository>();
         mockRepository.GetNewPuzzleAsync(stage, Arg.Any<CancellationToken>())
      .Returns(new NumberPuzzle { Id = Guid.NewGuid(), Stage = stage, IsTodaysPuzzle = false, Value = "2+2", Items = [new NumberPuzzleItem { Id = Guid.NewGuid(), Value = "5", Position = 1 }] });
-        var test = new GetNextPuzzleUseCase(mockRepository, NullLogger<GetNextPuzzleUseCase>.Instance);
-        var result = await test.GetPuzzle(stage, CancellationToken.None);
+        var test = new CreatePuzzleCommandHandler(mockRepository, NullLogger<CreatePuzzleCommandHandler>.Instance);
+        var result = await test.Handle(new CreatePuzzleCommand(false, stage), CancellationToken.None);
 
         Assert.Equal(stage, result.Stage);
     }

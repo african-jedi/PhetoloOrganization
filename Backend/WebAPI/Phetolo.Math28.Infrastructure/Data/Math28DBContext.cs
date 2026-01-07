@@ -7,7 +7,6 @@ public class Math28DBContext : DbContext
 {
     public DbSet<Puzzle> Puzzles { get; set; }
     public DbSet<User> Users { get; set; }
-    public DbSet<PuzzleStatistics> PuzzleStatistics { get; set; }
 
     public Math28DBContext(DbContextOptions<Math28DBContext> options) : base(options) { }
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -19,15 +18,16 @@ public class Math28DBContext : DbContext
     protected override void OnModelCreating(ModelBuilder modelBuilder) =>
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(Math28DBContext).Assembly);
 
-    public override int SaveChanges()
+    public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
     {
         foreach (var entry in ChangeTracker.Entries())
         {
             if (entry.State == EntityState.Added)
                 entry.Property("Created").CurrentValue = entry.Property("Modified").CurrentValue = DateTime.UtcNow;
+
             if (entry.State == EntityState.Modified)
                 entry.Property("Modified").CurrentValue = DateTime.UtcNow;
         }
-        return base.SaveChanges();
+        return base.SaveChangesAsync(cancellationToken);
     }
 }

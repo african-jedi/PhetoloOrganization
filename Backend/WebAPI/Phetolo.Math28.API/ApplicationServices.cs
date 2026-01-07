@@ -1,10 +1,5 @@
-using System;
-using Microsoft.AspNetCore.SignalR;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Distributed;
-using Phetolo.Math28.API.Hubs;
 using Phetolo.Math28.Application.Interface;
-using Phetolo.Math28.Application.UseCases;
 using Phetolo.Math28.Core.Interfaces;
 using Phetolo.Math28.Infrastructure.Repository;
 using Phetolo.Math28.Infrastructure.Service;
@@ -27,8 +22,6 @@ internal static class Extensions
                 provider.GetRequiredService<IDistributedCache>(),
                 provider.GetRequiredService<ILogger<CachedPuzzleRepository>>()));
 
-        services.AddScoped<GetTodayPuzzleUseCase>();
-        services.AddScoped<GetNextPuzzleUseCase>();
         services.AddTransient<Generator>();
         services.AddTransient<NumberGeneratorHelper>();
 

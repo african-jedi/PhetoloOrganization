@@ -6,7 +6,7 @@ public partial class NumberGeneratorHelper
 {
     private const int TOTAL = 28;
     private static Random _random = new();
-    public async Task<int> SecondNumber(OperatorType op, int total, int highestNumber)
+    public Task<int> SecondNumber(OperatorType op, int total, int highestNumber)
     {
         int num = 0;
         switch (op)
@@ -14,42 +14,42 @@ public partial class NumberGeneratorHelper
             //generate higher number because only 2 operator increase the number
             //number must not be a prime number
             case OperatorType.plus:
-                return _random.Next(5, highestNumber + 1);
+                return Task.FromResult(_random.Next(5, highestNumber + 1));
             //generate number higher than 28
             case OperatorType.multiply:
                 if (total > 10)
-                    return _random.Next(1, 4) * 2;
+                    return Task.FromResult(_random.Next(1, 4) * 2);
                 else
-                    return _random.Next(2, 6) * 2;
+                    return Task.FromResult(_random.Next(2, 6) * 2);
             case OperatorType.division:
                 //divide for second number must not equal 1
                 if (total % 2 == 0)
-                    return total / 2;
+                    return Task.FromResult(total / 2);
                 else if (total % 3 == 0)
-                    return total / 3;
+                    return Task.FromResult(total / 3);
                 else
                 {
                     num = 1;
-                    return num;
+                    return Task.FromResult(num);
                 }
             case OperatorType.minus:
                 //number must not be a prime number
-                return GenerateNonePrimeNumber(total);
+                return Task.FromResult(GenerateNonePrimeNumber(total));
             default:
                 throw new Exception("Cannot find random number");
         }
     }
 
-    public async Task<int> ThirdNumber(OperatorType op, int total, int highestNumber, int[] lastTwoOperators)
+    public Task<int> ThirdNumber(OperatorType op, int total, int highestNumber, int[] lastTwoOperators)
     {
         return op switch
         {
             //generate higher number because only 2 operator increase the number
-            OperatorType.plus => CalcPlusThirdNumber(total: total, highestNumber: highestNumber, lastTwoOperators),
+            OperatorType.plus => Task.FromResult(CalcPlusThirdNumber(total: total, highestNumber: highestNumber, lastTwoOperators)),
             //generate number higher than 28
-            OperatorType.multiply => CalcMultiplyThirdNumber(total: total, highestNumber: highestNumber, lastTwoOperators),//num = random.Next(28 / total > 10 ? 10 : 28 / total, highestNumber + 1);
-            OperatorType.division => CalcDivisionThirdNumber(total, highestNumber, lastTwoOperators),//mod high numbers first allow num to be lower than highest number
-            OperatorType.minus => CalcMinusThirdNumber(total, highestNumber, lastTwoOperators),
+            OperatorType.multiply => Task.FromResult(CalcMultiplyThirdNumber(total: total, highestNumber: highestNumber, lastTwoOperators)),//num = random.Next(28 / total > 10 ? 10 : 28 / total, highestNumber + 1);
+            OperatorType.division => Task.FromResult(CalcDivisionThirdNumber(total, highestNumber, lastTwoOperators)),//mod high numbers first allow num to be lower than highest number
+            OperatorType.minus => Task.FromResult(CalcMinusThirdNumber(total, highestNumber, lastTwoOperators)),
             _ => throw new Exception("Cannot find random number"),
         };
     }

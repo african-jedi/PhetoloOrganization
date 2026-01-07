@@ -39,7 +39,7 @@ public class CachedPuzzleRepository : IPuzzleRepository
                 return cachedPuzzle;
         }
 
-        return await GeneratePuzzle(cacheKey, cancellationToken);
+        return await GeneratePuzzle(cacheKey, null, cancellationToken);
     }
 
     public async Task<NumberPuzzle> GetNewPuzzleAsync(int id, CancellationToken cancellationToken = default)
@@ -65,12 +65,17 @@ public class CachedPuzzleRepository : IPuzzleRepository
                 return cachedPuzzle;
         }
 
-        return await GeneratePuzzle(cacheKey, cancellationToken);
+        return await GeneratePuzzle(cacheKey, id, cancellationToken);
     }
 
-    private async Task<NumberPuzzle> GeneratePuzzle(string cacheKey, CancellationToken cancellationToken)
+    private async Task<NumberPuzzle> GeneratePuzzle(string cacheKey, int? stage, CancellationToken cancellationToken)
     {
-        var newPuzzle = await _decorated.GetPuzzleAsync(cancellationToken);
+        NumberPuzzle newPuzzle = null!;
+        if(stage.HasValue)
+            newPuzzle =  await _decorated.GetNewPuzzleAsync(stage.Value, cancellationToken);
+        else
+            newPuzzle = await _decorated.GetPuzzleAsync(cancellationToken);
+
         var serializedPuzzle = JsonSerializer.Serialize(newPuzzle);
         var options = new DistributedCacheEntryOptions
         {

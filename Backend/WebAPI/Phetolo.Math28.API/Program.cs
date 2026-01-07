@@ -29,7 +29,7 @@ builder.Services.AddSwaggerGen(options =>
     {
         Title = "Order API",
         Version = "v1",
-        Description = "A sample API for demonstrating RabbitMQ Producer and Consumer in Web API",
+        Description = "Math28API - used by Angular 19 app",
         Contact = new OpenApiContact
         {
             Name = "African Jedi"
@@ -44,6 +44,11 @@ builder.Services.AddDbContext<Math28DBContext>(options =>
 //builder.EnrichNpgsqlDbContext<Math28DBContext>();
 
 //services.AddMigration<Math28DBContext, Math28DBContextSeed>();
+
+builder.Services.AddMediatR(cfg =>
+{
+    cfg.RegisterServicesFromAssembly(Phetolo.Math28.Application.AssemblyReference.Assembly);
+});
 
 builder.Services.AddStackExchangeRedisCache(Options =>
 {
