@@ -22,18 +22,19 @@
         background: transparent;
         border: 0px;
         text-align: center;
+        color: black;
     }
 </style>
 <div class="box-container" style="min-height: 30px">
     <div class="calc-board" style="display: flex; width: 100%">
         <div style="width: 33%; min-height: 30px">
             <input class="calc-board-input" type="text" maxlength="2" id="txtFirstNumber"
-                [value]="this.boardService.firstNumber()" />
+                [value]="this.boardService.firstNumber()" [disabled]="true"/>
         </div>
         &nbsp;
         <div style="width: 33%">
             <input class="calc-board-input" type="text" maxlength="2" id="txtNumerationSymbol"
-                [value]="this.boardService.numerationSymbol()" />
+                [value]="this.boardService.numerationSymbol()" [disabled]="true" />
         </div>
         &nbsp;
         <div style="width: 33%">

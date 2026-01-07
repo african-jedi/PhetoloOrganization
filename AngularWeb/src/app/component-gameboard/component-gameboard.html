@@ -39,6 +39,7 @@
     border-radius: 4px;
   }
 </style>
+@if (numbers().length !== 0) {
 <div class="box-container" style="min-height: 100px">
   <div style="display: flex; flex-direction: row; width: 300px; flex-wrap: wrap; gap: 10px">
     @for(item of numbers(); track item.id){
@@ -49,7 +50,8 @@
     </div>
     }@else if(item.calculated!==true && item.isNumber===false){
     <div style="width: calc(100% - 40px); flex: 0 1 10px">
-      <input [id]="item.id" (click)="numerationSymbolClicked($event)" [disabled]="item.disabledField" class="box orange-button" type="button" value="{{ item.value }}" />
+      <input [id]="item.id" (click)="numerationSymbolClicked($event)" [disabled]="item.disabledField"
+        class="box orange-button" type="button" value="{{ item.value=='*' ? 'x' : item.value=='/'?'÷':item.value }}" />
     </div>
     } }
   </div>
@@ -60,3 +62,10 @@
 </div>
 }
 <app-component-timer [stopTime]="endGame"></app-component-timer>
+}
+
+@if (numbers().length === 0) {
+<div class="box-container" style="min-height: 100px; display: flex; justify-content: center; align-items: center;">
+ <mat-spinner diameter="50"></mat-spinner>
+</div>
+}

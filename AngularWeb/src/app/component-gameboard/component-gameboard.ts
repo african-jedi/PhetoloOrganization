@@ -1,23 +1,24 @@
 import { Component, OnInit, OnDestroy, inject, signal, effect, SimpleChanges, OnChanges } from '@angular/core';
 import { NumberDetails } from '../models/number-details';
 import { Router } from '@angular/router';
-import { PuzzleService } from '../service/puzzleservice';
+import { PuzzleService, PuzzleAPIData } from '../service/puzzleservice';
 import { CookieService } from 'ngx-cookie-service';
 import { Constants } from '../models/constants';
 import confetti from 'canvas-confetti';
 import { ComponentTimer } from '../component-timer/component-timer';
 import { GameBoardService } from '../service/game-board-service';
 import { SharedService } from '../service/sharedservice';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @Component({
   selector: 'app-component-gameboard',
   standalone: true,
-  imports: [ComponentTimer],
+  imports: [ComponentTimer, MatProgressSpinnerModule],
   templateUrl: './component-gameboard.html',
   styleUrl: './component-gameboard.scss',
 })
 export class ComponentGameboard implements OnInit, OnDestroy, OnChanges {
-  readonly service = inject(PuzzleService);
+  service = inject(PuzzleService);
   readonly cookieService = inject(CookieService);
   numbers = signal<NumberDetails[]>([]);
   errorMsg = '';
@@ -32,19 +33,24 @@ export class ComponentGameboard implements OnInit, OnDestroy, OnChanges {
     this.initializeGameBoard();
 
     //subscribe to restart value
-    this.sharedService.restart$.subscribe(value=>{
-        if(value){
-          console.log('restart game');
-          this.initializeGameBoard();
-          this.boardService.firstNumber.set('');
-          this.boardService.secondNumber.set('');
-          this.boardService.numerationSymbol.set('');
-        }
+    this.sharedService.restart$.subscribe(value => {
+      if (value) {
+        console.log('restart game');
+        this.initializeGameBoard();
+        this.boardService.firstNumber.set('');
+        this.boardService.secondNumber.set('');
+        this.boardService.numerationSymbol.set('');
+      }
     });
 
     effect(() => {
       console.log("You win or lose check effect - numbers changed:", this.numbers());
+      if (this.service.todayPuzzle().length > 0 && this.numbers().length === 0) {
+        this.numbers.set(this.service.todayPuzzle());
+        this.cookieService.set(this.constants.puzzleCookieName, JSON.stringify(this.numbers()));
+      }
 
+      console.log("API Result:", this.service.todayPuzzle());
       //set showRestart in shared service
       var result = this.numbers().filter(c => c.calculated === true);
       if (result.length > 0)
@@ -93,23 +99,13 @@ export class ComponentGameboard implements OnInit, OnDestroy, OnChanges {
     if (!!cookieObject) {
       console.log("Cookie exists");
       puzzleNumbers = JSON.parse(cookieObject);
+      this.numbers.set(puzzleNumbers);
       console.log("Puzzle numbers:", JSON.stringify(puzzleNumbers));
     } else
-      puzzleNumbers = this.service.getPuzzle(false);
-    //puzzleNumbers = this.service.getTodaysPuzzle();
+      this.service.callApi.set(true);
 
     //reset: equation cookie
     this.cookieService.set(this.constants.cookieName, '');
-
-    if (puzzleNumbers.length === 0) {
-      this.cookieService.set(this.constants.puzzleCookieName, '');
-      this.numbers?.set([]);
-    } else {
-      this.numbers?.set(puzzleNumbers);
-
-      this.cookieService.set(this.constants.puzzleCookieName, JSON.stringify(puzzleNumbers));
-      console.log("Puzzle numbers:", JSON.stringify(puzzleNumbers));
-    }
   }
 
   numberClicked(event: Event) {
@@ -123,12 +119,12 @@ export class ComponentGameboard implements OnInit, OnDestroy, OnChanges {
       //set first number in calculation section if availabe
       if (this.boardService.firstNumber() === '') {
         this.boardService.firstNumber.set(button.value);
-        this._DisableButton(Number(button.id));
+        this._DisableButton(button.id);
       }
       //set second number in calculation section if available
       else if (this.boardService.secondNumber() === '') {
         this.boardService.secondNumber.set(button.value);
-        this._DisableButton(Number(button.id));
+        this._DisableButton(button.id);
       } else {
         //send toast message:
         //numbers have been slected, select numeration symbol or click selected numbers to remove
@@ -154,7 +150,7 @@ export class ComponentGameboard implements OnInit, OnDestroy, OnChanges {
     console.log('Button name:', button.value);
 
     this.boardService.numerationSymbol.set(button.value);
-    this._DisableButton(Number(button.id));
+    this._DisableButton(button.id);
   }
 
   private _Calculate(): void {
@@ -179,7 +175,7 @@ export class ComponentGameboard implements OnInit, OnDestroy, OnChanges {
     this.router.navigate([url, total]);
   }
 
-  private _DisableButton(id: number): void {
+  private _DisableButton(id: string): void {
     console.log(`Disable button with id: ${id}`);
     const selectedNumber = this.numbers().find(c => c.id === id);
     if (selectedNumber?.id === id) {
@@ -219,7 +215,7 @@ export class ComponentGameboard implements OnInit, OnDestroy, OnChanges {
     }
 
     this.numbers.set([...this.numbers(), {
-      id: this.numbers().length + 1,
+      id: (this.numbers().length + 1).toString(),
       value: total.toString(),
       disabledField: false,
       position: this.numbers().length + 1,

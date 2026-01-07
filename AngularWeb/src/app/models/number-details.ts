@@ -1,5 +1,5 @@
 export interface NumberDetails {
-    id: number,
+    id: string,
     value: string,
     position: number,
     disabledField: boolean,
