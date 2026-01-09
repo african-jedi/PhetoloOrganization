@@ -1,13 +1,14 @@
 import { computed, Injectable, signal } from '@angular/core';
 import { NumberDetails } from '../models/number-details';
 import { httpResource } from '@angular/common/http';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PuzzleService {
   callApi=signal<boolean>(false);
-  puzzleResource = httpResource<PuzzleAPIData>(() => this.callApi() ? 'http://localhost:5138/api/Puzzle': undefined);
+  puzzleResource = httpResource<PuzzleAPIData>(() => this.callApi() ? `${environment.apiUrl}/Puzzle`: undefined);
 
   // getPuzzle(disabled: boolean = true): NumberDetails[] {
   //   let numbers = [{
@@ -35,6 +36,7 @@ export class PuzzleService {
   // }
 
   todayPuzzle= computed(() => {
+    console.log('Fetching new puzzle from API:', environment.apiUrl);
     return this.puzzleResource.value()?.items ?? [];
   });
 }

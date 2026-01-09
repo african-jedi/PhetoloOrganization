@@ -12,7 +12,7 @@ public class Math28DBContext : DbContext
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         if (!optionsBuilder.IsConfigured)
-            optionsBuilder.UseNpgsql("Host=localhost;Port=5433;Database=Phetolo.Math28.Infrastructure;Username=postgres;Password=postgres");
+            optionsBuilder.UseNpgsql("Host=localhost;Port=5433;Database=Phetolo.Math28DB;Username=postgres;Password=postgres");
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder) =>

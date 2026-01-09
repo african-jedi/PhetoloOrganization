@@ -56,7 +56,8 @@ builder.Services.AddStackExchangeRedisCache(Options =>
     Options.InstanceName = "Math28.API_";
 }).AddApplicationServices();
 
-
+// Explicitly configure Kestrel to listen on IPv4 0.0.0.0:80  
+//builder.WebHost.ConfigureKestrel(serverOptions => serverOptions.ListenAnyIP(80));  
 
 var app = builder.Build();
 app.MapControllers();
@@ -72,4 +73,10 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.MapHub<WinnerNotificationHub>("/winnerNotificationHub");
 app.UseCors("AllowAll");
+
+using(IServiceScope scope = app.Services.CreateScope())
+{
+    Math28DBContext dbContext = scope.ServiceProvider.GetRequiredService<Math28DBContext>();
+    dbContext.Database.Migrate();
+}
 app.Run();

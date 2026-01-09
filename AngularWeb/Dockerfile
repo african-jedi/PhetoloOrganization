@@ -1,6 +1,6 @@
 FROM node:24-alpine as build
 WORKDIR /app
-
+EXPOSE 4200
 # Copy package-related files first to leverage Docker's caching mechanism
 COPY package.json ./
 
@@ -13,7 +13,7 @@ COPY . .
 RUN npm install
 
 # Build the Angular application
-CMD ["ng", "serve", "--host", "0.0.0.0"]
+CMD ["ng", "serve", "--host", "0.0.0.0", "--configuration", "production"]
 
 # FROM nginx:latest
 

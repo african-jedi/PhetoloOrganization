@@ -26,6 +26,9 @@ public class CachedPuzzleRepository : IPuzzleRepository
             puzzle = await _distributedCache.GetStringAsync(
                cacheKey,
                cancellationToken);
+
+            if (_logger.IsEnabled(LogLevel.Debug))
+                _logger.LogDebug("Using cached puzzle with key {CacheKey}", cacheKey);
         }
         catch (Exception ex)
         {
@@ -52,6 +55,9 @@ public class CachedPuzzleRepository : IPuzzleRepository
             puzzle = await _distributedCache.GetStringAsync(
                cacheKey,
                cancellationToken);
+
+            if (_logger.IsEnabled(LogLevel.Debug))
+                _logger.LogDebug("Using cached puzzle with key {CacheKey}", cacheKey);
         }
         catch (Exception ex)
         {
@@ -71,8 +77,8 @@ public class CachedPuzzleRepository : IPuzzleRepository
     private async Task<NumberPuzzle> GeneratePuzzle(string cacheKey, int? stage, CancellationToken cancellationToken)
     {
         NumberPuzzle newPuzzle = null!;
-        if(stage.HasValue)
-            newPuzzle =  await _decorated.GetNewPuzzleAsync(stage.Value, cancellationToken);
+        if (stage.HasValue)
+            newPuzzle = await _decorated.GetNewPuzzleAsync(stage.Value, cancellationToken);
         else
             newPuzzle = await _decorated.GetPuzzleAsync(cancellationToken);
 
@@ -89,6 +95,9 @@ public class CachedPuzzleRepository : IPuzzleRepository
                 serializedPuzzle,
                 options,
                 cancellationToken);
+
+            if (_logger.IsEnabled(LogLevel.Debug))
+                _logger.LogDebug("Set cached puzzle with key {CacheKey}", cacheKey);
         }
         catch (Exception ex)
         {
