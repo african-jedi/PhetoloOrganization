@@ -9,8 +9,9 @@ export const globalHttpErrorInterceptor: HttpInterceptorFn = (req, next) => {
   return next(req).pipe(
     retry({ count: 3, delay: 500 }),
     catchError((error: HttpErrorResponse) => {
-      snackBar.open(error.message, 'close',{
-        duration: 5000
+      snackBar.open('Failed to connect to external resource', 'close',{
+        duration: 5000,
+        panelClass: ["error-snackbar"]
       });
       return throwError(() => error);
     })

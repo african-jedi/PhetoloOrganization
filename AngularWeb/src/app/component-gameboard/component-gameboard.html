@@ -61,11 +61,13 @@
   {{errorMsg}}
 </div>
 }
+@defer{
 <app-component-timer [stopTime]="endGame"></app-component-timer>
+}
 }
 
 @if (numbers().length === 0) {
 <div class="box-container" style="min-height: 100px; display: flex; justify-content: center; align-items: center;">
- <mat-spinner diameter="50"></mat-spinner>
+  <mat-spinner diameter="50"></mat-spinner>
 </div>
 }
