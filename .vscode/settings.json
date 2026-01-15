@@ -25,6 +25,7 @@
         "Phetolo",
         "puzzleservice",
         "sharedservice",
-        "signalrservice"
+        "signalrservice",
+        "titlecase"
     ]
 }

@@ -43,9 +43,13 @@ ng generate --help
 
 For generating a component without Tests
 ```bash
-ng g c ComponentTips --skip-tests=false
+ng g c ComponentTips --skip-tests=true
 ```
 
+For generating a component with inline template and styles
+```bash
+ng g c test --inlineTemplate=true --inlineStyle=true
+```
 For generating a serive
 ```bash
 ng g s service/shared

@@ -8,7 +8,8 @@ import { environment } from '../../environments/environment';
 })
 export class PuzzleService {
   callApi=signal<boolean>(false);
-  puzzleResource = httpResource<PuzzleAPIData>(() => this.callApi() ? `${environment.apiUrl}/Puzzle`: undefined);
+  puzzleId=signal<string>('');
+  puzzleResource = httpResource<PuzzleAPIData>(() => this.callApi() ? this.puzzleId() === '' ? `${environment.apiUrl}/Puzzle` : `${environment.apiUrl}/Puzzle/${this.puzzleId()}` : undefined);
 
   // getPuzzle(disabled: boolean = true): NumberDetails[] {
   //   let numbers = [{
@@ -35,7 +36,12 @@ export class PuzzleService {
   //   return numbers;
   // }
 
-  todayPuzzle= computed(() => {
+  getMathPuzzle= computed(() => {
+    console.log('Fetching new puzzle from API:', environment.apiUrl);
+    return this.puzzleResource.value()?.items ?? [];
+  });
+
+  newPuzzle= computed(() => {
     console.log('Fetching new puzzle from API:', environment.apiUrl);
     return this.puzzleResource.value()?.items ?? [];
   });

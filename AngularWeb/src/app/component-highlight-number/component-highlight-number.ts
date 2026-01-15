@@ -1,7 +1,8 @@
 import { Component, input, inject, SimpleChanges, OnChanges } from '@angular/core';
 import { CookieService } from 'ngx-cookie-service';
-import { Constants } from '../models/constants';
+import { CookieNames } from '../models/cookieNames';
 import { ComponentTips } from '../component-tips/component-tips';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-component-highlight-number',
@@ -15,7 +16,8 @@ export class ComponentHighlightNumber implements OnChanges{
   answerClass = '';
   equation = '';
   readonly cookieService = inject(CookieService);
-  readonly constants = new Constants();
+  readonly constants = new CookieNames();
+  private router = inject(Router);
 
   constructor() {
     console.log("ComponentHighlightNumber: Constructor called before lifecycle hooks");
@@ -23,11 +25,18 @@ export class ComponentHighlightNumber implements OnChanges{
 
   ngOnInit() {
     console.log("ComponentHighlightNumber: ngOnInit called after constructor and onChanges");
-    this.answerClass = this.answer() === 28 ? 'pass' : 'fail';
-    this.equation = this.cookieService.get(this.constants.cookieName);
+    this.equation = this.cookieService.get(this.constants.equation);
+    console.log('Equation from cookie:', !this.equation);
+    if(!this.equation){
+      console.log('Error occurred');
+      this.router.navigate(['/error']);
+    }
 
-    if (this.answerClass === 'pass')
-      this.cookieService.set(this.constants.puzzleCookieName, '');
+
+    if (this.answer() === 28)
+      this.cookieService.set(this.constants.puzzle, '');
+
+    this.cookieService.set(this.constants.equation,'');
   }
 
   ngOnChanges(changes: SimpleChanges): void {

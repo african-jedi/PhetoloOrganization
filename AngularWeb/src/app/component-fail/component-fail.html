@@ -5,6 +5,7 @@
     justify-content: center;
     padding-top: 1rem;
   }
+
   .game-board {
     width: 400px;
     height: auto;
@@ -15,12 +16,20 @@
 </style>
 <div class="center-container">
   <div class="game-board">
-    <div style="text-align: center;"><h2>Opps, you failed!</h2></div>
+    <div style="text-align: center;">
+      <h2>Opps, you failed!</h2>
+    </div>
     <app-component-highlight-number [answer]="answer"></app-component-highlight-number>
-    <a matButton="filled" style="float: right;" [routerLink]="['']" matTooltip="Restart game">
+    @if(isNewPuzzle){
+    <a matButton style="float: right;" [routerLink]="['/new']" matTooltip="Restart game">
       Restart Game
       <mat-icon>arrow_forward</mat-icon>
     </a>
+    }@else{
+    <a matButton style="float: right;" [routerLink]="['']" matTooltip="Restart game">
+      Restart Game
+      <mat-icon>arrow_forward</mat-icon>
+    </a>
+    }
   </div>
 </div>
-

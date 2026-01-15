@@ -33,10 +33,10 @@
     <app-component-highlight-number [answer]="answer"></app-component-highlight-number>
     <!-- <input class="next-button" type="button" value="Next Game ->"/> -->
     <div style="padding-top: 1rem;">
-      <button matButton="filled" style="float: right;" matTooltip="Play next game">
+      <a matButton style="float: right;" [routerLink]="['/new']" matTooltip="Play next game">
         Next Game
         <mat-icon>arrow_forward</mat-icon>
-      </button>
+      </a>
     </div>
   </div>
 </div>

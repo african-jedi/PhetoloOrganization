@@ -3,12 +3,13 @@ import { NumberDetails } from '../models/number-details';
 import { Router } from '@angular/router';
 import { PuzzleService, PuzzleAPIData } from '../service/puzzleservice';
 import { CookieService } from 'ngx-cookie-service';
-import { Constants } from '../models/constants';
+import { CookieNames } from '../models/cookieNames';
 import confetti from 'canvas-confetti';
 import { ComponentTimer } from '../component-timer/component-timer';
 import { GameBoardService } from '../service/game-board-service';
 import { SharedService } from '../service/sharedservice';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-component-gameboard',
@@ -22,18 +23,19 @@ export class ComponentGameboard implements OnInit, OnDestroy, OnChanges {
   readonly cookieService = inject(CookieService);
   numbers = signal<NumberDetails[]>([]);
   errorMsg = '';
-  id = 0;
+  private winOrLoseInterval = 0;
+  private calculateInterval = 0;
   endGame = false;
 
   private router = inject(Router);
-  readonly constants = new Constants();
+  readonly constants = new CookieNames();
 
   constructor(public boardService: GameBoardService, private sharedService: SharedService) {
     console.log("ComponentGameboard: Constructor called before lifecycle hooks");
     this.initializeGameBoard();
 
     //subscribe to restart value
-    this.sharedService.restart$.subscribe(value => {
+    this.sharedService.restart$.pipe(takeUntilDestroyed()).subscribe(value => {
       if (value) {
         console.log('restart game');
         this.initializeGameBoard();
@@ -45,12 +47,12 @@ export class ComponentGameboard implements OnInit, OnDestroy, OnChanges {
 
     effect(() => {
       console.log("You win or lose check effect - numbers changed:", this.numbers());
-      if (this.service.todayPuzzle().length > 0 && this.numbers().length === 0) {
-        this.numbers.set(this.service.todayPuzzle());
-        this.cookieService.set(this.constants.puzzleCookieName, JSON.stringify(this.numbers()));
+      if (this.service.getMathPuzzle().length > 0 && this.numbers().length === 0) {
+        this.numbers.set(this.service.getMathPuzzle());
+        this.cookieService.set(this.constants.puzzle, JSON.stringify(this.numbers()));
       }
 
-      console.log("API Result:", this.service.todayPuzzle());
+      console.log("API Result:", this.service.getMathPuzzle());
       //set showRestart in shared service
       var result = this.numbers().filter(c => c.calculated === true);
       if (result.length > 0)
@@ -66,14 +68,19 @@ export class ComponentGameboard implements OnInit, OnDestroy, OnChanges {
       }
 
       if (this.endGame) {
-        this.id = setInterval(() => {
+        this.winOrLoseInterval = setInterval(() => {
           this._checkWinOrLose();
         }, 3000);
       }
 
-      setInterval(() => {
+      //todo: can cause multiple intervals - need to clear previous interval
+      if (this.calculateInterval) {
+        clearInterval(this.calculateInterval);
+      }
+      this.calculateInterval = setInterval(() => {
         this._Calculate();
       }, 500);
+
     });
   }
 
@@ -87,13 +94,19 @@ export class ComponentGameboard implements OnInit, OnDestroy, OnChanges {
   }
 
   ngOnDestroy() {
-    if (this.id) {
-      clearInterval(this.id);
+    if (this.winOrLoseInterval) {
+      clearInterval(this.winOrLoseInterval);
     }
+    if (this.calculateInterval) {
+      clearInterval(this.calculateInterval);
+    }
+    //unsubscribe from restart value
+    this.sharedService.updateShowRestart(false);
+    console.log('gnOnDestroy called');
   }
 
   initializeGameBoard() {
-    const cookieObject = this.cookieService.get(this.constants.puzzleCookieName);
+    const cookieObject = this.cookieService.get(this.constants.puzzle);
     let puzzleNumbers: NumberDetails[] = [];
 
     if (!!cookieObject) {
@@ -101,11 +114,21 @@ export class ComponentGameboard implements OnInit, OnDestroy, OnChanges {
       puzzleNumbers = JSON.parse(cookieObject);
       this.numbers.set(puzzleNumbers);
       console.log("Puzzle numbers:", JSON.stringify(puzzleNumbers));
-    } else
+    } else {
       this.service.callApi.set(true);
+      //set puzzle id if todays game is completed
+      const completedCookieObject = this.cookieService.get(this.constants.puzzleCompleted);
+
+      if (!!completedCookieObject) {
+        let completed: number[] = JSON.parse(completedCookieObject);
+        this.service.puzzleId.set(completed.length.toString());
+      } else {
+        this.service.puzzleId.set('');
+      }
+    }
 
     //reset: equation cookie
-    this.cookieService.set(this.constants.cookieName, '');
+    this.cookieService.set(this.constants.equation, '');
   }
 
   numberClicked(event: Event) {
@@ -168,10 +191,6 @@ export class ComponentGameboard implements OnInit, OnDestroy, OnChanges {
   }
 
   private _NavigateToComponent(url: string, total: number) {
-    if (this.id) {
-      clearInterval(this.id);
-    }
-
     this.router.navigate([url, total]);
   }
 
@@ -240,13 +259,13 @@ export class ComponentGameboard implements OnInit, OnDestroy, OnChanges {
   }
 
   private _updateCookieValue(equation: string) {
-    let value = this.cookieService.get(this.constants.cookieName);
+    let value = this.cookieService.get(this.constants.equation);
     if (value === '')
-      this.cookieService.set(this.constants.cookieName, equation, 1);
+      this.cookieService.set(this.constants.equation, equation, 1);
     else
-      this.cookieService.set(this.constants.cookieName, `${value} + ${equation}`, 1);
+      this.cookieService.set(this.constants.equation, `${value} + ${equation}`, 1);
 
-    console.log(`Cookie value: ${this.cookieService.get(this.constants.cookieName)}`);
+    console.log(`Cookie value: ${this.cookieService.get(this.constants.equation)}`);
   }
 
   private _finalNumber(): number | undefined {
