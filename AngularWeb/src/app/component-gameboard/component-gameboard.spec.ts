@@ -3,13 +3,13 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ComponentGameboard } from './component-gameboard';
 import { NumberDetails } from '../models/number-details';
 import { PuzzleService } from '../service/puzzleservice';
-import { Constants } from '../models/constants';
+import { CookieNames } from '../models/cookieNames';
 
 
 describe('ComponentGameboard', () => {
   let component: ComponentGameboard;
   let fixture: ComponentFixture<ComponentGameboard>;
-  let constants: Constants;
+  let constants: CookieNames;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -20,7 +20,7 @@ describe('ComponentGameboard', () => {
     fixture = TestBed.createComponent(ComponentGameboard);
     component = fixture.componentInstance;
     fixture.detectChanges();
-    constants = new Constants();
+    constants = new CookieNames();
   });
 
   it('should create', () => {
@@ -29,13 +29,13 @@ describe('ComponentGameboard', () => {
 
   it('should initialize numbers on ngOnInit', () => {
     spyOn(component.service, 'getPuzzle').and.returnValue([]);
-    component.cookieService.set(constants.puzzleCookieName, '');
+    component.cookieService.set(constants.puzzle, '');
     component.ngOnInit();
     expect(component.service.getPuzzle).toHaveBeenCalledTimes(0);
   });
 
   it('should clean up interval on ngOnDestroy', () => {
-    component.id = 12345;
+    component.winOrLoseInterval = 12345;
     spyOn(window, 'clearInterval');
     component.ngOnDestroy();
     expect(clearInterval).toHaveBeenCalledWith(12345);
@@ -67,17 +67,17 @@ describe('ComponentGameboard', () => {
   });
 
   it('should update cookie value', () => {
-    component.cookieService.set(component.constants.cookieName, "1");
+    component.cookieService.set(component.constants.equation, "1");
     (component as any)._updateCookieValue("2");
-    expect("1 + 2").toEqual(component.cookieService.get(component.constants.cookieName));
+    expect("1 + 2").toEqual(component.cookieService.get(component.constants.equation));
   });
 
   it('should navigate to Pass component when is winner', () => {
     let numbers = [
       {
-        id: 1, value: '28', position: 1, disabledField: true, selected: false, isNumber:true
+        id: '1', value: '28', position: 1, disabledField: true, selected: false, isNumber:true
       }, {
-        id: 2, value: '3', position: 2, disabledField: false, selected: true, isNumber:false
+        id: '2', value: '3', position: 2, disabledField: false, selected: true, isNumber:false
       }
     ];
     component.numbers.set(numbers);
@@ -89,9 +89,9 @@ describe('ComponentGameboard', () => {
   it('should navigate to Fail component when is not winner', () => {
     let numbers = [
       {
-        id: 1, value: '98', position: 1, disabledField: true, selected: false, isNumber:true
+        id: '1', value: '98', position: 1, disabledField: true, selected: false, isNumber:true
       }, {
-        id: 2, value: '3', position: 2, disabledField: false, selected: true, isNumber:false
+        id: '2', value: '3', position: 2, disabledField: false, selected: true, isNumber:false
       }
     ];
     component.numbers.set(numbers);

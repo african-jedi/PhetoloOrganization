@@ -23,8 +23,8 @@ export class ComponentGameboard implements OnInit, OnDestroy, OnChanges {
   readonly cookieService = inject(CookieService);
   numbers = signal<NumberDetails[]>([]);
   errorMsg = '';
-  private winOrLoseInterval = 0;
-  private calculateInterval = 0;
+  winOrLoseInterval = 0;
+  calculateInterval = 0;
   endGame = false;
 
   private router = inject(Router);

@@ -4,14 +4,14 @@
     <div style="padding: 1rem;">
         <mat-form-field appearance="outline" style="width: 350px;">
             <mat-label>Message</mat-label>
-            <input matInput [(ngModel)]="message" placeholder="Enter message to display to all users" />
+            <input matInput [formControl]="nameControl" placeholder="Enter message to display to all users" />
         </mat-form-field>
         <div>
             <button matButton="filled" type="button" value="Send Message" (click)="sendMessage()">Send Message</button>
         </div>
     </div>
     <h3>Winner Messages</h3>
-    @for(m of messages; track m){
+    @for(m of messages(); track m){
     <mat-list-item>{{m}}</mat-list-item>
     <mat-divider></mat-divider>
     }
