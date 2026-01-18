@@ -1,4 +1,5 @@
 import { TestBed } from '@angular/core/testing';
+import { provideZonelessChangeDetection } from '@angular/core';
 
 import { SharedService } from './sharedservice';
 
@@ -6,7 +7,11 @@ describe('SharedService', () => {
   let service: SharedService;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({});
+    TestBed.configureTestingModule({
+      providers: [
+        provideZonelessChangeDetection() // Add this line to provide zoneless change detection
+      ]
+    });
     service = TestBed.inject(SharedService);
   });
 

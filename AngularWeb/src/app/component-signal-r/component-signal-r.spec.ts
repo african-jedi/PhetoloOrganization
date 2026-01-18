@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import{ provideZonelessChangeDetection } from '@angular/core';
 
 import { ComponentSignalR } from './component-signal-r';
 
@@ -8,7 +9,10 @@ describe('ComponentSignalR', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ComponentSignalR]
+      imports: [ComponentSignalR],
+      providers: [
+        provideZonelessChangeDetection()
+      ]
     })
     .compileComponents();
 

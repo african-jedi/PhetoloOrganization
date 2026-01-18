@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy, inject, signal, effect, SimpleChanges, OnChanges } from '@angular/core';
 import { NumberDetails } from '../models/number-details';
 import { Router } from '@angular/router';
-import { PuzzleService, PuzzleAPIData } from '../service/puzzleservice';
+import { PuzzleService } from '../service/puzzleservice';
 import { CookieService } from 'ngx-cookie-service';
 import { CookieNames } from '../models/cookieNames';
 import confetti from 'canvas-confetti';
@@ -197,7 +197,7 @@ export class ComponentGameboard implements OnInit, OnDestroy, OnChanges {
   private _DisableButton(id: string): void {
     console.log(`Disable button with id: ${id}`);
     const selectedNumber = this.numbers().find(c => c.id === id);
-    if (selectedNumber?.id === id) {
+    if (!!selectedNumber && selectedNumber?.id === id) {
       selectedNumber.disabledField = true;
       selectedNumber.selected = true;
       console.log("Selected number:", selectedNumber);

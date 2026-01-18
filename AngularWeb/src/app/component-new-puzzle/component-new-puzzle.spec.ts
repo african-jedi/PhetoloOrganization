@@ -1,4 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { provideZonelessChangeDetection } from '@angular/core';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
+import { httpResource, provideHttpClient } from '@angular/common/http';
 
 import { ComponentNewPuzzle } from './component-new-puzzle';
 
@@ -8,7 +11,12 @@ describe('ComponentNewPuzzle', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ComponentNewPuzzle]
+      imports: [ComponentNewPuzzle],
+      providers: [
+        provideZonelessChangeDetection(),
+        provideHttpClient(),
+        provideHttpClientTesting()
+      ]
     })
     .compileComponents();
 

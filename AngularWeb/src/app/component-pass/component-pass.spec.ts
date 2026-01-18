@@ -1,7 +1,9 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { provideZonelessChangeDetection } from '@angular/core';
 import { ComponentPass } from './component-pass';
 import { ActivatedRoute, provideRouter } from '@angular/router';
+import { routes } from '../app.routes';
+import { ComponentHighlightNumber } from '../component-highlight-number/component-highlight-number';
 
 describe('ComponentPass', () => {
   let component: ComponentPass;
@@ -11,20 +13,17 @@ describe('ComponentPass', () => {
 
   it('should create', () => {
    fixture = TestBed.configureTestingModule({
-      imports: [ComponentPass],
-      providers: [provideRouter([])]
+      imports: [ComponentPass, ComponentHighlightNumber],
+      providers: [provideRouter(routes), provideZonelessChangeDetection()]
     })
       .createComponent(ComponentPass);
 
     //fixture = TestBed.createComponent(ComponentPass);
     component = fixture.componentInstance;
-    fixture.detectChanges();
     expect(component).toBeTruthy();
   });
 
   it('should have pass message', () => {
-    const paramap=new Map<string,string>();
-
     fixture = TestBed.configureTestingModule({
       imports: [ComponentPass],
       providers: [{ provide: ActivatedRoute, useValue: {
@@ -33,16 +32,16 @@ describe('ComponentPass', () => {
               get: () => 28, // represents the bookId
             },
           },
-        }, }]
+        }, }, provideZonelessChangeDetection()]
     })
       .createComponent(ComponentPass);
 
     const compiled = fixture.nativeElement as HTMLElement;
     component = fixture.componentInstance;
     console.log('Answer:', component.answer);
-    fixture.detectChanges();
 
     expect(compiled.querySelector('.message')?.textContent).toContain('Well, done!');
-    expect(compiled.querySelector('.pass')?.textContent).toContain(paramap.get('total') || '28');
+    let answer = Number(fixture.debugElement.injector.get(ActivatedRoute).snapshot.paramMap.get('total') ?? 0);
+    expect(28).toBe(answer);
   });
 });

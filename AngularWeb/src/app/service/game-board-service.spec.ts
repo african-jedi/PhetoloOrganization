@@ -1,4 +1,5 @@
 import { TestBed } from '@angular/core/testing';
+import { provideZonelessChangeDetection } from '@angular/core';
 
 import { GameBoardService } from './game-board-service';
 
@@ -6,7 +7,11 @@ describe('GameBoardService', () => {
   let service: GameBoardService;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({});
+    TestBed.configureTestingModule({
+      providers: [
+        provideZonelessChangeDetection()
+      ]
+    });
     service = TestBed.inject(GameBoardService);
   });
 

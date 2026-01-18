@@ -1,9 +1,14 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { provideZonelessChangeDetection } from '@angular/core';
 import { ComponentGameboard } from './component-gameboard';
 import { NumberDetails } from '../models/number-details';
 import { PuzzleService } from '../service/puzzleservice';
 import { CookieNames } from '../models/cookieNames';
+import { httpResource, provideHttpClient } from '@angular/common/http';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
+
+
+
 
 
 describe('ComponentGameboard', () => {
@@ -13,13 +18,17 @@ describe('ComponentGameboard', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ComponentGameboard]
+      imports: [ComponentGameboard],
+      providers: [
+        provideZonelessChangeDetection(),
+        provideHttpClient(),
+        provideHttpClientTesting()
+      ]
     })
       .compileComponents();
 
     fixture = TestBed.createComponent(ComponentGameboard);
     component = fixture.componentInstance;
-    fixture.detectChanges();
     constants = new CookieNames();
   });
 
@@ -59,10 +68,19 @@ describe('ComponentGameboard', () => {
   });
 
   it('should call numerationSymbolClicked', () => {
+    let numbers = [
+      {
+        id: '1', value: '28', position: 1, disabledField: true, selected: false, isNumber:true
+      }, {
+        id: '2', value: '3', position: 2, disabledField: false, selected: true, isNumber:false
+      }
+    ];
+    component.numbers.set(numbers);
     const event = new Event("+");
     Object.defineProperty(event, 'target', { writable: true, value: { value: '+' } });
 
     component.numerationSymbolClicked(event);
+    fixture.detectChanges();
     expect(component.boardService.numerationSymbol()).toEqual("+");
   });
 
