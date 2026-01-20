@@ -27,6 +27,33 @@ View Sample code below:
   }
 ```
 
+## Subscribe to Notification
+Once you have connect you can subscribe to receive and send notification. 
+
+Component can the
+```csharp
+  public addWinnerNotificationListener(callback: (message: string) => void): void {
+    if (this.hubConnection) {
+      this.hubConnection.on('ReceiveWinnerNotification', (message: string) => {
+        callback(message);
+      });
+    } else {
+      console.error('Hub connection is not established.');
+    } 
+  }
+```
+If the Hub exposes an api endpoint to send messages, this endpoint can be invoked in the client application.
+```csharp
+public sendWinnerNotification(message: string): void {
+    if (this.hubConnection) {
+      this.hubConnection.invoke('SendWinnerNotification', message)
+        .catch(err => console.error('Error while sending winner notification: ' + err));
+    } else {
+      console.error('Hub connection is not established.');
+    } 
+  }
+```
+
 ## To test SignalR
 
 Navigate to [http://localhost:4200/test](http://localhost:4200/test), on this page you can send message and view received messages.
