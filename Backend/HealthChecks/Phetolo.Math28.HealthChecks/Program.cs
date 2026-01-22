@@ -18,7 +18,10 @@ app.UseHttpsRedirection();
 app.UseRouting();
 app.UseEndpoints(endPoints =>
 {
-    endPoints.MapHealthChecksUI();
+    endPoints.MapHealthChecksUI(opt =>
+    {
+        opt.UIPath="/health-check";
+    });
 });
 
 app.UseAuthorization();
@@ -27,8 +30,7 @@ app.MapStaticAssets();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}")
-    .WithStaticAssets();
+    pattern: "{controller=Home}/{action=Index}/{id?}");
 
 
 app.Run();
