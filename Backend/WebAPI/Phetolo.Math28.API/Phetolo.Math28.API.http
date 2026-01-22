@@ -1,6 +1,6 @@
 @Phetolo.Math28.API_HostAddress = http://localhost:5138
 
-GET {{Phetolo.Math28.API_HostAddress}}/Puzzle/
+GET {Phetolo.Math28.API_HostAddress}/Puzzle/
 Accept: application/json
 
 ###

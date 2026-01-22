@@ -1,4 +1,6 @@
+using HealthChecks.UI.Client;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.OpenApi.Models;
 using Phetolo.Math28.API;
 using Phetolo.Math28.API.Hubs;
@@ -56,6 +58,20 @@ builder.Services.AddStackExchangeRedisCache(Options =>
     Options.InstanceName = "Math28.API_";
 }).AddApplicationServices();
 
+builder.Services.AddHealthChecks()
+    .AddCheck("Math28API-check", () => HealthCheckResult.Healthy())
+    .AddRedis(
+        builder.Configuration.GetConnectionString("Redis")!,
+        name: "Redis-check",
+        failureStatus: HealthStatus.Unhealthy,
+        tags: new string[] { "db", "redis" })
+    .AddNpgSql(
+        builder.Configuration.GetConnectionString("Math28DB")!,
+        name: "Math28DB-check",
+        healthQuery: "SELECT 1;",
+        failureStatus: HealthStatus.Unhealthy,
+        tags: new string[] { "db", "sql", "postgresql" });
+
 // Explicitly configure Kestrel to listen on IPv4 0.0.0.0:80  
 //builder.WebHost.ConfigureKestrel(serverOptions => serverOptions.ListenAnyIP(80));  
 
@@ -68,15 +84,24 @@ if (app.Environment.IsDevelopment())
     app.MapOpenApi();
     app.UseSwagger();
     app.UseSwaggerUI();
+
+    using (IServiceScope scope = app.Services.CreateScope())
+    {
+        Math28DBContext dbContext = scope.ServiceProvider.GetRequiredService<Math28DBContext>();
+        //dbContext.Database.Migrate();
+    }
 }
 
 app.UseHttpsRedirection();
 app.MapHub<WinnerNotificationHub>("/winnerNotificationHub");
 app.UseCors("AllowAll");
-
-using(IServiceScope scope = app.Services.CreateScope())
+app.UseRouting();
+app.UseEndpoints(endPoints =>
 {
-    Math28DBContext dbContext = scope.ServiceProvider.GetRequiredService<Math28DBContext>();
-    dbContext.Database.Migrate();
-}
+    endPoints.MapHealthChecks("/health", new Microsoft.AspNetCore.Diagnostics.HealthChecks.HealthCheckOptions
+    {
+        ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
+    });
+});
+
 app.Run();
