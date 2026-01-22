@@ -13,6 +13,9 @@ public class HomeController : Controller
 
     public IActionResult Index()
     {
+        if(_logger.IsEnabled(LogLevel.Debug))
+          _logger.LogDebug("Redirect to health check page");
+
         return Redirect("/health-check");
     }
 }
