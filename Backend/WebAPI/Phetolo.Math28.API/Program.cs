@@ -70,7 +70,13 @@ builder.Services.AddHealthChecks()
         name: "Math28DB-check",
         healthQuery: "SELECT 1;",
         failureStatus: HealthStatus.Unhealthy,
-        tags: new string[] { "db", "sql", "postgresql" });
+        tags: new string[] { "db", "sql", "postgresql" })
+    .AddAsyncCheck("AngularApp-check", async () =>
+    {
+        using var client = new HttpClient{Timeout = TimeSpan.FromSeconds(5)};
+        var response = await client.GetAsync(builder.Configuration["AngularHealthCheckUrl"]!);
+        return response.IsSuccessStatusCode ? HealthCheckResult.Healthy() : HealthCheckResult.Unhealthy();
+    });
 
 // Explicitly configure Kestrel to listen on IPv4 0.0.0.0:80  
 //builder.WebHost.ConfigureKestrel(serverOptions => serverOptions.ListenAnyIP(80));  

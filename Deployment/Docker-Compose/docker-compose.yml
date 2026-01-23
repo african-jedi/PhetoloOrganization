@@ -22,6 +22,7 @@ services:
         environment:
             - ConnectionStrings__Math28DB=Host=db;Port=5432;Database=Phetolo.Math28DB;Username=postgres;Password=postgres;
             - ConnectionStrings__Redis=cache:6379
+            - AngularHealthCheckUrl=http://frontend:4200
         ports: 
             - "5138:8080"
         depends_on:
