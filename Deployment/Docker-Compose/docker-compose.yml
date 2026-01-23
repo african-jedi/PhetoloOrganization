@@ -1,4 +1,4 @@
-version: '3.4'
+version: '3.9'
 
 services: 
 
@@ -12,13 +12,16 @@ services:
         - "5432:5432"
       volumes:
           - pgdata:/var/lib/postgresql/data
-
     cache:
       image: redis:latest
       ports:
             - "6379:6379"
+    frontend:
+      build: ../../AngularWeb
+      ports:
+            - "4200:4200"   
     backend:
-        build: ./backend
+        build: ../../backend
         environment:
             - ConnectionStrings__Math28DB=Host=db;Port=5432;Database=Phetolo.Math28DB;Username=postgres;Password=postgres;
             - ConnectionStrings__Redis=cache:6379
@@ -28,13 +31,19 @@ services:
         depends_on:
             - db
             - cache
-
-    frontend:
-        build: ./AngularWeb
+            - frontend
+    
+    healthcheck:
+        build: ../../backend/HealthChecks/Phetolo.Math28.HealthChecks
+        environment:
+            - HealthChecksUI__HealthChecks__0__Name=Math28 API_Prod
+            - HealthChecksUI__HealthChecks__0__Uri=http://backend:8080/health
         ports:
-            - "4200:4200"
+            - "5148:8080"
         depends_on:
-            - backend
+            backend:
+                condition: service_started
+        restart: on-failure:5
 
 volumes:
     pgdata:

@@ -16,10 +16,9 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAll", builder =>
     {
-        builder.WithOrigins("http://localhost:4200")
+        builder.AllowAnyOrigin()
         .AllowAnyHeader()
-        .AllowAnyMethod()
-        .AllowCredentials();
+        .AllowAnyMethod();
     });
 });
 
@@ -73,9 +72,35 @@ builder.Services.AddHealthChecks()
         tags: new string[] { "db", "sql", "postgresql" })
     .AddAsyncCheck("AngularApp-check", async () =>
     {
-        using var client = new HttpClient{Timeout = TimeSpan.FromSeconds(5)};
-        var response = await client.GetAsync(builder.Configuration["AngularHealthCheckUrl"]!);
-        return response.IsSuccessStatusCode ? HealthCheckResult.Healthy() : HealthCheckResult.Unhealthy();
+        try
+        {
+            var angularUrl = builder.Configuration["AngularHealthCheckUrl"];
+            if (string.IsNullOrEmpty(angularUrl))
+                return HealthCheckResult.Healthy();
+                
+            Console.WriteLine($"Checking Angular app health at: {angularUrl}");
+            using var client = new HttpClient { Timeout = TimeSpan.FromSeconds(10) };
+            var response = await client.GetAsync(angularUrl);
+            Console.WriteLine($"Angular app responded with status code: {response.StatusCode}");
+            // Accept 200-299 or 403 Forbidden (app is running)
+            if (response.IsSuccessStatusCode || response.StatusCode == System.Net.HttpStatusCode.Forbidden)
+                return HealthCheckResult.Healthy();
+            return HealthCheckResult.Degraded($"Angular returned {response.StatusCode}");
+        }
+        catch (HttpRequestException hex)
+        {
+            // If Angular is unreachable, return degraded instead of failing - it might still be starting
+            Console.WriteLine($"Angular health check failed: {hex.Message}");
+            return HealthCheckResult.Degraded($"Angular app still starting or network issue");
+        }
+        catch (TaskCanceledException)
+        {
+            return HealthCheckResult.Degraded("Angular app timeout - still starting");
+        }
+        catch (Exception ex)
+        {
+            return HealthCheckResult.Degraded($"Angular check error: {ex.GetType().Name}");
+        }
     });
 
 // Explicitly configure Kestrel to listen on IPv4 0.0.0.0:80  
@@ -90,12 +115,12 @@ if (app.Environment.IsDevelopment())
     app.MapOpenApi();
     app.UseSwagger();
     app.UseSwaggerUI();
+}
 
-    using (IServiceScope scope = app.Services.CreateScope())
-    {
-        Math28DBContext dbContext = scope.ServiceProvider.GetRequiredService<Math28DBContext>();
-        //dbContext.Database.Migrate();
-    }
+using (IServiceScope scope = app.Services.CreateScope())
+{
+    Math28DBContext dbContext = scope.ServiceProvider.GetRequiredService<Math28DBContext>();
+    dbContext.Database.Migrate();
 }
 
 app.UseHttpsRedirection();

@@ -23,6 +23,7 @@
         "Backplane",
         "colour",
         "gameboard",
+        "healthcheck",
         "Phetolo",
         "puzzleservice",
         "sharedservice",
