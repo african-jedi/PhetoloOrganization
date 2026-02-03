@@ -5,8 +5,14 @@ using Microsoft.OpenApi.Models;
 using Phetolo.Math28.API;
 using Phetolo.Math28.API.Hubs;
 using Phetolo.Math28.Infrastructure.Data;
+using Serilog;
+using Serilog.Context;
 
 var builder = WebApplication.CreateBuilder(args);
+
+// Configure Serilog
+builder.Host.UseSerilog((context, configuration) =>
+    configuration.ReadFrom.Configuration(context.Configuration));
 
 // Add services to the container.
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
@@ -107,6 +113,21 @@ builder.Services.AddHealthChecks()
 //builder.WebHost.ConfigureKestrel(serverOptions => serverOptions.ListenAnyIP(80));  
 
 var app = builder.Build();
+
+// Middleware to capture correlation ID from request headers
+app.Use(async (context, next) =>
+{
+    var correlationId = context.Request.Headers.TryGetValue("X-Correlation-Id", out var value)
+        ? value.ToString()
+        : context.TraceIdentifier;
+    
+    using (LogContext.PushProperty("CorrelationId", correlationId))
+    {
+        await next();
+    }
+});
+
+app.UseSerilogRequestLogging();
 app.MapControllers();
 
 // Configure the HTTP request pipeline.
@@ -134,5 +155,5 @@ app.UseEndpoints(endPoints =>
         ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
     });
 });
-
+app.UseSerilogRequestLogging();
 app.Run();

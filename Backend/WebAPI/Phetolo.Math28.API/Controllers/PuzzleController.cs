@@ -8,13 +8,16 @@ namespace Phetolo.Math28.API.Controllers;
 [ApiController]
 public class PuzzleController : ApiController
 {
-    public PuzzleController(ISender sender) : base(sender)
+    private readonly ILogger<PuzzleController> _logger;
+    public PuzzleController(ISender sender, ILogger<PuzzleController> logger) : base(sender)
     {
+        _logger = logger;
     }
 
     [HttpGet]
     public async Task<Phetolo.Math28.Core.Models.NumberPuzzle> TodaysPuzzle(CancellationToken cancellationToken)
     {
+        _logger.LogInformation("Fetching today's puzzle");
         return await Sender.Send(new CreatePuzzleCommand(true, null), cancellationToken);
     }
 
