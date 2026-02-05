@@ -118,3 +118,9 @@ NB: **-f** stands for *file* in the below command:
 ```bash
 kubectl apply -f postgressql-deployment.yml
 
+When all pods, volumes and services are deployed correctly the `healthcheck-web` pod will display a green status such as below image.
+
+![Health check image](./healthcheck-allapps.png)
+
+
+
