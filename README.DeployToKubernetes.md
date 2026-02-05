@@ -39,7 +39,7 @@ NB: **-f** stands for *file* in the below command:
 kubectl apply -f frontend-deployment.yml
 ```
 
-### 2. Deploy Back-end
+### 3. Deploy Back-end
 
 To deploy the back-end, the Back-end application Docker image must be published to *Docker Hub* registry.
 
@@ -54,7 +54,7 @@ docker build . -t kgapzajedi56/math28-backend:01
 docker push kgapzajedi56/math28-backend:01
 ```
 
-3. Deploy front-end on Kubernetes
+3. Deploy back-end on Kubernetes
 To deploy to Kubernetes a deployment configuration file is created and used to deploy the front-end application. The `backend-deployment.yml` contains deployment and service configuration.
 
 NB: **-f** stands for *file* in the below command:
@@ -62,7 +62,7 @@ NB: **-f** stands for *file* in the below command:
 kubectl apply -f backend-deployment.yml
 ```
 
-### 3. Deploy Heathcheck-Web
+### 4. Deploy Healthcheck-Web
 
 To deploy the healthcheck-web, the healthcheck-web application Docker image must be published to *Docker Hub* registry.
 
@@ -85,7 +85,7 @@ NB: **-f** stands for *file* in the below command:
 kubectl apply -f healthcheckweb-deployment.yml
 ```
 
-### 4. Deploy Redis (`cache Server`)
+### 5. Deploy Redis (`cache Server`)
 
 To deploy the Redis cache, the public Docker image published by Redis on *Docker Hub* will be used.
 
@@ -97,11 +97,21 @@ NB: **-f** stands for *file* in the below command:
 kubectl apply -f redis-deployment.yml
 ```
 
-### 4. Deploy PostgreSQL (`DB Server`)
+### 6. Deploy PostgreSQL (`DB Server`) with `Volumes`
 
-To deploy the Redis cache, the public Docker image published by Redis on *Docker Hub* will be used.
+To deploy the Redis cache, the public Docker image published by Redis on *Docker Hub* will be used. First we need to create a `PersistentVolume` and then `PersistentVolumeClaim`. The `PersistentVolumeClaim` allows pods to claim some or all space in the volume.
 
-1. Deploy PostgreSQL on Kubernetes
+1. Create a PersistentVolume
+```bash
+kubectl apply -f postgressql-volume.yml
+```
+
+2. Create a PersistentvolumeClaim
+```bash
+kubectl apply -f pvc.yml
+```
+
+3. Deploy PostgreSQL on Kubernetes
 To deploy to Kubernetes a deployment configuration file is created and used to deploy the PostgreSQL which will be used by backend application. The `postgressql-deployment.yml` contains deployment and service configuration.
 
 NB: **-f** stands for *file* in the below command:

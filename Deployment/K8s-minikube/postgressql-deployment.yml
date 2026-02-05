@@ -6,6 +6,9 @@ metadata:
   namespace: math28
 spec:
   replicas: 1
+  selector:
+    matchLabels:
+      app: math28-postgresql
   template:
     metadata:
       labels:
@@ -24,9 +27,13 @@ spec:
           value: Phetolo.Math28DB
         ports:
         - containerPort: 5432
-  selector:
-    matchLabels:
-      app: math28-postgresql
+        volumeMounts:
+        - name: postgres-storage
+          mountPath: /var/lib/postgresql/data
+      volumes:
+      - name: postgres-storage
+        persistentVolumeClaim:
+          claimName: math28-postgresql-pvc  
 ---
 apiVersion: v1
 kind: Service

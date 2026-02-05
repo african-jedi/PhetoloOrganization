@@ -35,7 +35,8 @@ spec:
   ports:
   - protocol: TCP
     targetPort: 8080
-    port: 31039
+    port: 8080
+    nodePort: 30249
   selector:
     app: math28-healthcheck-web
 
