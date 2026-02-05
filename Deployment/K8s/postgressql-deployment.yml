@@ -1,0 +1,43 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: math28-postgresql
+  namespace: math28
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: math28-postgresql
+    spec:
+      containers:
+      - name: math28-postgresql
+        image: postgres:17
+        imagePullPolicy: IfNotPresent
+        env:
+        - name: POSTGRES_USER
+          value: postgres
+        - name: POSTGRES_PASSWORD
+          value: postgres
+        - name: POSTGRES_DB
+          value: Phetolo.Math28DB
+        ports:
+        - containerPort: 5432
+  selector:
+    matchLabels:
+      app: math28-postgresql
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: math28-postgresql
+  namespace: math28
+spec:
+  type: ClusterIP
+  selector:
+    app: math28-postgresql
+  ports:
+  - protocol: TCP
+    port: 5432
+    targetPort: 5432 

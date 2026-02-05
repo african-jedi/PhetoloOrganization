@@ -1,0 +1,45 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: math28-backend
+  namespace: math28
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: math28-backend
+  template:
+    metadata:
+      labels:
+        app: math28-backend
+    spec:
+      containers:
+      - name: math28-backend
+        image: kgapzajedi56/math28-backend:01
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8080
+        env:
+        - name: ConnectionStrings__Math28DB
+          value: Host=math28-postgresql;Port=5432;Database=Phetolo.Math28DB;Username=postgres;Password=postgres;
+        - name: ConnectionStrings__Redis
+          value: math28-redis:6379
+        - name: AngularHealthCheckUrl
+          value: http://math28-frontend:4200
+        - name: ASPNETCORE_URLS
+          value: http://*:8080
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: math28-backend
+  namespace: math28
+spec:
+  type: NodePort
+  ports:
+  - protocol: TCP
+    targetPort: 8080
+    port: 5138
+  selector:
+    app: math28-backend        

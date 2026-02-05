@@ -1,0 +1,43 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: math28-frontend
+  namespace: math28
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: math28-frontend
+    spec:
+      containers:
+      - name: math28-frontend
+        image: kgapzajedi56/math28-frontend:02
+        imagePullPolicy: Always
+        resources:
+          requests:
+            memory: "20Mi"
+            cpu: "100m"
+          limits:
+            memory: "40Mi"
+            cpu: "200m"
+        ports:
+        - containerPort: 80
+  selector:
+    matchLabels:
+      app: math28-frontend
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: math28-frontend
+  namespace: math28
+spec:
+  type: NodePort
+  ports:
+  - port: 80
+    targetPort: 80
+    nodePort: 30080
+  selector:
+    app: math28-frontend

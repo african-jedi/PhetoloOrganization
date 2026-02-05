@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: math28-healthcheck-web
+  namespace: math28
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: math28-healthcheck-web
+  template:
+    metadata:
+      labels:
+        app: math28-healthcheck-web
+    spec:
+      containers:
+      - name: math28-healthcheck-web
+        image: kgapzajedi56/math28-healthcheck-web:01
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8080
+        env:
+        - name: HealthChecksUI__HealthChecks__0__Name
+          value: Math28 API_Prod
+        - name: HealthChecksUI__HealthChecks__0__Uri
+          value: http://math28-backend:8080/health
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: math28-healthcheck-web
+  namespace: math28
+spec: 
+  type: NodePort
+  ports:
+  - protocol: TCP
+    targetPort: 8080
+    port: 31039
+  selector:
+    app: math28-healthcheck-web
+

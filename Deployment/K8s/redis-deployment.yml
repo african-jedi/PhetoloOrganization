@@ -1,0 +1,36 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: math28-redis
+  namespace: math28
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: math28-redis
+    spec:
+      containers:
+      - name: math28-redis
+        image: redis:latest
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 6379 
+  selector:
+    matchLabels:
+      app: math28-redis
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: math28-redis
+  namespace: math28
+spec:
+  type: ClusterIP
+  selector:
+    app: math28-redis
+  ports:
+  - protocol: TCP
+    port: 6379
+    targetPort: 6379   
